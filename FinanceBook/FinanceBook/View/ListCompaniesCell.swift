@@ -10,21 +10,16 @@ import SnapKit
 
 final class ListCompaniesCell: UITableViewCell {
     
-    private enum Constants {
-        static let spacing: CGFloat = 5
-    }
-    
     static let id = String(describing: ListCompaniesCell.self)
     
-    private let nameLabel = UILabel()
-    private let countLabel = UILabel()
-    private let vStackView = UIStackView()
+    private let titleLabel = UILabel()
+    private let newsImageView = UIImageView()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.addSubview()
-        self.makeStackViewConstraints()
-        self.configStackView()
+        self.makeNewsImageViewConstraints()
+        self.makeTitleLabelConstraints()
     }
     
     required init?(coder: NSCoder) {
@@ -35,29 +30,34 @@ final class ListCompaniesCell: UITableViewCell {
 extension ListCompaniesCell {
     
     func update(article: Article) {
-        self.nameLabel.text = article.title
-        self.countLabel.text = article.description
+        self.titleLabel.text = article.title
+    }
+    
+    func setImage(data: Data) {
+        self.newsImageView.image = UIImage(data: data)
     }
 }
 
 private extension ListCompaniesCell {
     
     func addSubview() {
-        self.addSubview(self.vStackView)
-        self.vStackView.addArrangedSubview(self.nameLabel)
-        self.vStackView.addArrangedSubview(self.countLabel)
+        self.addSubview(titleLabel)
+        self.addSubview(newsImageView)
     }
     
-    func makeStackViewConstraints() {
-        self.vStackView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+    func makeNewsImageViewConstraints() {
+        newsImageView.backgroundColor = .gray
+        self.newsImageView.snp.makeConstraints { make in
+            make.top.bottom.leading.equalToSuperview().inset(10)
+            make.width.equalTo(self.newsImageView.snp.height)
         }
     }
     
-    func configStackView() {
-        self.vStackView.axis = .vertical
-        self.vStackView.alignment = .center
-        self.vStackView.distribution = .fill
-        self.vStackView.spacing = Constants.spacing
+    func makeTitleLabelConstraints() {
+        titleLabel.numberOfLines = 0
+        self.titleLabel.snp.makeConstraints { make in
+            make.top.bottom.trailing.equalToSuperview().inset(10)
+            make.leading.equalTo(self.newsImageView.snp.trailing).inset(-10)
+        }
     }
 }

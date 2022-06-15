@@ -48,6 +48,7 @@ final class ListCompaniesViewController: UIViewController {
         self.setOnCellDeleteHandler()
         self.setRightBarButton()
         self.interactor.loadNews()
+        self.tableAdapter.delegate = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -60,6 +61,13 @@ extension ListCompaniesViewController: IListCompaniesViewController {
     
     func showError(_ error: String) {
         self.router.showErrorAlert(error)
+    }
+}
+
+extension ListCompaniesViewController: ListCompaniesTableAdapterDelegate {
+    
+    func loadImageData(url: String?, complition: @escaping (Data) -> ()) {
+        self.interactor.loadImageDataFrom(url: url, complition: complition)
     }
 }
 

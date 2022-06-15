@@ -37,6 +37,28 @@ extension NetworkManager {
         
         self.loadData(api: api, completion: completion)
     }
+    
+    func loadImageDataFrom(url: String,
+                           completion: @escaping (Result<Data, Error>) -> ()) {
+        
+        let correctUrlString = url
+        guard let url = URL(string: correctUrlString) else { assert(false) }
+        let request = URLRequest(url: url)
+        
+        self.session.downloadTask(with: request) { url, response, error in
+            if let error = error {
+                completion(.failure(error))
+            }
+            guard let url = url else { return }
+            do {
+                let data = try Data(contentsOf: url)
+                completion(.success(data))
+            }
+            catch let error {
+                completion(.failure(error))
+            }
+        }.resume()
+    }
 }
 
 private extension NetworkManager {

@@ -7,7 +7,12 @@
 
 import UIKit
 
+protocol ListCompaniesTableAdapterDelegate: AnyObject {
+    func loadImageData(url: String?, complition: @escaping(Data) -> ())
+}
+
 protocol IListCompaniesTableAdapter: AnyObject {
+    var delegate: ListCompaniesTableAdapterDelegate? { get set }
     var tableView: UITableView? { get set }
     var onCellDeleteHandler: ((CompanyRequest) -> ())? { get set }
     var onCellTappedHandler: ((CompanyRequest) -> ())? { get set }
@@ -23,6 +28,7 @@ final class ListCompaniesTableAdapter: NSObject {
     private var articleArray: [Article] = []
     var onCellDeleteHandler: ((CompanyRequest) -> ())?
     var onCellTappedHandler: ((CompanyRequest) -> ())?
+    var delegate: ListCompaniesTableAdapterDelegate?
     weak var tableView: UITableView? {
         didSet {
             self.tableView?.delegate = self
@@ -68,6 +74,10 @@ extension ListCompaniesTableAdapter: UITableViewDelegate, UITableViewDataSource 
         articleArray.count
     }
     
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        150
+    }
+    
     func tableView(_ tableView: UITableView,
                    cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
@@ -76,6 +86,9 @@ extension ListCompaniesTableAdapter: UITableViewDelegate, UITableViewDataSource 
         
         let article = articleArray[indexPath.row]
         cell.update(article: article)
+        self.delegate?.loadImageData(url: article.urlToImage, complition: { imageData in
+            cell.setImage(data: imageData)
+        })
         
         return cell
     }
