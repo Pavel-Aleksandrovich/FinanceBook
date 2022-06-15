@@ -9,21 +9,46 @@
 /* Begin PBXBuildFile section */
 		84A40700285984830013387C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A406FF285984830013387C /* AppDelegate.swift */; };
 		84A40702285984830013387C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A40701285984830013387C /* SceneDelegate.swift */; };
-		84A40704285984830013387C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A40703285984830013387C /* ViewController.swift */; };
 		84A4070A285984830013387C /* FinanceBook.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 84A40708285984830013387C /* FinanceBook.xcdatamodeld */; };
 		84A4070C285984840013387C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 84A4070B285984840013387C /* Assets.xcassets */; };
 		84A4070F285984840013387C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 84A4070D285984840013387C /* LaunchScreen.storyboard */; };
+		84A4071D28598E110013387C /* ListCompaniesRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A4071828598E100013387C /* ListCompaniesRouter.swift */; };
+		84A4071E28598E110013387C /* CompanyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A4071928598E100013387C /* CompanyViewModel.swift */; };
+		84A4071F28598E110013387C /* ListCompaniesInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A4071A28598E100013387C /* ListCompaniesInteractor.swift */; };
+		84A4072028598E110013387C /* ListCompaniesPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A4071B28598E100013387C /* ListCompaniesPresenter.swift */; };
+		84A4072128598E110013387C /* ListCompaniesAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A4071C28598E110013387C /* ListCompaniesAssembly.swift */; };
+		84A4073128598E860013387C /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 84A4073028598E860013387C /* SnapKit */; };
+		84A4073228598F3D0013387C /* ListCompaniesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A4072C28598E220013387C /* ListCompaniesView.swift */; };
+		84A4073328598F3D0013387C /* ListCompaniesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A4072E28598E220013387C /* ListCompaniesViewController.swift */; };
+		84A4073428598F3D0013387C /* ListCompaniesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A4072B28598E220013387C /* ListCompaniesCell.swift */; };
+		84A4073528598F3D0013387C /* ListCompaniesTableAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A4072D28598E220013387C /* ListCompaniesTableAdapter.swift */; };
+		84A4073F285990EA0013387C /* CompanyRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A4073E285990C80013387C /* CompanyRequest.swift */; };
+		84A40740285990EA0013387C /* EmployeeRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A4073D285990C80013387C /* EmployeeRequest.swift */; };
+		84A4074328599C5C0013387C /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A4074228599C5C0013387C /* NetworkManager.swift */; };
+		84A4074528599DB80013387C /* News.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A4074428599DB80013387C /* News.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		84A406FC285984830013387C /* FinanceBook.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FinanceBook.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		84A406FF285984830013387C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		84A40701285984830013387C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		84A40703285984830013387C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		84A40709285984830013387C /* FinanceBook.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = FinanceBook.xcdatamodel; sourceTree = "<group>"; };
 		84A4070B285984840013387C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		84A4070E285984840013387C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		84A40710285984840013387C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		84A4071828598E100013387C /* ListCompaniesRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ListCompaniesRouter.swift; path = "../../../ShiftHomeWork/Homework-10/Homework-10/Modules/ListCompanies/ListCompaniesRouter.swift"; sourceTree = "<group>"; };
+		84A4071928598E100013387C /* CompanyViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CompanyViewModel.swift; path = "../../../ShiftHomeWork/Homework-10/Homework-10/Modules/ListCompanies/CompanyViewModel.swift"; sourceTree = "<group>"; };
+		84A4071A28598E100013387C /* ListCompaniesInteractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ListCompaniesInteractor.swift; path = "../../../ShiftHomeWork/Homework-10/Homework-10/Modules/ListCompanies/ListCompaniesInteractor.swift"; sourceTree = "<group>"; };
+		84A4071B28598E100013387C /* ListCompaniesPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ListCompaniesPresenter.swift; path = "../../../ShiftHomeWork/Homework-10/Homework-10/Modules/ListCompanies/ListCompaniesPresenter.swift"; sourceTree = "<group>"; };
+		84A4071C28598E110013387C /* ListCompaniesAssembly.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ListCompaniesAssembly.swift; path = "../../../ShiftHomeWork/Homework-10/Homework-10/Modules/ListCompanies/ListCompaniesAssembly.swift"; sourceTree = "<group>"; };
+		84A4072B28598E220013387C /* ListCompaniesCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListCompaniesCell.swift; sourceTree = "<group>"; };
+		84A4072C28598E220013387C /* ListCompaniesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListCompaniesView.swift; sourceTree = "<group>"; };
+		84A4072D28598E220013387C /* ListCompaniesTableAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListCompaniesTableAdapter.swift; sourceTree = "<group>"; };
+		84A4072E28598E220013387C /* ListCompaniesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListCompaniesViewController.swift; sourceTree = "<group>"; };
+		84A4073D285990C80013387C /* EmployeeRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmployeeRequest.swift; sourceTree = "<group>"; };
+		84A4073E285990C80013387C /* CompanyRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanyRequest.swift; sourceTree = "<group>"; };
+		84A4074228599C5C0013387C /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
+		84A4074428599DB80013387C /* News.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = News.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,6 +56,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84A4073128598E860013387C /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -56,8 +82,17 @@
 		84A406FE285984830013387C /* FinanceBook */ = {
 			isa = PBXGroup;
 			children = (
+				84A4073E285990C80013387C /* CompanyRequest.swift */,
+				84A4073D285990C80013387C /* EmployeeRequest.swift */,
+				84A4073A285990A60013387C /* Models */,
+				84A4074128599C410013387C /* Services */,
 				84A40717285989310013387C /* Application */,
-				84A40703285984830013387C /* ViewController.swift */,
+				84A4071928598E100013387C /* CompanyViewModel.swift */,
+				84A4071C28598E110013387C /* ListCompaniesAssembly.swift */,
+				84A4071A28598E100013387C /* ListCompaniesInteractor.swift */,
+				84A4071B28598E100013387C /* ListCompaniesPresenter.swift */,
+				84A4071828598E100013387C /* ListCompaniesRouter.swift */,
+				84A4072A28598E220013387C /* View */,
 				84A407162859881D0013387C /* Resources */,
 			);
 			path = FinanceBook;
@@ -83,6 +118,33 @@
 			path = Application;
 			sourceTree = "<group>";
 		};
+		84A4072A28598E220013387C /* View */ = {
+			isa = PBXGroup;
+			children = (
+				84A4072B28598E220013387C /* ListCompaniesCell.swift */,
+				84A4072D28598E220013387C /* ListCompaniesTableAdapter.swift */,
+				84A4072C28598E220013387C /* ListCompaniesView.swift */,
+				84A4072E28598E220013387C /* ListCompaniesViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		84A4073A285990A60013387C /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				84A4074428599DB80013387C /* News.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		84A4074128599C410013387C /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				84A4074228599C5C0013387C /* NetworkManager.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -99,6 +161,9 @@
 			dependencies = (
 			);
 			name = FinanceBook;
+			packageProductDependencies = (
+				84A4073028598E860013387C /* SnapKit */,
+			);
 			productName = FinanceBook;
 			productReference = 84A406FC285984830013387C /* FinanceBook.app */;
 			productType = "com.apple.product-type.application";
@@ -127,6 +192,9 @@
 				Base,
 			);
 			mainGroup = 84A406F3285984830013387C;
+			packageReferences = (
+				84A4072F28598E860013387C /* XCRemoteSwiftPackageReference "SnapKit" */,
+			);
 			productRefGroup = 84A406FD285984830013387C /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -153,9 +221,21 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				84A40704285984830013387C /* ViewController.swift in Sources */,
+				84A40740285990EA0013387C /* EmployeeRequest.swift in Sources */,
+				84A4071E28598E110013387C /* CompanyViewModel.swift in Sources */,
+				84A4071F28598E110013387C /* ListCompaniesInteractor.swift in Sources */,
+				84A4072028598E110013387C /* ListCompaniesPresenter.swift in Sources */,
+				84A4074328599C5C0013387C /* NetworkManager.swift in Sources */,
+				84A4073328598F3D0013387C /* ListCompaniesViewController.swift in Sources */,
+				84A4073528598F3D0013387C /* ListCompaniesTableAdapter.swift in Sources */,
+				84A4073228598F3D0013387C /* ListCompaniesView.swift in Sources */,
 				84A40700285984830013387C /* AppDelegate.swift in Sources */,
+				84A4072128598E110013387C /* ListCompaniesAssembly.swift in Sources */,
+				84A4074528599DB80013387C /* News.swift in Sources */,
+				84A4073F285990EA0013387C /* CompanyRequest.swift in Sources */,
 				84A40702285984830013387C /* SceneDelegate.swift in Sources */,
+				84A4073428598F3D0013387C /* ListCompaniesCell.swift in Sources */,
+				84A4071D28598E110013387C /* ListCompaniesRouter.swift in Sources */,
 				84A4070A285984830013387C /* FinanceBook.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -224,7 +304,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -278,7 +358,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -366,6 +446,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		84A4072F28598E860013387C /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		84A4073028598E860013387C /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 84A4072F28598E860013387C /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		84A40708285984830013387C /* FinanceBook.xcdatamodeld */ = {
