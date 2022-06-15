@@ -13,15 +13,12 @@ final class ListNewsCell: UITableViewCell {
     static let id = String(describing: ListNewsCell.self)
     
     private let activityIndicator = UIActivityIndicatorView(style: .large)
-    private let titleLabel = UILabel()
+    private let titleLabel = BaseLabel()
     private let newsImageView = UIImageView()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        self.addSubview()
-        self.makeNewsImageViewConstraints()
-        self.makeTitleLabelConstraints()
-        self.makeActivityIndicatorConstraints()
+        self.makeConstraints()
         self.activityIndicator.startAnimating()
     }
     
@@ -47,6 +44,14 @@ extension ListNewsCell {
 
 private extension ListNewsCell {
     
+    func makeConstraints() {
+        self.addSubview()
+        self.makeNewsImageViewConstraints()
+        self.makeTitleLabelConstraints()
+        self.makeTitleLabelConstraints()
+        self.makeActivityIndicatorConstraints()
+    }
+    
     func addSubview() {
         self.addSubview(self.titleLabel)
         self.addSubview(self.newsImageView)
@@ -62,7 +67,6 @@ private extension ListNewsCell {
     }
     
     func makeTitleLabelConstraints() {
-        self.titleLabel.numberOfLines = 0
         self.titleLabel.snp.makeConstraints { make in
             make.top.bottom.trailing.equalToSuperview().inset(10)
             make.leading.equalTo(self.newsImageView.snp.trailing).inset(-10)

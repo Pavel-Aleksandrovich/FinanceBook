@@ -21,6 +21,7 @@ final class ListNewsRouter {
 extension ListNewsRouter: IListNewsRouter {
     
     func showArticleDetails(_ article: Article) {
+        print(24)
     }
     
     func showAlert(complition: @escaping() -> ()) {
