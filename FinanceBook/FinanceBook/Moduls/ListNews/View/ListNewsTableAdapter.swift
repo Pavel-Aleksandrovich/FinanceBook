@@ -1,41 +1,41 @@
 //
-//  ListCompaniesTableAdapter.swift
-//  Homework-10
+//  ListNewsTableAdapter.swift
+//  FinanceBook
 //
-//  Created by pavel mishanin on 08.06.2022.
+//  Created by pavel mishanin on 15.06.2022.
 //
 
 import UIKit
 
-protocol ListCompaniesTableAdapterDelegate: AnyObject {
+protocol ListNewsTableAdapterDelegate: AnyObject {
     func loadImageData(url: String?, complition: @escaping(Data) -> ())
 }
 
-protocol IListCompaniesTableAdapter: AnyObject {
-    var delegate: ListCompaniesTableAdapterDelegate? { get set }
+protocol IListNewsTableAdapter: AnyObject {
+    var delegate: ListNewsTableAdapterDelegate? { get set }
     var tableView: UITableView? { get set }
     var onCellTappedHandler: ((Article) -> ())? { get set }
     var scrollDidEndHandler: (() -> ())? { get set }
     func setNews(_ news: News)
 }
 
-final class ListCompaniesTableAdapter: NSObject {
+final class ListNewsTableAdapter: NSObject {
     
     private var articleArray: [Article] = []
     var onCellTappedHandler: ((Article) -> ())?
     var scrollDidEndHandler: (() -> ())?
-    var delegate: ListCompaniesTableAdapterDelegate?
+    var delegate: ListNewsTableAdapterDelegate?
     weak var tableView: UITableView? {
         didSet {
             self.tableView?.delegate = self
             self.tableView?.dataSource = self
-            self.tableView?.register(ListCompaniesCell.self,
-                                     forCellReuseIdentifier: ListCompaniesCell.id)
+            self.tableView?.register(ListNewsCell.self,
+                                     forCellReuseIdentifier: ListNewsCell.id)
         }
     }
 }
 
-extension ListCompaniesTableAdapter: IListCompaniesTableAdapter {
+extension ListNewsTableAdapter: IListNewsTableAdapter {
     
     func setNews(_ news: News) {
         self.articleArray.append(contentsOf: news.articles)
@@ -43,7 +43,7 @@ extension ListCompaniesTableAdapter: IListCompaniesTableAdapter {
     }
 }
 
-extension ListCompaniesTableAdapter: UITableViewDelegate, UITableViewDataSource {
+extension ListNewsTableAdapter: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView,
                    numberOfRowsInSection section: Int) -> Int {
@@ -68,8 +68,8 @@ extension ListCompaniesTableAdapter: UITableViewDelegate, UITableViewDataSource 
     func tableView(_ tableView: UITableView,
                    cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: ListCompaniesCell.id,
-                                                       for: indexPath) as? ListCompaniesCell else { return UITableViewCell() }
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: ListNewsCell.id,
+                                                       for: indexPath) as? ListNewsCell else { return UITableViewCell() }
         
         let article = articleArray[indexPath.row]
         cell.update(article: article)

@@ -16,7 +16,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: windowScene)
-        let viewController = ListCompaniesAssembly.build()
+        let viewController = ListNewsAssembly.build()
         let navigationController = UINavigationController(rootViewController: viewController)
         window?.rootViewController = navigationController
         window?.makeKeyAndVisible()

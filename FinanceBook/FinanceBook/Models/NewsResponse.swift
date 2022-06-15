@@ -10,8 +10,4 @@ import Foundation
 struct NewsResponse {
     let title: String
     let image: Data
-    
-//    init(news: News) {
-//        self.title = 
-//    }
 }

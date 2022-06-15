@@ -1,30 +1,30 @@
 //
-//  ViewController.swift
-//  Homework-10
+//  ListNewsViewController.swift
+//  FinanceBook
 //
-//  Created by pavel mishanin on 08.06.2022.
+//  Created by pavel mishanin on 15.06.2022.
 //
 
 import UIKit
 
-protocol IListCompaniesViewController: AnyObject {
+protocol IListNewsViewController: AnyObject {
     func showError(_ error: String)
 }
 
-final class ListCompaniesViewController: UIViewController {
+final class ListNewsViewController: UIViewController {
     
     private enum Constants {
         static let barButtonTitle = "Add Company"
     }
     
-    private let mainView = ListCompaniesView()
-    private let tableAdapter: IListCompaniesTableAdapter
-    private let interactor: IListCompaniesInteractor
+    private let mainView = ListNewsView()
+    private let tableAdapter: IListNewsTableAdapter
+    private let interactor: IListNewsInteractor
     private let router: IListNewsRouter
 
-    init(interactor: IListCompaniesInteractor,
+    init(interactor: IListNewsInteractor,
          router: IListNewsRouter,
-         tableAdapter: IListCompaniesTableAdapter) {
+         tableAdapter: IListNewsTableAdapter) {
         self.interactor = interactor
         self.router = router
         self.tableAdapter = tableAdapter
@@ -45,34 +45,28 @@ final class ListCompaniesViewController: UIViewController {
                                        view: self.mainView,
                                        tableAdapter: self.tableAdapter)
         self.setOnCellTappedHandler()
-        self.setOnCellDeleteHandler()
         self.setRightBarButton()
         self.interactor.loadNews()
         self.setScrollDidEndHandler()
         self.tableAdapter.delegate = self
     }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        self.interactor.fetchData()
-    }
 }
 
-extension ListCompaniesViewController: IListCompaniesViewController {
+extension ListNewsViewController: IListNewsViewController {
     
     func showError(_ error: String) {
         self.router.showErrorAlert(error)
     }
 }
 
-extension ListCompaniesViewController: ListCompaniesTableAdapterDelegate {
+extension ListNewsViewController: ListNewsTableAdapterDelegate {
     
     func loadImageData(url: String?, complition: @escaping (Data) -> ()) {
         self.interactor.loadImageDataFrom(url: url, complition: complition)
     }
 }
 
-private extension ListCompaniesViewController {
+private extension ListNewsViewController {
     
     func setScrollDidEndHandler() {
         
@@ -83,14 +77,8 @@ private extension ListCompaniesViewController {
     
     func setOnCellTappedHandler() {
         self.tableAdapter.onCellTappedHandler = { [ weak self ] article in
-//            self?.router.showListEmployeesModule(company)
+            self?.router.showArticleDetails(article)
         }
-    }
-    
-    func setOnCellDeleteHandler() {
-//        self.tableAdapter.onCellDeleteHandler = { [ weak self ] company in
-//            self?.interactor.deleteCompany(company)
-//        }
     }
     
     func setRightBarButton() {
@@ -102,8 +90,8 @@ private extension ListCompaniesViewController {
     }
     
     @objc func addCompanyButtonTapped() {
-        self.router.showAlert { company in
-            self.interactor.createCompany(company)
+        self.router.showAlert { 
+//            self.interactor.createCompany(company)
         }
     }
 }

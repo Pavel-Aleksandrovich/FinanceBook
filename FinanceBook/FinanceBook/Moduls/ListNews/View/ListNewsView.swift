@@ -1,18 +1,18 @@
 //
-//  ListCompaniesView.swift
-//  Homework-10
+//  ListNewsView.swift
+//  FinanceBook
 //
-//  Created by pavel mishanin on 08.06.2022.
+//  Created by pavel mishanin on 15.06.2022.
 //
 
 import UIKit
 import SnapKit
 
-protocol IListCompaniesView: AnyObject {
+protocol IListNewsView: AnyObject {
     func getTableView() -> UITableView
 }
 
-final class ListCompaniesView: UIView {
+final class ListNewsView: UIView {
     
     private let tableView = UITableView()
     
@@ -27,14 +27,14 @@ final class ListCompaniesView: UIView {
     }
 }
 
-extension ListCompaniesView: IListCompaniesView {
+extension ListNewsView: IListNewsView {
     
     func getTableView() -> UITableView {
         self.tableView
     }
 }
 
-private extension ListCompaniesView {
+private extension ListNewsView {
     
     func makeTableViewConstraints() {
         self.addSubview(self.tableView)
