@@ -20,10 +20,10 @@ final class ListCompaniesViewController: UIViewController {
     private let mainView = ListCompaniesView()
     private let tableAdapter: IListCompaniesTableAdapter
     private let interactor: IListCompaniesInteractor
-    private let router: IListCompaniesRouter
-    
+    private let router: IListNewsRouter
+
     init(interactor: IListCompaniesInteractor,
-         router: IListCompaniesRouter,
+         router: IListNewsRouter,
          tableAdapter: IListCompaniesTableAdapter) {
         self.interactor = interactor
         self.router = router
@@ -48,6 +48,7 @@ final class ListCompaniesViewController: UIViewController {
         self.setOnCellDeleteHandler()
         self.setRightBarButton()
         self.interactor.loadNews()
+        self.setScrollDidEndHandler()
         self.tableAdapter.delegate = self
     }
     
@@ -73,16 +74,23 @@ extension ListCompaniesViewController: ListCompaniesTableAdapterDelegate {
 
 private extension ListCompaniesViewController {
     
+    func setScrollDidEndHandler() {
+        
+        self.tableAdapter.scrollDidEndHandler = {
+            self.interactor.loadNews()
+        }
+    }
+    
     func setOnCellTappedHandler() {
-        self.tableAdapter.onCellTappedHandler = { [ weak self ] company in
-            self?.router.showListEmployeesModule(company)
+        self.tableAdapter.onCellTappedHandler = { [ weak self ] article in
+//            self?.router.showListEmployeesModule(company)
         }
     }
     
     func setOnCellDeleteHandler() {
-        self.tableAdapter.onCellDeleteHandler = { [ weak self ] company in
-            self?.interactor.deleteCompany(company)
-        }
+//        self.tableAdapter.onCellDeleteHandler = { [ weak self ] company in
+//            self?.interactor.deleteCompany(company)
+//        }
     }
     
     func setRightBarButton() {

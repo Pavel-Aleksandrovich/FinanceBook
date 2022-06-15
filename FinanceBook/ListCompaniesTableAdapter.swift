@@ -14,20 +14,16 @@ protocol ListCompaniesTableAdapterDelegate: AnyObject {
 protocol IListCompaniesTableAdapter: AnyObject {
     var delegate: ListCompaniesTableAdapterDelegate? { get set }
     var tableView: UITableView? { get set }
-    var onCellDeleteHandler: ((CompanyRequest) -> ())? { get set }
-    var onCellTappedHandler: ((CompanyRequest) -> ())? { get set }
-    func setCompanies(_ company: [CompanyViewModel])
-    func addCompany(_ company: CompanyViewModel)
-    func deleteCompanyAt(_ id: UUID)
+    var onCellTappedHandler: ((Article) -> ())? { get set }
+    var scrollDidEndHandler: (() -> ())? { get set }
     func setNews(_ news: News)
 }
 
 final class ListCompaniesTableAdapter: NSObject {
     
-    private var companyArray: [CompanyViewModel] = []
     private var articleArray: [Article] = []
-    var onCellDeleteHandler: ((CompanyRequest) -> ())?
-    var onCellTappedHandler: ((CompanyRequest) -> ())?
+    var onCellTappedHandler: ((Article) -> ())?
+    var scrollDidEndHandler: (() -> ())?
     var delegate: ListCompaniesTableAdapterDelegate?
     weak var tableView: UITableView? {
         didSet {
@@ -41,28 +37,8 @@ final class ListCompaniesTableAdapter: NSObject {
 
 extension ListCompaniesTableAdapter: IListCompaniesTableAdapter {
     
-    func setCompanies(_ company: [CompanyViewModel]) {
-        self.companyArray = company
-        self.tableView?.reloadData()
-    }
-    
-    func addCompany(_ company: CompanyViewModel) {
-        self.companyArray.append(company)
-        self.tableView?.reloadData()
-    }
-    
-    func deleteCompanyAt(_ id: UUID) {
-        let index = self.companyArray.firstIndex { $0.id == id }
-        if let index = index {
-            self.companyArray.remove(at: index)
-            let indexPath = IndexPath(row: index, section: 0)
-            self.tableView?.deleteRows(at: [indexPath], with: .fade)
-            self.tableView?.reloadData()
-        }
-    }
-    
     func setNews(_ news: News) {
-        self.articleArray = news.articles
+        self.articleArray.append(contentsOf: news.articles)
         self.tableView?.reloadData()
     }
 }
@@ -76,6 +52,17 @@ extension ListCompaniesTableAdapter: UITableViewDelegate, UITableViewDataSource 
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         150
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let offsetY = scrollView.contentOffset.y
+        let contentHeight = scrollView.contentSize.height
+        let height = scrollView.frame.size.height
+        
+        if offsetY > contentHeight - height {
+//            self.scrollDidEndHandler?()
+//            print(88)
+        }
     }
     
     func tableView(_ tableView: UITableView,
@@ -96,7 +83,7 @@ extension ListCompaniesTableAdapter: UITableViewDelegate, UITableViewDataSource 
     func tableView(_ tableView: UITableView,
                    didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        let companyRequest = CompanyRequest(company: companyArray[indexPath.row])
-        self.onCellTappedHandler?(companyRequest)
+        let article = articleArray[indexPath.row]
+        self.onCellTappedHandler?(article)
     }
 }
