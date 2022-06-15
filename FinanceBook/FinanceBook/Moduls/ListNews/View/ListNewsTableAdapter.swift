@@ -21,10 +21,11 @@ protocol IListNewsTableAdapter: AnyObject {
 
 final class ListNewsTableAdapter: NSObject {
     
+    private var isLoading = false
     private var articleArray: [Article] = []
     var onCellTappedHandler: ((Article) -> ())?
     var scrollDidEndHandler: (() -> ())?
-    var delegate: ListNewsTableAdapterDelegate?
+    weak var delegate: ListNewsTableAdapterDelegate?
     weak var tableView: UITableView? {
         didSet {
             self.tableView?.delegate = self
@@ -57,11 +58,22 @@ extension ListNewsTableAdapter: UITableViewDelegate, UITableViewDataSource {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let offsetY = scrollView.contentOffset.y
         let contentHeight = scrollView.contentSize.height
-        let height = scrollView.frame.size.height
-        
-        if offsetY > contentHeight - height {
-//            self.scrollDidEndHandler?()
-//            print(88)
+        if (offsetY > contentHeight - scrollView.frame.height * 4) && !isLoading {
+            self.loadMoreData()
+        }
+    }
+    
+    private func loadMoreData() {
+        if !isLoading {
+            isLoading = true
+            DispatchQueue.global().async {
+                sleep(1)
+                self.scrollDidEndHandler?()
+//                DispatchQueue.main.async {
+//                    self.tableView?.reloadData()
+                    self.isLoading = false
+//                }
+            }
         }
     }
     

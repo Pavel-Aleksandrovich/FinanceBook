@@ -17,7 +17,7 @@ protocol IListNewsInteractor: AnyObject {
 
 final class ListNewsInteractor {
     
-    private var page = 1
+    private var page = 0
     private let presenter: IListNewsPresenter
     private let networkManager = NetworkManager()
     
@@ -30,27 +30,25 @@ extension ListNewsInteractor: IListNewsInteractor {
     
     func loadImageDataFrom(url: String?, complition: @escaping(Data) -> ()) {
         guard let url = url else { return }
-        self.networkManager.loadImageDataFrom(url: url) { result in
+        self.networkManager.loadImageDataFrom(url: url) { [ weak self ] result in
             switch result {
             case .success(let data):
                 DispatchQueue.main.async {
                     complition(data)
                 }
             case .failure(let error):
-                print(error)
+                self?.presenter.showError(error)
             }
         }
     }
     
     func loadNews() {
         self.page += 1
-        self.networkManager.loadNews(page: 1) { [ weak self ] result in
+        self.networkManager.loadNews(page: self.page) { [ weak self ] result in
             switch result {
             case .success(let news):
-                print(50)
                 self?.presenter.setNews(news)
             case .failure(let error):
-                print(52)
                 print(error.localizedDescription)
             }
         }

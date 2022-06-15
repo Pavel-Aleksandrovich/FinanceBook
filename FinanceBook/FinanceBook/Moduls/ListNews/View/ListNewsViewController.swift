@@ -17,6 +17,7 @@ final class ListNewsViewController: UIViewController {
         static let barButtonTitle = "Add Company"
     }
     
+    private let cell = ListNewsCell()
     private let mainView = ListNewsView()
     private let tableAdapter: IListNewsTableAdapter
     private let interactor: IListNewsInteractor
@@ -49,6 +50,7 @@ final class ListNewsViewController: UIViewController {
         self.interactor.loadNews()
         self.setScrollDidEndHandler()
         self.tableAdapter.delegate = self
+        self.cell.delegate = self
     }
 }
 
@@ -66,10 +68,15 @@ extension ListNewsViewController: ListNewsTableAdapterDelegate {
     }
 }
 
+extension ListNewsViewController: ListNewsCellDelegate {
+    func load(url: String?, complition: @escaping (Data) -> ()) {
+//        self.interactor.loadImageDataFrom(url: url, complition: complition)
+    }
+}
+
 private extension ListNewsViewController {
     
     func setScrollDidEndHandler() {
-        
         self.tableAdapter.scrollDidEndHandler = {
             self.interactor.loadNews()
         }

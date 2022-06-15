@@ -8,10 +8,15 @@
 import UIKit
 import SnapKit
 
+protocol ListNewsCellDelegate: AnyObject {
+    func load(url: String?, complition: @escaping(Data) -> ())
+}
+
 final class ListNewsCell: UITableViewCell {
     
     static let id = String(describing: ListNewsCell.self)
     
+    weak var delegate: ListNewsCellDelegate?
     private let activityIndicator = UIActivityIndicatorView(style: .large)
     private let titleLabel = BaseLabel()
     private let newsImageView = UIImageView()
@@ -31,6 +36,9 @@ extension ListNewsCell {
     
     func update(article: Article) {
         self.titleLabel.text = article.title
+//        delegate?.load(url: article.urlToImage) { data in
+//            self.setImage(data: data)
+//        }
     }
     
     func setImage(data: Data) {

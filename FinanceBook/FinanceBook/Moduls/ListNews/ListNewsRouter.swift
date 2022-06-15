@@ -21,7 +21,10 @@ final class ListNewsRouter {
 extension ListNewsRouter: IListNewsRouter {
     
     func showArticleDetails(_ article: Article) {
-        print(24)
+        let vc = NewsDetailsAssembly.build(article: article)
+        let nav = UINavigationController(rootViewController: vc)
+        self.controller?.present(nav, animated: true)
+        print(article.title)
     }
     
     func showAlert(complition: @escaping() -> ()) {

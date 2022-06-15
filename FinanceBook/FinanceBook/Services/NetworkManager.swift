@@ -34,7 +34,7 @@ final class NetworkManager {
 extension NetworkManager {
     func loadNews(page: Int, completion: @escaping (Result<News, Error>) -> ()) {
 //        let api = "https://newsapi.org/v2/top-headlines?country=us&page=\(page)&apiKey=7d0b341870634da093c7dd7b06db9891"
-        let api = "https://newsapi.org/v2/top-headlines?country=us&page=1&apiKey=b21393dbff084185b011f3acdc9bd5fb"
+        let api = "https://newsapi.org/v2/top-headlines?country=us&page=\(page)&apiKey=b21393dbff084185b011f3acdc9bd5fb"
         self.loadData(api: api, completion: completion)
     }
     
