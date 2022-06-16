@@ -11,16 +11,18 @@ protocol INewsDetailsInteractor: AnyObject {
     func onViewAttached(controller: INewsDetailsViewController,
                         view: INewsDetailsView)
     func loadImageDataFrom(url: String?)
+    func addToFavorite(news: NewsRequest?)
 }
 
 final class NewsDetailsInteractor {
     
-    private var page = 1
     private let presenter: INewsDetailsPresenter
+    private let dataManager: IDataManager
     private let networkManager = NetworkManager()
     
-    init(presenter: INewsDetailsPresenter, article: Article) {
+    init(presenter: INewsDetailsPresenter, dataManager: IDataManager, article: Article) {
         self.presenter = presenter
+        self.dataManager = dataManager
         self.setData(article: article)
     }
 }
@@ -37,6 +39,20 @@ extension NewsDetailsInteractor: INewsDetailsInteractor {
                 print(error)
             }
         }
+    }
+    
+    func addToFavorite(news: NewsRequest?) {
+        guard let news = news else { return }
+
+        self.dataManager.create(news: news) { [ weak self ] result in
+            switch result {
+            case .success():
+                self?.presenter.showSuccess()
+            case .failure(let error):
+                self?.presenter.showError(error)
+            }
+        }
+        print(#function)
     }
     
     func onViewAttached(controller: INewsDetailsViewController,

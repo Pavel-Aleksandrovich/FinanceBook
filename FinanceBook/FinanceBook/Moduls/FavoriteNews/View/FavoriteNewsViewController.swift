@@ -8,7 +8,7 @@
 import UIKit
 
 protocol IFavoriteNewsViewController: AnyObject {
-    
+    func showError(_ error: String)
 }
 
 final class FavoriteNewsViewController: UIViewController {
@@ -40,9 +40,34 @@ final class FavoriteNewsViewController: UIViewController {
         self.interactor.onViewAttached(controller: self,
                                        view: self.mainView,
                                        tableAdapter: self.tableAdapter)
+        self.setOnCellTappedHandler()
+        self.setOnCellDeleteHandler()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.interactor.loadNews()
     }
 }
 
 extension FavoriteNewsViewController: IFavoriteNewsViewController {
     
+    func showError(_ error: String) {
+        self.router.showErrorAlert(error)
+    }
+}
+
+private extension FavoriteNewsViewController {
+    
+    func setOnCellTappedHandler() {
+        self.tableAdapter.onCellTappedHandler = { [ weak self ] article in
+            self?.router.showArticleDetails(article)
+        }
+    }
+    
+    func setOnCellDeleteHandler() {
+        self.tableAdapter.onCellDeleteHandler = { news in
+            self.interactor.deleteNews(news)
+        }
+    }
 }

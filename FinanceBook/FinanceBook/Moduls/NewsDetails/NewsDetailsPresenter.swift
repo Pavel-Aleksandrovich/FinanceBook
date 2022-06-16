@@ -11,6 +11,7 @@ protocol INewsDetailsPresenter: AnyObject {
     func onViewAttached(controller: INewsDetailsViewController,
                         view: INewsDetailsView)
     func showError(_ error: Error)
+    func showSuccess()
     func setNews(_ article: Article)
     func setImageDate(_ data: Data)
 }
@@ -32,6 +33,12 @@ extension NewsDetailsPresenter: INewsDetailsPresenter {
     func showError(_ error: Error) {
         DispatchQueue.main.async {
             self.controller?.showError(error.localizedDescription)
+        }
+    }
+    
+    func showSuccess() {
+        DispatchQueue.main.async {
+            self.controller?.showSuccess()
         }
     }
     

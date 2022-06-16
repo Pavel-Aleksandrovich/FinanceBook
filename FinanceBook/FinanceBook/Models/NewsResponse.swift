@@ -8,6 +8,15 @@
 import Foundation
 
 struct NewsResponse {
+    let id: UUID
     let title: String
-    let image: Data
+    let desctiption: String
+    let imageData: Data
+    
+    init(from model: NewsEntity) {
+        self.id = model.id
+        self.title = model.title
+        self.desctiption = model.content
+        self.imageData = model.imageData
+    }
 }

@@ -9,6 +9,7 @@ import UIKit
 
 protocol INewsDetailsRouter: AnyObject {
     func dismiss()
+    func showSuccessAlert()
 }
 
 final class NewsDetailsRouter {
@@ -20,5 +21,9 @@ extension NewsDetailsRouter: INewsDetailsRouter {
     
     func dismiss() {
         self.controller?.dismiss(animated: true)
+    }
+    
+    func showSuccessAlert() {
+        print("router - showSuccessAlert")
     }
 }

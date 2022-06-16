@@ -13,7 +13,9 @@ enum FavoriteNewsAssembly {
         
         let tableAdapter = FavoriteNewsTableAdapter()
         let presenter = FavoriteNewsPresenter()
-        let interactor = FavoriteNewsInteractor(presenter: presenter)
+        let dataManager = DataManager()
+        let interactor = FavoriteNewsInteractor(presenter: presenter,
+                                                dataManager: dataManager)
         let router = FavoriteNewsRouter()
         let controller = FavoriteNewsViewController(interactor: interactor,
                                                 router: router,

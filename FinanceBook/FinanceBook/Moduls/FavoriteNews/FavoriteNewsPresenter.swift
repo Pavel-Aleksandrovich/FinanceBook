@@ -11,9 +11,9 @@ protocol IFavoriteNewsPresenter: AnyObject {
     func onViewAttached(controller: IFavoriteNewsViewController,
                         view: IFavoriteNewsView,
                         tableAdapter: IFavoriteNewsTableAdapter)
-    func deleteCompanyAt(_ id: UUID)
     func showError(_ error: Error)
-    func setNews(_ news: News)
+    func setFavoriteNews(_ news: [NewsResponse])
+    func deleteNewsAt(_ id: UUID)
 }
 
 final class FavoriteNewsPresenter {
@@ -34,21 +34,21 @@ extension FavoriteNewsPresenter: IFavoriteNewsPresenter {
         self.tableAdapter?.tableView = self.view?.getTableView()
     }
     
-    func deleteCompanyAt(_ id: UUID) {
+    func setFavoriteNews(_ news: [NewsResponse]) {
         DispatchQueue.main.async {
-//            self.tableAdapter?.deleteCompanyAt(id)
+            self.tableAdapter?.setFavoriteNews(news)
         }
     }
     
     func showError(_ error: Error) {
         DispatchQueue.main.async {
-//            self.controller?.showError(error.localizedDescription)
+            self.controller?.showError(error.localizedDescription)
         }
     }
     
-    func setNews(_ news: News) {
+    func deleteNewsAt(_ id: UUID) {
         DispatchQueue.main.async {
-            self.tableAdapter?.setNews(news)
+            self.tableAdapter?.deleteNewsAt(id)
         }
     }
 }

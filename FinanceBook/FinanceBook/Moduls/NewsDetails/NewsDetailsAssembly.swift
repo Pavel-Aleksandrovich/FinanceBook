@@ -12,7 +12,10 @@ enum NewsDetailsAssembly {
     static func build(article: Article) -> UIViewController {
         
         let presenter = NewsDetailsPresenter()
-        let interactor = NewsDetailsInteractor(presenter: presenter, article: article)
+        let dataManager = DataManager()
+        let interactor = NewsDetailsInteractor(presenter: presenter,
+                                               dataManager: dataManager,
+                                               article: article)
         let router = NewsDetailsRouter()
         let controller = NewsDetailsViewController(interactor: interactor,
                                                    router: router)

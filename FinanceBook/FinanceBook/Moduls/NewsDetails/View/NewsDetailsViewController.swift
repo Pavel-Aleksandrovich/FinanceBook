@@ -9,13 +9,10 @@ import UIKit
 
 protocol INewsDetailsViewController: AnyObject {
     func showError(_ error: String)
+    func showSuccess()
 }
 
 final class NewsDetailsViewController: UIViewController {
-    
-    private enum Constants {
-        static let barButtonTitle = "Add Company"
-    }
     
     private let mainView = NewsDetailsView()
     private let interactor: INewsDetailsInteractor
@@ -40,12 +37,8 @@ final class NewsDetailsViewController: UIViewController {
         super.viewDidLoad()
         self.interactor.onViewAttached(controller: self,
                                        view: self.mainView)
-//        self.setOnCellTappedHandler()
-//        self.setRightBarButton()
-//        self.interactor.loadNews()
-//        self.setScrollDidEndHandler()
-//        self.tableAdapter.delegate = self
         self.createExitBarButton()
+        self.createFavoriteBarButton()
     }
 }
 
@@ -53,6 +46,10 @@ extension NewsDetailsViewController: INewsDetailsViewController {
     
     func showError(_ error: String) {
         
+    }
+    
+    func showSuccess() {
+        self.router.showSuccessAlert()
     }
 }
 
@@ -68,6 +65,18 @@ private extension NewsDetailsViewController {
     
     @objc func exitButtonTapped() {
         self.router.dismiss()
-//        dismiss(animated: true)
+    }
+    
+    func createFavoriteBarButton() {
+        let image = UIImage(systemName: "heart")
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: image,
+                                                           style: .plain,
+                                                           target: self,
+                                                           action: #selector(favoriteButtonTapped))
+    }
+    
+    @objc func favoriteButtonTapped() {
+        let model = self.mainView.getModel()
+        self.interactor.addToFavorite(news: model)
     }
 }

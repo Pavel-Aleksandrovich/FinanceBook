@@ -11,6 +11,7 @@ import SnapKit
 protocol INewsDetailsView: AnyObject {
     func update(article: Article)
     func setImage(data: Data)
+    func getModel() -> NewsRequest?
 }
 
 final class NewsDetailsView: UIView {
@@ -20,6 +21,7 @@ final class NewsDetailsView: UIView {
     private let imageView = UIImageView()
     private let scrollView = UIScrollView()
     private let activityIndicator = UIActivityIndicatorView(style: .large)
+    private var data = Data()
     
     init() {
         super.init(frame: .zero)
@@ -37,12 +39,22 @@ extension NewsDetailsView: INewsDetailsView {
     
     func update(article: Article) {
         self.titleLabel.text = article.title
-        self.contentLabel.text = article.content
+        self.contentLabel.text = article.description
     }
     
     func setImage(data: Data) {
         self.imageView.image = UIImage(data: data)
         self.activityIndicator.stopAnimating()
+        self.data = data
+    }
+    
+    func getModel() -> NewsRequest? {
+        guard let title = titleLabel.text,
+              let description = contentLabel.text else { return nil }
+        
+        return NewsRequest(title: title,
+                           desctiption: description,
+                           imageData: self.data)
     }
 }
 

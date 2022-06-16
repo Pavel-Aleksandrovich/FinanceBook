@@ -14,17 +14,17 @@ protocol FavoriteNewsTableAdapterDelegate: AnyObject {
 protocol IFavoriteNewsTableAdapter: AnyObject {
     var delegate: FavoriteNewsTableAdapterDelegate? { get set }
     var tableView: UITableView? { get set }
-    var onCellTappedHandler: ((Article) -> ())? { get set }
-    var scrollDidEndHandler: (() -> ())? { get set }
-    func setNews(_ news: News)
+    var onCellTappedHandler: ((NewsResponse) -> ())? { get set }
+    var onCellDeleteHandler: ((NewsResponse) -> ())? { get set }
+    func setFavoriteNews(_ news: [NewsResponse])
+    func deleteNewsAt(_ id: UUID)
 }
 
 final class FavoriteNewsTableAdapter: NSObject {
     
-    private var isLoading = false
-    private var articleArray: [Article] = [Article(title: "Article")]
-    var onCellTappedHandler: ((Article) -> ())?
-    var scrollDidEndHandler: (() -> ())?
+    private var articleArray: [NewsResponse] = []
+    var onCellTappedHandler: ((NewsResponse) -> ())?
+    var onCellDeleteHandler: ((NewsResponse) -> ())?
     weak var delegate: FavoriteNewsTableAdapterDelegate?
     weak var tableView: UITableView? {
         didSet {
@@ -38,8 +38,18 @@ final class FavoriteNewsTableAdapter: NSObject {
 
 extension FavoriteNewsTableAdapter: IFavoriteNewsTableAdapter {
     
-    func setNews(_ news: News) {
-        self.articleArray.append(contentsOf: news.articles)
+    func deleteNewsAt(_ id: UUID) {
+        let index = self.articleArray.firstIndex { $0.id == id }
+        if let index = index {
+            self.articleArray.remove(at: index)
+            let indexPath = IndexPath(row: index, section: 0)
+            self.tableView?.deleteRows(at: [indexPath], with: .fade)
+            self.tableView?.reloadData()
+        }
+    }
+    
+    func setFavoriteNews(_ news: [NewsResponse]) {
+        self.articleArray = news
         self.tableView?.reloadData()
     }
 }
@@ -51,7 +61,8 @@ extension FavoriteNewsTableAdapter: UITableViewDelegate, UITableViewDataSource {
         articleArray.count
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView,
+                   heightForRowAt indexPath: IndexPath) -> CGFloat {
         150
     }
     
@@ -61,11 +72,8 @@ extension FavoriteNewsTableAdapter: UITableViewDelegate, UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: FavoriteNewsCell.id,
                                                        for: indexPath) as? FavoriteNewsCell else { return UITableViewCell() }
         
-        let article = articleArray[indexPath.row]
-        cell.update(article: article)
-        self.delegate?.loadImageData(url: article.urlToImage, complition: { imageData in
-            cell.setImage(data: imageData)
-        })
+        let news = articleArray[indexPath.row]
+        cell.update(article: news)
         
         return cell
     }
@@ -75,5 +83,19 @@ extension FavoriteNewsTableAdapter: UITableViewDelegate, UITableViewDataSource {
         tableView.deselectRow(at: indexPath, animated: true)
         let article = articleArray[indexPath.row]
         self.onCellTappedHandler?(article)
+    }
+    
+    func tableView(_ tableView: UITableView,
+                   canEditRowAt indexPath: IndexPath) -> Bool {
+        true
+    }
+    
+    func tableView(_ tableView: UITableView,
+                   commit editingStyle: UITableViewCell.EditingStyle,
+                   forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+//            let employeeRequest = EmployeeRequest(employee: employeeArray[indexPath.row])
+            self.onCellDeleteHandler?(articleArray[indexPath.row])
+        }
     }
 }

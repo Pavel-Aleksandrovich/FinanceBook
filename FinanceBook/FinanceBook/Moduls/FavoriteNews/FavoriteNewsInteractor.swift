@@ -12,44 +12,41 @@ protocol IFavoriteNewsInteractor: AnyObject {
                         view: IFavoriteNewsView,
                         tableAdapter: IFavoriteNewsTableAdapter)
     func loadNews()
-    func loadImageDataFrom(url: String?, complition: @escaping(Data) -> ())
+    func deleteNews(_ news: NewsResponse)
 }
 
 final class FavoriteNewsInteractor {
     
-    private var page = 0
     private let presenter: IFavoriteNewsPresenter
+    private let dataManager: IDataManager
     private let networkManager = NetworkManager()
     
-    init(presenter: IFavoriteNewsPresenter) {
+    init(presenter: IFavoriteNewsPresenter, dataManager: IDataManager) {
         self.presenter = presenter
+        self.dataManager = dataManager
     }
 }
 
 extension FavoriteNewsInteractor: IFavoriteNewsInteractor {
     
-    func loadImageDataFrom(url: String?, complition: @escaping(Data) -> ()) {
-        guard let url = url else { return }
-        self.networkManager.loadImageDataFrom(url: url) { [ weak self ] result in
+    func loadNews() {
+        self.dataManager.getListNews { [ weak self ] result in
             switch result {
-            case .success(let data):
-                DispatchQueue.main.async {
-                    complition(data)
-                }
+            case .success(let model):
+                self?.presenter.setFavoriteNews(model)
             case .failure(let error):
-                self?.presenter.showError(error)
+                print(error)
             }
         }
     }
     
-    func loadNews() {
-        self.page += 1
-        self.networkManager.loadNews(page: self.page) { [ weak self ] result in
+    func deleteNews(_ news: NewsResponse) {
+        self.dataManager.delete(news: news) { [ weak self ] result in
             switch result {
-            case .success(let news):
-                self?.presenter.setNews(news)
+            case .success():
+                self?.presenter.deleteNewsAt(news.id)
             case .failure(let error):
-                print(error.localizedDescription)
+                self?.presenter.showError(error)
             }
         }
     }
