@@ -9,6 +9,7 @@ import UIKit
 
 protocol IListNewsViewController: AnyObject {
     func showError(_ error: String)
+    func setLanguageBarButtonTitle(title: String)
 }
 
 final class ListNewsViewController: UIViewController {
@@ -17,18 +18,22 @@ final class ListNewsViewController: UIViewController {
         static let barButtonTitle = "Add Company"
     }
     
+    private var languageBarButton = UIBarButtonItem()
     private let cell = ListNewsCell()
     private let mainView = ListNewsView()
     private let tableAdapter: IListNewsTableAdapter
+    private var collectionAdapter: ICollectionViewAdapter
     private let interactor: IListNewsInteractor
     private let router: IListNewsRouter
 
     init(interactor: IListNewsInteractor,
          router: IListNewsRouter,
-         tableAdapter: IListNewsTableAdapter) {
+         tableAdapter: IListNewsTableAdapter,
+         collectionAdapter: ICollectionViewAdapter) {
         self.interactor = interactor
         self.router = router
         self.tableAdapter = tableAdapter
+        self.collectionAdapter = collectionAdapter
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -42,15 +47,17 @@ final class ListNewsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.collectionAdapter.collectionView = self.mainView.getCollectionView()
         self.interactor.onViewAttached(controller: self,
                                        view: self.mainView,
                                        tableAdapter: self.tableAdapter)
         self.setOnCellTappedHandler()
-        self.setRightBarButton()
-        self.interactor.loadNews()
+        self.interactor.loadNews(language: nil, category: nil)
         self.setScrollDidEndHandler()
         self.tableAdapter.delegate = self
-        self.cell.delegate = self
+        self.setOnCellCollectionTappedHandler()
+        self.createLanguageBarButton()
+        self.createLanguageBarButton()
     }
 }
 
@@ -58,6 +65,10 @@ extension ListNewsViewController: IListNewsViewController {
     
     func showError(_ error: String) {
         self.router.showErrorAlert(error)
+    }
+    
+    func setLanguageBarButtonTitle(title: String) {
+        self.languageBarButton.title = title
     }
 }
 
@@ -68,17 +79,26 @@ extension ListNewsViewController: ListNewsTableAdapterDelegate {
     }
 }
 
-extension ListNewsViewController: ListNewsCellDelegate {
-    func load(url: String?, complition: @escaping (Data) -> ()) {
-//        self.interactor.loadImageDataFrom(url: url, complition: complition)
-    }
-}
-
 private extension ListNewsViewController {
+    
+    func createLanguageBarButton() {
+        self.languageBarButton = UIBarButtonItem(title: "US",
+                                                 style: .done,
+                                                 target: self,
+                                                 action: #selector(self.languageButtonTapped))
+        
+        self.navigationItem.rightBarButtonItem = self.languageBarButton
+    }
+    
+    @objc func languageButtonTapped() {
+        self.router.showLanguageAlert { [ weak self ] language in
+            self?.interactor.loadNews(language: language, category: nil)
+        }
+    }
     
     func setScrollDidEndHandler() {
         self.tableAdapter.scrollDidEndHandler = {
-            self.interactor.loadNews()
+            self.interactor.loadNews(language: nil, category: nil)
         }
     }
     
@@ -88,17 +108,9 @@ private extension ListNewsViewController {
         }
     }
     
-    func setRightBarButton() {
-        let rightButton = UIBarButtonItem(title: Constants.barButtonTitle,
-                                          style: .plain,
-                                          target: self,
-                                          action: #selector(addCompanyButtonTapped))
-        self.navigationItem.setRightBarButton(rightButton, animated: false)
-    }
-    
-    @objc func addCompanyButtonTapped() {
-        self.router.showAlert { 
-//            self.interactor.createCompany(company)
+    func setOnCellCollectionTappedHandler() {
+        self.collectionAdapter.onCellTappedHandler = { [ weak self ] category in
+            self?.interactor.loadNews(language: nil, category: category)
         }
     }
 }

@@ -17,6 +17,7 @@ protocol IListNewsTableAdapter: AnyObject {
     var onCellTappedHandler: ((Article) -> ())? { get set }
     var scrollDidEndHandler: (() -> ())? { get set }
     func setNews(_ news: News)
+    func clearData()
 }
 
 final class ListNewsTableAdapter: NSObject {
@@ -37,6 +38,11 @@ final class ListNewsTableAdapter: NSObject {
 }
 
 extension ListNewsTableAdapter: IListNewsTableAdapter {
+    
+    func clearData() {
+        self.articleArray.removeAll()
+        self.tableView?.reloadData()
+    }
     
     func setNews(_ news: News) {
         self.articleArray.append(contentsOf: news.articles)
@@ -69,10 +75,10 @@ extension ListNewsTableAdapter: UITableViewDelegate, UITableViewDataSource {
             DispatchQueue.global().async {
                 sleep(1)
                 self.scrollDidEndHandler?()
-//                DispatchQueue.main.async {
-//                    self.tableView?.reloadData()
+                DispatchQueue.main.async {
+                    self.tableView?.reloadData()
                     self.isLoading = false
-//                }
+                }
             }
         }
     }

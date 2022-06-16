@@ -11,11 +11,26 @@ protocol IListNewsInteractor: AnyObject {
     func onViewAttached(controller: IListNewsViewController,
                         view: IListNewsView,
                         tableAdapter: IListNewsTableAdapter)
-    func loadNews()
+    func loadNews(language: String?, category: String?)
     func loadImageDataFrom(url: String?, complition: @escaping(Data) -> ())
 }
 
 final class ListNewsInteractor {
+    
+    private var category: String? = Category.general.rawValue {
+        didSet {
+            self.page = 0
+            self.presenter.clearData()
+        }
+    }
+    
+    private var language: String? = "us" {
+        didSet {
+            self.page = 0
+            self.presenter.clearData()
+            self.presenter.setLanguageBarButtonTitle(title: self.language)
+        }
+    }
     
     private var page = 0
     private let presenter: IListNewsPresenter
@@ -42,9 +57,21 @@ extension ListNewsInteractor: IListNewsInteractor {
         }
     }
     
-    func loadNews() {
+    func loadNews(language: String? = nil, category: String? = nil) {
+        
+        if category != nil {
+            self.category = category
+        }
+        let category = self.category ?? Category.general.rawValue
+        
+        if language != nil {
+            self.language = language
+        }
+        let language = self.language ?? "us"
         self.page += 1
-        self.networkManager.loadNews(page: self.page) { [ weak self ] result in
+        self.networkManager.loadNews(language: language,
+                                     category: category,
+                                     page: self.page) { [ weak self ] result in
             switch result {
             case .success(let news):
                 self?.presenter.setNews(news)

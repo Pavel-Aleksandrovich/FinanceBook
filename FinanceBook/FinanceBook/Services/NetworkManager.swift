@@ -32,8 +32,12 @@ final class NetworkManager {
 }
 //7d0b341870634da093c7dd7b06db9891
 extension NetworkManager {
-    func loadNews(page: Int, completion: @escaping (Result<News, Error>) -> ()) {
-        let api = "https://newsapi.org/v2/top-headlines?country=us&page=\(page)&apiKey=7d0b341870634da093c7dd7b06db9891"
+    
+    func loadNews(language: String,
+                  category: String,
+                  page: Int,
+                  completion: @escaping (Result<News, Error>) -> ()) {
+        let api = "https://newsapi.org/v2/top-headlines?country=\(language)&page=\(page)&category=\(category)&apiKey=b21393dbff084185b011f3acdc9bd5fb"
 //        let api = "https://newsapi.org/v2/top-headlines?country=us&page=\(page)&apiKey=b21393dbff084185b011f3acdc9bd5fb"
         self.loadData(api: api, completion: completion)
     }
@@ -42,7 +46,7 @@ extension NetworkManager {
                            completion: @escaping (Result<Data, Error>) -> ()) {
         
         let correctUrlString = url
-        guard let url = URL(string: correctUrlString) else { assert(false) }
+        guard let url = URL(string: correctUrlString) else { return }
         let request = URLRequest(url: url)
         
         self.session.downloadTask(with: request) { url, response, error in

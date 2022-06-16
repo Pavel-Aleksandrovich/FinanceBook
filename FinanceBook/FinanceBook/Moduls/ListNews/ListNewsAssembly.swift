@@ -15,9 +15,11 @@ enum ListNewsAssembly {
         let presenter = ListNewsPresenter()
         let interactor = ListNewsInteractor(presenter: presenter)
         let router = ListNewsRouter()
+        let collectionAdapter = CollectionViewAdapter()
         let controller = ListNewsViewController(interactor: interactor,
                                                 router: router,
-                                                tableAdapter: tableAdapter)
+                                                tableAdapter: tableAdapter,
+                                                collectionAdapter: collectionAdapter)
         router.controller = controller
         
         return controller

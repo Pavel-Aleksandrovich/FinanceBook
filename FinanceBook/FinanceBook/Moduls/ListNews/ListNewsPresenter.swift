@@ -14,6 +14,8 @@ protocol IListNewsPresenter: AnyObject {
     func deleteCompanyAt(_ id: UUID)
     func showError(_ error: Error)
     func setNews(_ news: News)
+    func clearData()
+    func setLanguageBarButtonTitle(title: String?)
 }
 
 final class ListNewsPresenter {
@@ -42,13 +44,26 @@ extension ListNewsPresenter: IListNewsPresenter {
     
     func showError(_ error: Error) {
         DispatchQueue.main.async {
-//            self.controller?.showError(error.localizedDescription)
+            //            self.controller?.showError(error.localizedDescription)
         }
     }
     
     func setNews(_ news: News) {
         DispatchQueue.main.async {
             self.tableAdapter?.setNews(news)
+        }
+    }
+    
+    func clearData() {
+        DispatchQueue.main.async {
+            self.tableAdapter?.clearData()
+        }
+    }
+    
+    func setLanguageBarButtonTitle(title: String?) {
+        guard let title = title else { return }
+        DispatchQueue.main.async {
+            self.controller?.setLanguageBarButtonTitle(title: title)
         }
     }
 }

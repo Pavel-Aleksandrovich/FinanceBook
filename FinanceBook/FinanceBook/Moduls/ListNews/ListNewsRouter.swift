@@ -11,6 +11,7 @@ protocol IListNewsRouter: AnyObject {
     func showArticleDetails(_ article: Article)
     func showAlert(complition: @escaping() -> ())
     func showErrorAlert(_ error: String)
+    func showLanguageAlert(complition: @escaping(String) -> ())
 }
 
 final class ListNewsRouter {
@@ -24,6 +25,13 @@ extension ListNewsRouter: IListNewsRouter {
         let vc = NewsDetailsAssembly.build(article: article)
         let nav = UINavigationController(rootViewController: vc)
         self.controller?.present(nav, animated: true)
+    }
+    
+    func showLanguageAlert(complition: @escaping(String) -> ()) {
+        let alert = AlertAssembly.createLanguageAlert { language in
+            complition(language)
+        }
+        self.controller?.present(alert, animated: true)
     }
     
     func showAlert(complition: @escaping() -> ()) {
