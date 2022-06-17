@@ -1,16 +1,16 @@
 //
-//  FavoriteNewsCell.swift
+//  ChartCell.swift
 //  FinanceBook
 //
-//  Created by pavel mishanin on 16.06.2022.
+//  Created by pavel mishanin on 17.06.2022.
 //
 
 import UIKit
 import SnapKit
 
-final class FavoriteNewsCell: UITableViewCell {
+final class ChartCell: UITableViewCell {
     
-    static let id = String(describing: FavoriteNewsCell.self)
+    static let id = String(describing: ChartCell.self)
     
     private let titleLabel = BaseLabel()
     private let newsImageView = UIImageView()
@@ -25,19 +25,17 @@ final class FavoriteNewsCell: UITableViewCell {
     }
 }
 
-extension FavoriteNewsCell {
+extension ChartCell {
     
-    func update(article: NewsResponse) {
-        self.titleLabel.text = article.title
-        self.newsImageView.image = UIImage(data: article.imageData)
+    func update(article: Segment) {
+        self.titleLabel.text = article.name
     }
 }
 
-private extension FavoriteNewsCell {
+private extension ChartCell {
     
     func makeConstraints() {
         self.addSubview()
-        self.makeNewsImageViewConstraints()
         self.makeTitleLabelConstraints()
     }
     
@@ -56,8 +54,7 @@ private extension FavoriteNewsCell {
     
     func makeTitleLabelConstraints() {
         self.titleLabel.snp.makeConstraints { make in
-            make.top.bottom.trailing.equalToSuperview().inset(10)
-            make.leading.equalTo(self.newsImageView.snp.trailing).inset(-10)
+            make.edges.equalToSuperview()
         }
     }
 }

@@ -29,6 +29,22 @@
 		84272C4F285B229B005B1955 /* CollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84272C4E285B229B005B1955 /* CollectionCell.swift */; };
 		84272C51285B22B5005B1955 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84272C50285B22B5005B1955 /* Category.swift */; };
 		84272C54285B5E47005B1955 /* AlertAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84272C53285B5E47005B1955 /* AlertAssembly.swift */; };
+		84272C56285B7FB8005B1955 /* ChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84272C55285B7FB8005B1955 /* ChartViewController.swift */; };
+		84272C59285B806F005B1955 /* PieChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84272C58285B806F005B1955 /* PieChart.swift */; };
+		84272C5B285C2560005B1955 /* ChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84272C5A285C2560005B1955 /* ChartView.swift */; };
+		84272C5D285C261C005B1955 /* ChartRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84272C5C285C261C005B1955 /* ChartRouter.swift */; };
+		84272C5F285C2668005B1955 /* ChartInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84272C5E285C2668005B1955 /* ChartInteractor.swift */; };
+		84272C61285C26FA005B1955 /* ChartPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84272C60285C26FA005B1955 /* ChartPresenter.swift */; };
+		84272C63285C27C7005B1955 /* ChartTableAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84272C62285C27C7005B1955 /* ChartTableAdapter.swift */; };
+		84272C65285C2883005B1955 /* ChartCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84272C64285C2883005B1955 /* ChartCell.swift */; };
+		84272C67285C2963005B1955 /* ChartAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84272C66285C2963005B1955 /* ChartAssembly.swift */; };
+		84272C6B285C391B005B1955 /* NewSegmentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84272C6A285C391B005B1955 /* NewSegmentViewController.swift */; };
+		84272C6D285C3CC3005B1955 /* NewSegmentRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84272C6C285C3CC3005B1955 /* NewSegmentRouter.swift */; };
+		84272C6F285C3CFF005B1955 /* NewSegmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84272C6E285C3CFF005B1955 /* NewSegmentView.swift */; };
+		84272C71285C3D8D005B1955 /* NewSegmentInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84272C70285C3D8D005B1955 /* NewSegmentInteractor.swift */; };
+		84272C73285C3E32005B1955 /* NewSegmentPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84272C72285C3E32005B1955 /* NewSegmentPresenter.swift */; };
+		84272C76285C3F54005B1955 /* NewSegmentAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84272C75285C3F54005B1955 /* NewSegmentAssembly.swift */; };
+		84272C78285C5C49005B1955 /* Section.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84272C77285C5C49005B1955 /* Section.swift */; };
 		845AE7012859E5050021F7B7 /* ListNewsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845AE7002859E5050021F7B7 /* ListNewsInteractor.swift */; };
 		845AE7032859E5CB0021F7B7 /* ListNewsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845AE7022859E5CB0021F7B7 /* ListNewsPresenter.swift */; };
 		845AE7052859E66E0021F7B7 /* ListNewsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845AE7042859E66E0021F7B7 /* ListNewsViewController.swift */; };
@@ -74,6 +90,22 @@
 		84272C4E285B229B005B1955 /* CollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionCell.swift; sourceTree = "<group>"; };
 		84272C50285B22B5005B1955 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
 		84272C53285B5E47005B1955 /* AlertAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertAssembly.swift; sourceTree = "<group>"; };
+		84272C55285B7FB8005B1955 /* ChartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartViewController.swift; sourceTree = "<group>"; };
+		84272C58285B806F005B1955 /* PieChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieChart.swift; sourceTree = "<group>"; };
+		84272C5A285C2560005B1955 /* ChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartView.swift; sourceTree = "<group>"; };
+		84272C5C285C261C005B1955 /* ChartRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartRouter.swift; sourceTree = "<group>"; };
+		84272C5E285C2668005B1955 /* ChartInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartInteractor.swift; sourceTree = "<group>"; };
+		84272C60285C26FA005B1955 /* ChartPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartPresenter.swift; sourceTree = "<group>"; };
+		84272C62285C27C7005B1955 /* ChartTableAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartTableAdapter.swift; sourceTree = "<group>"; };
+		84272C64285C2883005B1955 /* ChartCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartCell.swift; sourceTree = "<group>"; };
+		84272C66285C2963005B1955 /* ChartAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartAssembly.swift; sourceTree = "<group>"; };
+		84272C6A285C391B005B1955 /* NewSegmentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewSegmentViewController.swift; sourceTree = "<group>"; };
+		84272C6C285C3CC3005B1955 /* NewSegmentRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewSegmentRouter.swift; sourceTree = "<group>"; };
+		84272C6E285C3CFF005B1955 /* NewSegmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewSegmentView.swift; sourceTree = "<group>"; };
+		84272C70285C3D8D005B1955 /* NewSegmentInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewSegmentInteractor.swift; sourceTree = "<group>"; };
+		84272C72285C3E32005B1955 /* NewSegmentPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewSegmentPresenter.swift; sourceTree = "<group>"; };
+		84272C75285C3F54005B1955 /* NewSegmentAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewSegmentAssembly.swift; sourceTree = "<group>"; };
+		84272C77285C5C49005B1955 /* Section.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Section.swift; sourceTree = "<group>"; };
 		845AE7002859E5050021F7B7 /* ListNewsInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListNewsInteractor.swift; sourceTree = "<group>"; };
 		845AE7022859E5CB0021F7B7 /* ListNewsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListNewsPresenter.swift; sourceTree = "<group>"; };
 		845AE7042859E66E0021F7B7 /* ListNewsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListNewsViewController.swift; sourceTree = "<group>"; };
@@ -159,9 +191,57 @@
 			path = Helpers;
 			sourceTree = "<group>";
 		};
+		84272C57285B7FC3005B1955 /* Chart */ = {
+			isa = PBXGroup;
+			children = (
+				84272C68285C2A0E005B1955 /* View */,
+				84272C5C285C261C005B1955 /* ChartRouter.swift */,
+				84272C5E285C2668005B1955 /* ChartInteractor.swift */,
+				84272C60285C26FA005B1955 /* ChartPresenter.swift */,
+				84272C66285C2963005B1955 /* ChartAssembly.swift */,
+				84272C77285C5C49005B1955 /* Section.swift */,
+			);
+			path = Chart;
+			sourceTree = "<group>";
+		};
+		84272C68285C2A0E005B1955 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				84272C55285B7FB8005B1955 /* ChartViewController.swift */,
+				84272C5A285C2560005B1955 /* ChartView.swift */,
+				84272C62285C27C7005B1955 /* ChartTableAdapter.swift */,
+				84272C64285C2883005B1955 /* ChartCell.swift */,
+				84272C58285B806F005B1955 /* PieChart.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		84272C69285C3853005B1955 /* NewSegment */ = {
+			isa = PBXGroup;
+			children = (
+				84272C74285C3F47005B1955 /* View */,
+				84272C6C285C3CC3005B1955 /* NewSegmentRouter.swift */,
+				84272C70285C3D8D005B1955 /* NewSegmentInteractor.swift */,
+				84272C72285C3E32005B1955 /* NewSegmentPresenter.swift */,
+				84272C75285C3F54005B1955 /* NewSegmentAssembly.swift */,
+			);
+			path = NewSegment;
+			sourceTree = "<group>";
+		};
+		84272C74285C3F47005B1955 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				84272C6A285C391B005B1955 /* NewSegmentViewController.swift */,
+				84272C6E285C3CFF005B1955 /* NewSegmentView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		845AE6FF2859E4DB0021F7B7 /* Moduls */ = {
 			isa = PBXGroup;
 			children = (
+				84272C69285C3853005B1955 /* NewSegment */,
+				84272C57285B7FC3005B1955 /* Chart */,
 				84272C31285ADAD9005B1955 /* FavoriteNews */,
 				845AE7122859F4500021F7B7 /* NewsDetails */,
 				845AE7112859F2B00021F7B7 /* ListNews */,
@@ -359,10 +439,13 @@
 				845AE70B2859E7E40021F7B7 /* ListNewsTableAdapter.swift in Sources */,
 				84A40700285984830013387C /* AppDelegate.swift in Sources */,
 				845AE7012859E5050021F7B7 /* ListNewsInteractor.swift in Sources */,
+				84272C56285B7FB8005B1955 /* ChartViewController.swift in Sources */,
 				84272C44285AE925005B1955 /* DataManager.swift in Sources */,
 				84272C3D285ADF94005B1955 /* FavoriteNewsView.swift in Sources */,
 				84A4074528599DB80013387C /* News.swift in Sources */,
+				84272C5F285C2668005B1955 /* ChartInteractor.swift in Sources */,
 				84272C29285A2A79005B1955 /* NewsDetailsPresenter.swift in Sources */,
+				84272C59285B806F005B1955 /* PieChart.swift in Sources */,
 				84272C42285AE67C005B1955 /* CoreDataStorage.swift in Sources */,
 				84272C54285B5E47005B1955 /* AlertAssembly.swift in Sources */,
 				84272C30285AD616005B1955 /* FavoriteNewsViewController.swift in Sources */,
@@ -371,26 +454,39 @@
 				84272C3B285ADF3E005B1955 /* FavoriteNewsCell.swift in Sources */,
 				84A407472859B4EC0013387C /* NewsResponse.swift in Sources */,
 				84272C25285A29F2005B1955 /* NewsDetailsRouter.swift in Sources */,
+				84272C78285C5C49005B1955 /* Section.swift in Sources */,
 				84272C2E285AD367005B1955 /* TabBarAssembly.swift in Sources */,
 				84272C51285B22B5005B1955 /* Category.swift in Sources */,
+				84272C65285C2883005B1955 /* ChartCell.swift in Sources */,
 				845AE7072859E6E90021F7B7 /* ListNewsRouter.swift in Sources */,
 				845AE7032859E5CB0021F7B7 /* ListNewsPresenter.swift in Sources */,
+				84272C6D285C3CC3005B1955 /* NewSegmentRouter.swift in Sources */,
 				84272C33285ADCCD005B1955 /* FavoriteNewsRouter.swift in Sources */,
+				84272C61285C26FA005B1955 /* ChartPresenter.swift in Sources */,
+				84272C6F285C3CFF005B1955 /* NewSegmentView.swift in Sources */,
 				84A40702285984830013387C /* SceneDelegate.swift in Sources */,
 				84272C39285ADEB1005B1955 /* FavoriteNewsTableAdapter.swift in Sources */,
 				845AE70F2859E96D0021F7B7 /* ListNewsAssembly.swift in Sources */,
+				84272C63285C27C7005B1955 /* ChartTableAdapter.swift in Sources */,
 				845AE7182859FB310021F7B7 /* BaseLabel.swift in Sources */,
 				84272C49285AFCAA005B1955 /* NewsEntity+CoreDataClass.swift in Sources */,
 				845AE7142859F5C20021F7B7 /* NewsDetailsViewController.swift in Sources */,
 				84272C4D285B2279005B1955 /* CollectionViewAdapter.swift in Sources */,
 				845AE7052859E66E0021F7B7 /* ListNewsViewController.swift in Sources */,
 				84272C2B285A2DA8005B1955 /* NewsDetailsAssembly.swift in Sources */,
+				84272C6B285C391B005B1955 /* NewSegmentViewController.swift in Sources */,
+				84272C67285C2963005B1955 /* ChartAssembly.swift in Sources */,
 				845AE70D2859E8820021F7B7 /* ListNewsCell.swift in Sources */,
 				84272C3F285AE043005B1955 /* FavoriteNewsAssembly.swift in Sources */,
+				84272C76285C3F54005B1955 /* NewSegmentAssembly.swift in Sources */,
 				845AE7092859E7880021F7B7 /* ListNewsView.swift in Sources */,
 				84272C37285ADE54005B1955 /* FavoriteNewsPresenter.swift in Sources */,
+				84272C5D285C261C005B1955 /* ChartRouter.swift in Sources */,
+				84272C5B285C2560005B1955 /* ChartView.swift in Sources */,
 				84272C27285A2A3C005B1955 /* NewsDetailsInteractor.swift in Sources */,
 				84272C4A285AFCAA005B1955 /* NewsEntity+CoreDataProperties.swift in Sources */,
+				84272C71285C3D8D005B1955 /* NewSegmentInteractor.swift in Sources */,
+				84272C73285C3E32005B1955 /* NewSegmentPresenter.swift in Sources */,
 				84272C46285AF686005B1955 /* NewsRequest.swift in Sources */,
 				84A4070A285984830013387C /* FinanceBook.xcdatamodeld in Sources */,
 			);

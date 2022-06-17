@@ -48,7 +48,6 @@ private extension ListNewsCell {
         self.addSubview()
         self.makeNewsImageViewConstraints()
         self.makeTitleLabelConstraints()
-        self.makeTitleLabelConstraints()
         self.makeActivityIndicatorConstraints()
     }
     
