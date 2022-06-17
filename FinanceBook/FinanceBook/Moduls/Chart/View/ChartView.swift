@@ -45,14 +45,14 @@ extension ChartView: IChartView {
         } else {
             for i in 0..<pieChartView.segments.count {
                 if pieChartView.segments[i].name == segment.name {
-                    print("56")
-                    pieChartView.segments[i].value += segment.value
+//                    pieChartView.segments[i].value += segment.value
                 }
             }
         }
     }
     
     func setSegments(_ segment: [Segment]) {
+        print(#function)
         self.pieChartView.segments = segment
     }
 }

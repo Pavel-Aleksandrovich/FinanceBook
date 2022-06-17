@@ -17,10 +17,10 @@ protocol INewsDetailsInteractor: AnyObject {
 final class NewsDetailsInteractor {
     
     private let presenter: INewsDetailsPresenter
-    private let dataManager: IDataManager
+    private let dataManager: INewsDataManager
     private let networkManager = NetworkManager()
     
-    init(presenter: INewsDetailsPresenter, dataManager: IDataManager, article: Article) {
+    init(presenter: INewsDetailsPresenter, dataManager: INewsDataManager, article: Article) {
         self.presenter = presenter
         self.dataManager = dataManager
         self.setData(article: article)

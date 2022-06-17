@@ -7,14 +7,24 @@
 
 import Foundation
 
-protocol IDataManager {
+protocol INewsDataManager {
     func getListNews(completion: @escaping(Result<([NewsResponse]),
                                             Error>) -> ())
     func create(news: NewsRequest,
                 completion: @escaping(Result<(), Error>) -> ())
     func delete(news: NewsResponse,
                 completion: @escaping(Result<(),
-                                       Error>) -> ())
+                                      Error>) -> ())
+}
+
+protocol IChartDataManager {
+    func getListSegments(completion: @escaping(Result<([ChartDTO]),
+                                            Error>) -> ())
+    func create(segment: ChartRequest,
+                completion: @escaping(Result<(), Error>) -> ())
+    func delete(segment: Segment,
+                completion: @escaping(Result<(),
+                                      Error>) -> ())
 }
 
 final class DataManager {
@@ -26,9 +36,10 @@ final class DataManager {
     }
 }
 
-extension DataManager: IDataManager {
+extension DataManager: INewsDataManager {
     
-    func getListNews(completion: @escaping(Result<([NewsResponse]), Error>) -> ()) {
+    func getListNews(completion: @escaping(Result<([NewsResponse]),
+                                           Error>) -> ()) {
         DispatchQueue.global(qos: .userInteractive).async {
             do {
                 let news = try self.coreDataStorage.getListNews()
@@ -47,8 +58,6 @@ extension DataManager: IDataManager {
                 completion(.success(()))
             } catch {
                 completion(.failure(error))
-            } catch is CustomError {
-                completion(.failure(CustomError.added))
             }
         }
     }
@@ -58,6 +67,45 @@ extension DataManager: IDataManager {
         DispatchQueue.global(qos: .userInteractive).async {
             do {
                 try self.coreDataStorage.delete(news: news)
+                completion(.success(()))
+            } catch {
+                completion(.failure(error))
+            }
+        }
+    }
+}
+
+extension DataManager: IChartDataManager {
+    
+    func getListSegments(completion: @escaping (Result<([ChartDTO]),
+                                                Error>) -> ()) {
+        DispatchQueue.global(qos: .userInteractive).async {
+            do {
+                let segments = try self.coreDataStorage.getCharts()
+                completion(.success(segments))
+            } catch {
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    func create(segment: ChartRequest,
+                completion: @escaping (Result<(), Error>) -> ()) {
+        DispatchQueue.global(qos: .userInteractive).async {
+            do {
+                try self.coreDataStorage.create(chart: segment)
+                completion(.success(()))
+            } catch {
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    func delete(segment: Segment,
+                completion: @escaping (Result<(), Error>) -> ()) {
+        DispatchQueue.global(qos: .userInteractive).async {
+            do {
+//                try self.coreDataStorage.delete(segment: segment)
                 completion(.success(()))
             } catch {
                 completion(.failure(error))

@@ -13,7 +13,9 @@ enum ChartAssembly {
         
         let tableAdapter = ChartTableAdapter()
         let presenter = ChartPresenter()
-        let interactor = ChartInteractor(presenter: presenter)
+        let dataManager = DataManager()
+        let interactor = ChartInteractor(presenter: presenter,
+                                         dataManager: dataManager)
         let router = ChartRouter()
         let controller = ChartViewController(interactor: interactor,
                                              router: router,

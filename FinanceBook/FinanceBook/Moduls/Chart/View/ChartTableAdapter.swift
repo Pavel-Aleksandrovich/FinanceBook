@@ -16,12 +16,12 @@ protocol IChartTableAdapter: AnyObject {
     var tableView: UITableView? { get set }
     var onCellTappedHandler: ((NewsResponse) -> ())? { get set }
     var onCellDeleteHandler: ((NewsResponse) -> ())? { get set }
-    func setSegments(_ segment: [Segment])
+    func setCharts(_ chart: [ChartDTO])
 }
 
 final class ChartTableAdapter: NSObject {
     
-    private var articleArray: [Segment] = []
+    private var articleArray: [ChartDTO] = []
     var onCellTappedHandler: ((NewsResponse) -> ())?
     var onCellDeleteHandler: ((NewsResponse) -> ())?
     weak var delegate: ChartTableAdapterDelegate?
@@ -37,8 +37,8 @@ final class ChartTableAdapter: NSObject {
 
 extension ChartTableAdapter: IChartTableAdapter {
 
-    func setSegments(_ segment: [Segment]) {
-        self.articleArray = segment
+    func setCharts(_ chart: [ChartDTO]) {
+        self.articleArray = chart
         self.tableView?.reloadData()
     }
 }

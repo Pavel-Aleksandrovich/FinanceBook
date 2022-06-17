@@ -11,15 +11,18 @@ protocol IChartInteractor: AnyObject {
     func onViewAttached(controller: IChartViewController,
                         view: IChartView,
                         tableAdapter: IChartTableAdapter)
+    func createChart()
     func loadData()
 }
 
 final class ChartInteractor {
     
     private let presenter: IChartPresenter
+    private let dataManager: IChartDataManager
     
-    init(presenter: IChartPresenter) {
+    init(presenter: IChartPresenter, dataManager: IChartDataManager) {
         self.presenter = presenter
+        self.dataManager = dataManager
     }
 }
 
@@ -33,16 +36,49 @@ extension ChartInteractor: IChartInteractor {
                                       tableAdapter: tableAdapter)
     }
     
+    func createChart() {
+        let segments = Segment(name: "tramp", color: .red, amount: 782, date: Date())
+        
+        let chart = ChartRequest(segments: segments)
+        self.dataManager.create(segment: chart) { [ weak self ] result in
+            switch result {
+            case .success():
+                print("success")
+            case .failure(let error):
+                print(error)
+            }
+        }
+    }
+    
     func loadData() {
-        let segments = [
-            Segment(color: #colorLiteral(red: 1.0, green: 0.121568627, blue: 0.28627451, alpha: 1.0), name: "Red",        value: 57.56, date: Date()),
-            Segment(color: #colorLiteral(red: 1.0, green: 0.541176471, blue: 0.0, alpha: 1.0), name: "Orange",     value: 30, date: Date()),
-            Segment(color: #colorLiteral(red: 0.478431373, green: 0.423529412, blue: 1.0, alpha: 1.0), name: "Purple",     value: 27, date: Date()),
-            Segment(color: #colorLiteral(red: 0.0, green: 0.870588235, blue: 1.0, alpha: 1.0), name: "Light Blue", value: 40, date: Date()),
-            Segment(color: #colorLiteral(red: 0.392156863, green: 0.945098039, blue: 0.717647059, alpha: 1.0), name: "Green",      value: 25, date: Date()),
-            Segment(color: #colorLiteral(red: 0.0, green: 0.392156863, blue: 1.0, alpha: 1.0), name: "Blue",       value: 38, date: Date()),
-            Segment(color: #colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1), name: "Green",       value: 207, date: Date())
-        ]
-        self.presenter.setSegments(segments)
+//        let segments = [Segment(name: "name", color: .orange, amount: 50, date: Date())]
+//        self.presenter.setSegments(segments)
+        
+        self.dataManager.getListSegments { [ weak self ] result in
+            switch result {
+            case .success(let model):
+                self?.presenter.setCharts(model)
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+}
+
+struct ChartRequest {
+    let id: UUID
+    let idSegment: UUID
+    let name: String
+    let color: Data
+    let amount: Int
+    let date: Date
+    
+    init(segments: Segment) {
+        self.id = segments.id
+        self.idSegment = segments.segment.id
+        self.name = segments.name
+        self.color = ColorConverter.toData(fromColor: segments.color) ?? Data()
+        self.amount = segments.segment.amount
+        self.date = segments.segment.date
     }
 }

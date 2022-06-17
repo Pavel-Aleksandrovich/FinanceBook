@@ -45,7 +45,9 @@ final class ChartViewController: UIViewController {
         super.viewWillAppear(animated)
 //        let segment = Segment(color: #colorLiteral(red: 1.0, green: 0.121568627, blue: 0.28627451, alpha: 1.0), name: "Red", value: 57.56)
 //        self.mainView.updateChart(segment: segment)
+//        self.interactor.createChart()
         self.interactor.loadData()
+        
     }
 }
 

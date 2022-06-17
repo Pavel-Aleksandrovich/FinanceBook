@@ -7,7 +7,7 @@
 
 import UIKit
 
-enum Section: String, CaseIterable {
+enum TypeSection: String, CaseIterable {
     case home
     case sport
     case pets
@@ -18,7 +18,7 @@ enum Section: String, CaseIterable {
     case entertainment
     case health
     
-    var color: UIColor? {
+    var color: UIColor {
         switch self {
         case .home: return .magenta
         case .sport: return .brown
