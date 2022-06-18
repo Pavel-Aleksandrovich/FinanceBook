@@ -51,14 +51,13 @@ extension ChartPresenter: IChartPresenter {
     func setSegments(_ segment: [Segment]) {
         DispatchQueue.main.async {
 //            self.tableAdapter?.setSegments(segment)
-            self.view?.setSegments(segment)
         }
     }
     
     func setCharts(_ chart: [ChartDTO]) {
         DispatchQueue.main.async {
             self.tableAdapter?.setCharts(chart)
-            print(chart.count)
+            self.view?.setCharts(chart)
         }
     }
 }

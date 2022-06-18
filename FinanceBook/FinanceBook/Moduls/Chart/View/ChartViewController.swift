@@ -38,16 +38,14 @@ final class ChartViewController: UIViewController {
         self.interactor.onViewAttached(controller: self,
                                        view: self.mainView,
                                        tableAdapter: self.tableAdapter)
-        createAddSegmentBarButton()
+        self.createAddSegmentBarButton()
+        self.setOnCellDeleteHandler()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-//        let segment = Segment(color: #colorLiteral(red: 1.0, green: 0.121568627, blue: 0.28627451, alpha: 1.0), name: "Red", value: 57.56)
-//        self.mainView.updateChart(segment: segment)
 //        self.interactor.createChart()
         self.interactor.loadData()
-        
     }
 }
 
@@ -55,10 +53,17 @@ extension ChartViewController: IChartViewController {}
 
 private extension ChartViewController {
     
+    func setOnCellDeleteHandler() {
+        self.tableAdapter.onCellDeleteHandler = { [ weak self ] chart, segment in
+            self?.interactor.deleteSegment(segment, from: chart)
+        }
+    }
+    
     func createAddSegmentBarButton() {
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add,
-                                                            target: self,
-                                                            action: #selector(addSegmentButtonTapped))
+        let item = UIBarButtonItem(barButtonSystemItem: .add,
+                                   target: self,
+                                   action: #selector(self.addSegmentButtonTapped))
+        self.navigationItem.rightBarButtonItem = item
     }
     
     @objc func addSegmentButtonTapped() {

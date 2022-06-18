@@ -5,7 +5,7 @@
 //  Created by pavel mishanin on 16.06.2022.
 //
 
-import UIKit
+import Foundation
 import CoreData
 
 final class CoreDataStorage {
@@ -89,13 +89,13 @@ extension CoreDataStorage {
         if savedChart.contains(where: { $0.color == chart.color}) == false {
             let newChartEntity = ChartEntity(entity: entity, insertInto: context)
             newChartEntity.setValues(from: chart)
+            self.saveContext()
             try self.add(segment: chart, to: newChartEntity)
         } else {
-            
             for i in 0..<savedChart.count {
-                if savedChart[i].name == chart.name {
-                    let newChartEntity = ChartEntity(entity: entity, insertInto: context)
-                    try self.add(segment: chart, to: newChartEntity)
+                if savedChart[i].color == chart.color {
+                    print(97)
+                    try self.add(segment: chart, to: savedChart[i])
                 }
             }
             
@@ -104,17 +104,40 @@ extension CoreDataStorage {
         self.saveContext()
     }
     
-    func delete(segment: NewsResponse) throws {
+    func deleteSegment(_ segment: SegmentDTO, from chart: ChartDTO) throws {
+        let fetchRequest = SegmentEntity.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "id = %@",
+                                             segment.id.description)
         
+        if chart.segment.count == 1 {
+            try self.delete(chart: chart)
+        } else {
+            if let employeeForDelete = try self.context.fetch(fetchRequest).first {
+                context.delete(employeeForDelete)
+                self.saveContext()
+            }
+        }
+    }
+    
+    func delete(chart: ChartDTO) throws {
+        let fetchRequest = ChartEntity.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "id = %@",
+                                             chart.id.description)
+        
+        let charts = try self.context.fetch(fetchRequest)
+        if let chartsForDelete = charts.first {
+            self.context.delete(chartsForDelete)
+            self.saveContext()
+        }
     }
     
     private func getSegments(from chart: ChartEntity) throws -> [SegmentEntity] {
         let fetchRequest = SegmentEntity.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "chart.id = %@",
                                              chart.id.description)
-        
+
         let segment = try context.fetch(fetchRequest)
-        
+
         return segment
     }
     
@@ -136,44 +159,14 @@ extension CoreDataStorage {
                                              chart.id.description)
         
         if savedSegments.contains(where: { $0.id == segment.idSegment}) == false {
-            if let companyEntity = try context.fetch(fetchRequest).first {
-                let employeeEntity = SegmentEntity(entity: entity, insertInto: context)
-                employeeEntity.chart = companyEntity
-                employeeEntity.setValues(from: segment)
+            if let chartEntity = try context.fetch(fetchRequest).first {
+                let segmentEntity = SegmentEntity(entity: entity, insertInto: context)
+                segmentEntity.chart = chartEntity
+                segmentEntity.setValues(from: segment)
             }
         }
         
         self.saveContext()
-    }
-}
-
-struct ChartDTO {
-    let id: UUID
-    let name: String
-    let color: Data
-    let segment: [SegmentDTO]
-    
-    var amount: CGFloat {
-        return CGFloat(segment.map { $0.value }.reduce(0, +))
-    }
-    
-    init(chart: ChartEntity, segment: [SegmentDTO]) {
-        self.id = chart.id
-        self.name = chart.name
-        self.color = chart.color
-        self.segment = segment
-    }
-}
-
-struct SegmentDTO {
-    let id: UUID
-    let value: Int
-    let date: Date
-
-    init(segment: SegmentEntity) {
-        self.id = segment.id
-        self.value = Int(segment.value)
-        self.date = segment.date
     }
 }
 

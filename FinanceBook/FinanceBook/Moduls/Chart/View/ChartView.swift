@@ -10,8 +10,7 @@ import SnapKit
 
 protocol IChartView: AnyObject {
     func getTableView() -> UITableView
-    func updateChart(segment: Segment)
-    func setSegments(_ segment: [Segment])
+    func setCharts(_ chart: [ChartDTO])
 }
 
 final class ChartView: UIView {
@@ -38,22 +37,9 @@ extension ChartView: IChartView {
         self.tableView
     }
     
-    func updateChart(segment: Segment) {
-        
-        if pieChartView.segments.contains(where: { $0.name == segment.name }) == false {
-            pieChartView.segments.append(segment)
-        } else {
-            for i in 0..<pieChartView.segments.count {
-                if pieChartView.segments[i].name == segment.name {
-//                    pieChartView.segments[i].value += segment.value
-                }
-            }
-        }
-    }
-    
-    func setSegments(_ segment: [Segment]) {
-        print(#function)
-        self.pieChartView.segments = segment
+    func setCharts(_ chart: [ChartDTO]) {
+        self.pieChartView.updateChart(chart)
+        print(chart.count)
     }
 }
 

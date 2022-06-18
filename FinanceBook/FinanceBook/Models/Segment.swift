@@ -24,10 +24,25 @@ struct Segment {
         self.color = color
         self.segment = SegmentRequest(id: UUID(), amount: amount, date: date)
     }
+    
+//    init(from chartDto: ChartDTO) {
+//        self.id = chartDto.id
+//        self.name = chartDto.name
+//        self.color = ColorConverter.toColor(fromData: chartDto.color)
+//        self.value = chartDto.amount
+//    }
 }
 
 struct SegmentRequest {
     let id: UUID
     let amount: Int
     let date: Date
+}
+
+struct ChartViewModel {
+    let id: UUID
+    let name: String
+    let color: UIColor
+    let segment: SegmentRequest
+    let value: CGFloat
 }

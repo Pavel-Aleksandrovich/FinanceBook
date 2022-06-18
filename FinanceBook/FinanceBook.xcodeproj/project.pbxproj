@@ -51,6 +51,9 @@
 		84272C83285CAF6D005B1955 /* SegmentEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84272C7F285CAF6D005B1955 /* SegmentEntity+CoreDataProperties.swift */; };
 		84272C84285CAF6D005B1955 /* ChartEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84272C80285CAF6D005B1955 /* ChartEntity+CoreDataClass.swift */; };
 		84272C85285CAF6D005B1955 /* ChartEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84272C81285CAF6D005B1955 /* ChartEntity+CoreDataProperties.swift */; };
+		84272C87285D8FC3005B1955 /* ChartHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84272C86285D8FC3005B1955 /* ChartHeaderView.swift */; };
+		84272C8A285D940A005B1955 /* ChartDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84272C89285D940A005B1955 /* ChartDTO.swift */; };
+		84272C8C285D9588005B1955 /* ChartRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84272C8B285D9588005B1955 /* ChartRequest.swift */; };
 		845AE7012859E5050021F7B7 /* ListNewsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845AE7002859E5050021F7B7 /* ListNewsInteractor.swift */; };
 		845AE7032859E5CB0021F7B7 /* ListNewsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845AE7022859E5CB0021F7B7 /* ListNewsPresenter.swift */; };
 		845AE7052859E66E0021F7B7 /* ListNewsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845AE7042859E66E0021F7B7 /* ListNewsViewController.swift */; };
@@ -118,6 +121,9 @@
 		84272C7F285CAF6D005B1955 /* SegmentEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SegmentEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		84272C80285CAF6D005B1955 /* ChartEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChartEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
 		84272C81285CAF6D005B1955 /* ChartEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChartEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		84272C86285D8FC3005B1955 /* ChartHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartHeaderView.swift; sourceTree = "<group>"; };
+		84272C89285D940A005B1955 /* ChartDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartDTO.swift; sourceTree = "<group>"; };
+		84272C8B285D9588005B1955 /* ChartRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartRequest.swift; sourceTree = "<group>"; };
 		845AE7002859E5050021F7B7 /* ListNewsInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListNewsInteractor.swift; sourceTree = "<group>"; };
 		845AE7022859E5CB0021F7B7 /* ListNewsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListNewsPresenter.swift; sourceTree = "<group>"; };
 		845AE7042859E66E0021F7B7 /* ListNewsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListNewsViewController.swift; sourceTree = "<group>"; };
@@ -212,7 +218,6 @@
 				84272C60285C26FA005B1955 /* ChartPresenter.swift */,
 				84272C66285C2963005B1955 /* ChartAssembly.swift */,
 				84272C77285C5C49005B1955 /* TypeSection.swift */,
-				84272C79285C9C05005B1955 /* Segment.swift */,
 			);
 			path = Chart;
 			sourceTree = "<group>";
@@ -224,6 +229,7 @@
 				84272C5A285C2560005B1955 /* ChartView.swift */,
 				84272C62285C27C7005B1955 /* ChartTableAdapter.swift */,
 				84272C64285C2883005B1955 /* ChartCell.swift */,
+				84272C86285D8FC3005B1955 /* ChartHeaderView.swift */,
 				84272C58285B806F005B1955 /* PieChart.swift */,
 			);
 			path = View;
@@ -256,6 +262,19 @@
 				84272C7B285CA57A005B1955 /* ColorConverter.swift */,
 			);
 			path = Converters;
+			sourceTree = "<group>";
+		};
+		84272C88285D93DE005B1955 /* Entity */ = {
+			isa = PBXGroup;
+			children = (
+				84272C7E285CAF6D005B1955 /* SegmentEntity+CoreDataClass.swift */,
+				84272C7F285CAF6D005B1955 /* SegmentEntity+CoreDataProperties.swift */,
+				84272C80285CAF6D005B1955 /* ChartEntity+CoreDataClass.swift */,
+				84272C81285CAF6D005B1955 /* ChartEntity+CoreDataProperties.swift */,
+				84272C47285AFCAA005B1955 /* NewsEntity+CoreDataClass.swift */,
+				84272C48285AFCAA005B1955 /* NewsEntity+CoreDataProperties.swift */,
+			);
+			path = Entity;
 			sourceTree = "<group>";
 		};
 		845AE6FF2859E4DB0021F7B7 /* Moduls */ = {
@@ -361,12 +380,10 @@
 		84A4073A285990A60013387C /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				84272C7E285CAF6D005B1955 /* SegmentEntity+CoreDataClass.swift */,
-				84272C7F285CAF6D005B1955 /* SegmentEntity+CoreDataProperties.swift */,
-				84272C80285CAF6D005B1955 /* ChartEntity+CoreDataClass.swift */,
-				84272C81285CAF6D005B1955 /* ChartEntity+CoreDataProperties.swift */,
-				84272C47285AFCAA005B1955 /* NewsEntity+CoreDataClass.swift */,
-				84272C48285AFCAA005B1955 /* NewsEntity+CoreDataProperties.swift */,
+				84272C88285D93DE005B1955 /* Entity */,
+				84272C79285C9C05005B1955 /* Segment.swift */,
+				84272C89285D940A005B1955 /* ChartDTO.swift */,
+				84272C8B285D9588005B1955 /* ChartRequest.swift */,
 				84A4074428599DB80013387C /* News.swift */,
 				84A407462859B4EC0013387C /* NewsResponse.swift */,
 				84272C45285AF686005B1955 /* NewsRequest.swift */,
@@ -476,6 +493,7 @@
 				84272C54285B5E47005B1955 /* AlertAssembly.swift in Sources */,
 				84272C30285AD616005B1955 /* FavoriteNewsViewController.swift in Sources */,
 				84272C4F285B229B005B1955 /* CollectionCell.swift in Sources */,
+				84272C8A285D940A005B1955 /* ChartDTO.swift in Sources */,
 				845AE7162859F62C0021F7B7 /* NewsDetailsView.swift in Sources */,
 				84272C3B285ADF3E005B1955 /* FavoriteNewsCell.swift in Sources */,
 				84A407472859B4EC0013387C /* NewsResponse.swift in Sources */,
@@ -496,9 +514,11 @@
 				84272C39285ADEB1005B1955 /* FavoriteNewsTableAdapter.swift in Sources */,
 				845AE70F2859E96D0021F7B7 /* ListNewsAssembly.swift in Sources */,
 				84272C63285C27C7005B1955 /* ChartTableAdapter.swift in Sources */,
+				84272C8C285D9588005B1955 /* ChartRequest.swift in Sources */,
 				845AE7182859FB310021F7B7 /* BaseLabel.swift in Sources */,
 				84272C49285AFCAA005B1955 /* NewsEntity+CoreDataClass.swift in Sources */,
 				845AE7142859F5C20021F7B7 /* NewsDetailsViewController.swift in Sources */,
+				84272C87285D8FC3005B1955 /* ChartHeaderView.swift in Sources */,
 				84272C7A285C9C05005B1955 /* Segment.swift in Sources */,
 				84272C4D285B2279005B1955 /* CollectionViewAdapter.swift in Sources */,
 				845AE7052859E66E0021F7B7 /* ListNewsViewController.swift in Sources */,

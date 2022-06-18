@@ -13,6 +13,8 @@ protocol IChartInteractor: AnyObject {
                         tableAdapter: IChartTableAdapter)
     func createChart()
     func loadData()
+    func deleteChart(chart: ChartDTO)
+    func deleteSegment(_ segment: SegmentDTO, from chart: ChartDTO)
 }
 
 final class ChartInteractor {
@@ -37,23 +39,26 @@ extension ChartInteractor: IChartInteractor {
     }
     
     func createChart() {
-        let segments = Segment(name: "tramp", color: .red, amount: 782, date: Date())
+        let segments = Segment(name: "rweg", color: .brown, amount: 329, date: Date())
         
         let chart = ChartRequest(segments: segments)
         self.dataManager.create(segment: chart) { [ weak self ] result in
             switch result {
             case .success():
-                print("success")
+                DispatchQueue.main.async {
+                    print("success")
+                }
+                
             case .failure(let error):
-                print(error)
+                DispatchQueue.main.async {
+                    print(error)
+                }
+                
             }
         }
     }
     
     func loadData() {
-//        let segments = [Segment(name: "name", color: .orange, amount: 50, date: Date())]
-//        self.presenter.setSegments(segments)
-        
         self.dataManager.getListSegments { [ weak self ] result in
             switch result {
             case .success(let model):
@@ -63,22 +68,17 @@ extension ChartInteractor: IChartInteractor {
             }
         }
     }
-}
-
-struct ChartRequest {
-    let id: UUID
-    let idSegment: UUID
-    let name: String
-    let color: Data
-    let amount: Int
-    let date: Date
     
-    init(segments: Segment) {
-        self.id = segments.id
-        self.idSegment = segments.segment.id
-        self.name = segments.name
-        self.color = ColorConverter.toData(fromColor: segments.color) ?? Data()
-        self.amount = segments.segment.amount
-        self.date = segments.segment.date
+    func deleteSegment(_ segment: SegmentDTO, from chart: ChartDTO) {
+        self.dataManager.deleteSegment(segment,
+                                       from: chart) { [ weak self ] result in
+            print(result)
+        }
+    }
+    
+    func deleteChart(chart: ChartDTO) {
+        self.dataManager.delete(segment: chart) { result in
+            print(result)
+        }
     }
 }

@@ -7,19 +7,10 @@
 
 import UIKit
 
-//@IBDesignable
 final class PieChart: UIView {
     
-    var segments = [Segment]() {
-        didSet { setNeedsDisplay() }
-    }
+    private var segments = [ChartDTO]()
     
-//    @IBInspectable
-    var showSegmentLabels: Bool = true {
-        didSet { setNeedsDisplay() }
-    }
-    
-//    @IBInspectable
     var segmentLabelFont: UIFont = UIFont.systemFont(ofSize: 10) {
         didSet {
             textAttributes[.font] = segmentLabelFont
@@ -32,9 +23,10 @@ final class PieChart: UIView {
     }
     
     private let paragraphStyle: NSParagraphStyle = {
-        var p = NSMutableParagraphStyle()
-        p.alignment = .center
-        return p.copy() as! NSParagraphStyle
+        var style = NSMutableParagraphStyle()
+        style.alignment = .center
+        guard let style = style.copy() as? NSParagraphStyle else { return NSParagraphStyle() }
+        return style
     }()
     
     private lazy var textAttributes: [NSAttributedString.Key: Any] = [
@@ -53,14 +45,68 @@ final class PieChart: UIView {
     override func draw(_ rect: CGRect) {
         
         guard let ctx = UIGraphicsGetCurrentContext() else { return }
-        
         let radius = min(frame.width, frame.height) * 0.5
-        
         let viewCenter = bounds.center
         
-        forEachSegment { segment, startAngle, endAngle in
+        self.configSegmentsColor(viewCenter: viewCenter,
+                                 radius: radius,
+                                 ctx: ctx)
+        self.configChartLabels(viewCenter: viewCenter, radius: radius)
+    }
+}
+
+extension PieChart {
+    
+    func updateChart(_ chart: [ChartDTO]) {
+        self.segments = chart
+        self.setNeedsDisplay()
+    }
+}
+
+private extension PieChart {
+    
+    func forEachSegment(complition: (ChartDTO, _ startAngle: CGFloat, _ endAngle: CGFloat) -> ()) {
+        
+        let valueCount = segments.lazy.map { $0.amount }.reduce(0, +)
+        
+        var startAngle: CGFloat = -.pi * 0.5
+        
+        for segment in segments {
+            let endAngle = startAngle + .pi * 2 * CGFloat((segment.amount / valueCount))
+            defer {
+                startAngle = endAngle
+            }
             
-            ctx.setFillColor(segment.color.cgColor)
+            complition(segment, startAngle, endAngle)
+        }
+    }
+    
+    func configChartLabels(viewCenter: CGPoint, radius: CGFloat) {
+        self.forEachSegment { segment, startAngle, endAngle in
+            let halfAngle = startAngle + (endAngle - startAngle) * 0.5;
+            
+            var segmentCenter = viewCenter
+            if segments.count > 1 {
+                segmentCenter = segmentCenter
+                    .projected(by: radius * 0.8, angle: halfAngle)
+            }
+            
+            let textToRender = segmentLabelFormatter.getLabel(for: segment) as NSString
+            let textRenderSize = textToRender.size(withAttributes: textAttributes)
+            let renderRect = CGRect(centeredOn: segmentCenter,
+                                    size: textRenderSize)
+            textToRender.draw(in: renderRect, withAttributes: textAttributes)
+        }
+    }
+    
+    func configSegmentsColor(viewCenter: CGPoint,
+                             radius: CGFloat,
+                             ctx: CGContext) {
+        
+        self.forEachSegment { segment, startAngle, endAngle in
+            
+            let color = ColorConverter.toColor(fromData: segment.color)
+            ctx.setFillColor(color?.cgColor ?? UIColor.green.cgColor)
             
             ctx.move(to: viewCenter)
             
@@ -71,43 +117,6 @@ final class PieChart: UIView {
                        clockwise: false)
             
             ctx.fillPath()
-        }
-        
-        if showSegmentLabels {
-            forEachSegment { segment, startAngle, endAngle in
-                let halfAngle = startAngle + (endAngle - startAngle) * 0.5;
-                
-                var segmentCenter = viewCenter
-                if segments.count > 1 {
-                    segmentCenter = segmentCenter
-                        .projected(by: radius * 0.8, angle: halfAngle)
-                }
-                
-                let textToRender = segmentLabelFormatter.getLabel(for: segment) as NSString
-                let textRenderSize = textToRender.size(withAttributes: textAttributes)
-                let renderRect = CGRect(centeredOn: segmentCenter,
-                                        size: textRenderSize)
-                textToRender.draw(in: renderRect, withAttributes: textAttributes)
-            }
-        }
-    }
-}
-
-private extension PieChart {
-    
-    func forEachSegment(complition: (Segment, _ startAngle: CGFloat, _ endAngle: CGFloat) -> ()) {
-        
-        let valueCount = segments.lazy.map { $0.value }.reduce(0, +)
-        
-        var startAngle: CGFloat = -.pi * 0.5
-        
-        for segment in segments {
-            let endAngle = startAngle + .pi * 2 * CGFloat((segment.value / valueCount))
-            defer {
-                startAngle = endAngle
-            }
-            
-            complition(segment, startAngle, endAngle)
         }
     }
 }
@@ -137,13 +146,13 @@ extension CGPoint {
 
 
 struct SegmentLabelFormatter {
-    private let getLabel: (Segment) -> String
+    private let getLabel: (ChartDTO) -> String
     
-    init(_ getLabel: @escaping (Segment) -> String) {
+    init(_ getLabel: @escaping (ChartDTO) -> String) {
         self.getLabel = getLabel
     }
     
-    func getLabel(for segment: Segment) -> String {
+    func getLabel(for segment: ChartDTO) -> String {
         return getLabel(segment)
     }
 }
@@ -151,7 +160,7 @@ struct SegmentLabelFormatter {
 extension SegmentLabelFormatter {
     static let nameWithValue = SegmentLabelFormatter { segment in
         let formattedValue = NumberFormatter()
-            .string(from: segment.value as NSNumber) ?? "\(segment.value)"
+            .string(from: segment.amount as NSNumber) ?? "\(segment.amount)"
         return "\(segment.name) (\(formattedValue))"
     }
     

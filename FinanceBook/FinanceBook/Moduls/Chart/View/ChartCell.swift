@@ -27,9 +27,8 @@ final class ChartCell: UITableViewCell {
 
 extension ChartCell {
     
-    func update(article: ChartDTO) {
-        self.titleLabel.text = "\(ColorConverter.toColor(fromData: article.color) )"
-        self.titleLabel.textColor = ColorConverter.toColor(fromData: article.color)
+    func update(article: SegmentDTO) {
+        self.titleLabel.text = String(article.value)
     }
 }
 

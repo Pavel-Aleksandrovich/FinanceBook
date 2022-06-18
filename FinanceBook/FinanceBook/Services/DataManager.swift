@@ -22,9 +22,12 @@ protocol IChartDataManager {
                                             Error>) -> ())
     func create(segment: ChartRequest,
                 completion: @escaping(Result<(), Error>) -> ())
-    func delete(segment: Segment,
+    func delete(segment: ChartDTO,
                 completion: @escaping(Result<(),
                                       Error>) -> ())
+    func deleteSegment(_ segment: SegmentDTO,
+                       from chart: ChartDTO,
+                       completion: @escaping (Result<(), Error>) -> ()) 
 }
 
 final class DataManager {
@@ -101,11 +104,24 @@ extension DataManager: IChartDataManager {
         }
     }
     
-    func delete(segment: Segment,
+    func deleteSegment(_ segment: SegmentDTO,
+                       from chart: ChartDTO,
+                       completion: @escaping (Result<(), Error>) -> ()) {
+        
+        DispatchQueue.global(qos: .userInteractive).async {
+            do {
+                try self.coreDataStorage.deleteSegment(segment, from: chart)
+                completion(.success(()))
+            } catch {
+                completion(.failure(error))
+            }
+        }
+    }
+    func delete(segment: ChartDTO,
                 completion: @escaping (Result<(), Error>) -> ()) {
         DispatchQueue.global(qos: .userInteractive).async {
             do {
-//                try self.coreDataStorage.delete(segment: segment)
+                try self.coreDataStorage.delete(chart: segment)
                 completion(.success(()))
             } catch {
                 completion(.failure(error))
