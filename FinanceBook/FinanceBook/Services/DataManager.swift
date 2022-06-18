@@ -9,7 +9,7 @@ import Foundation
 
 protocol INewsDataManager {
     func getListNews(completion: @escaping(Result<([NewsResponse]),
-                                            Error>) -> ())
+                                           Error>) -> ())
     func create(news: NewsRequest,
                 completion: @escaping(Result<(), Error>) -> ())
     func delete(news: NewsResponse,
@@ -19,7 +19,7 @@ protocol INewsDataManager {
 
 protocol IChartDataManager {
     func getListSegments(completion: @escaping(Result<([ChartDTO]),
-                                            Error>) -> ())
+                                               Error>) -> ())
     func create(segment: ChartRequest,
                 completion: @escaping(Result<(), Error>) -> ())
     func delete(segment: ChartDTO,
@@ -27,7 +27,7 @@ protocol IChartDataManager {
                                       Error>) -> ())
     func deleteSegment(_ segment: SegmentDTO,
                        from chart: ChartDTO,
-                       completion: @escaping (Result<(), Error>) -> ()) 
+                       completion: @escaping (Result<(), Error>) -> ())
 }
 
 final class DataManager {

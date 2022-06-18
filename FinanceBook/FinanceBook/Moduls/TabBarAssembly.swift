@@ -14,6 +14,7 @@ final class TabBarAssembly: UITabBarController {
         self.viewControllers = [self.createChartViewController(),
                                 self.createListNewsViewController(),
                                 self.createFavoriteNewsViewController()]
+        self.tabBar.tintColor = Main.color
     }
 }
 

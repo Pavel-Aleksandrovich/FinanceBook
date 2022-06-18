@@ -67,15 +67,16 @@ extension CoreDataStorage {
 extension CoreDataStorage {
     
     func getCharts() throws -> [ChartDTO] {
+        
         var chartDto: [ChartDTO] = []
         
         let chart = try self.getChartEntity()
-        
-        for i in 0..<chart.count {
-            let segment = try self.getSegments(from: chart[i])
-            let segmentDto = segment.compactMap { SegmentDTO(segment: $0) }
-            chartDto.append(ChartDTO(chart: chart[i], segment: segmentDto))
-        }
+            
+            for i in 0..<chart.count {
+                let segment = try self.getSegments(from: chart[i])
+                let segmentDto = segment.compactMap { SegmentDTO(segment: $0) }
+                chartDto.append(ChartDTO(chart: chart[i], segment: segmentDto))
+            }
         
         return chartDto
     }
@@ -130,6 +131,20 @@ extension CoreDataStorage {
             self.saveContext()
         }
     }
+}
+
+private extension CoreDataStorage {
+    
+    func saveContext () {
+        if self.context.hasChanges {
+            do {
+                try self.context.save()
+            } catch {
+                let nserror = error as NSError
+                fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
+            }
+        }
+    }
     
     private func getSegments(from chart: ChartEntity) throws -> [SegmentEntity] {
         let fetchRequest = SegmentEntity.fetchRequest()
@@ -167,19 +182,5 @@ extension CoreDataStorage {
         }
         
         self.saveContext()
-    }
-}
-
-private extension CoreDataStorage {
-    
-    func saveContext () {
-        if self.context.hasChanges {
-            do {
-                try self.context.save()
-            } catch {
-                let nserror = error as NSError
-                fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
-            }
-        }
     }
 }

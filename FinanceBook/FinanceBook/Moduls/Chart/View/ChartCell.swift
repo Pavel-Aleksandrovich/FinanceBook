@@ -18,6 +18,7 @@ final class ChartCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.makeConstraints()
+        self.titleLabel.textColor = Main.color
     }
     
     required init?(coder: NSCoder) {
@@ -54,7 +55,8 @@ private extension ChartCell {
     
     func makeTitleLabelConstraints() {
         self.titleLabel.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.top.bottom.trailing.equalToSuperview()
+            make.leading.equalToSuperview().inset(30)
         }
     }
 }

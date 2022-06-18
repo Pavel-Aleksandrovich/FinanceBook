@@ -7,8 +7,7 @@
 
 import UIKit
 
-protocol INewSegmentViewController: AnyObject {
-}
+protocol INewSegmentViewController: AnyObject {}
 
 final class NewSegmentViewController: UIViewController {
     
@@ -35,32 +34,18 @@ final class NewSegmentViewController: UIViewController {
         super.viewDidLoad()
         self.interactor.onViewAttached(controller: self,
                                        view: self.mainView)
-        self.createExitBarButton()
         self.setSaveButtonTappedHandler()
     }
 }
 
-extension NewSegmentViewController: INewSegmentViewController {
-}
+extension NewSegmentViewController: INewSegmentViewController {}
 
 private extension NewSegmentViewController {
     
     func setSaveButtonTappedHandler() {
-        self.mainView.saveButtonTappedHandler = {
-            print("save tapped")
-            self.router.dismiss()
+        self.mainView.saveButtonTappedHandler = { [ weak self ] segment in
+            self?.interactor.createChart(segment)
+//            self?.router.dismiss()
         }
-    }
-    
-    func createExitBarButton() {
-        let image = UIImage(systemName: "xmark.circle")
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: image,
-                                                            style: .plain,
-                                                            target: self,
-                                                            action: #selector(exitButtonTapped))
-    }
-    
-    @objc func exitButtonTapped() {
-        self.router.dismiss()
     }
 }

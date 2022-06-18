@@ -11,7 +11,6 @@ protocol IChartInteractor: AnyObject {
     func onViewAttached(controller: IChartViewController,
                         view: IChartView,
                         tableAdapter: IChartTableAdapter)
-    func createChart()
     func loadData()
     func deleteChart(chart: ChartDTO)
     func deleteSegment(_ segment: SegmentDTO, from chart: ChartDTO)
@@ -36,26 +35,6 @@ extension ChartInteractor: IChartInteractor {
         self.presenter.onViewAttached(controller: controller,
                                       view: view,
                                       tableAdapter: tableAdapter)
-    }
-    
-    func createChart() {
-        let segments = Segment(name: "rweg", color: .brown, amount: 329, date: Date())
-        
-        let chart = ChartRequest(segments: segments)
-        self.dataManager.create(segment: chart) { [ weak self ] result in
-            switch result {
-            case .success():
-                DispatchQueue.main.async {
-                    print("success")
-                }
-                
-            case .failure(let error):
-                DispatchQueue.main.async {
-                    print(error)
-                }
-                
-            }
-        }
     }
     
     func loadData() {

@@ -12,10 +12,12 @@ enum NewSegmentAssembly {
     static func build() -> UIViewController {
         
         let presenter = NewSegmentPresenter()
-        let interactor = NewSegmentInteractor(presenter: presenter)
+        let dataManager = DataManager()
+        let interactor = NewSegmentInteractor(presenter: presenter,
+                                              dataManager: dataManager)
         let router = NewSegmentRouter()
         let controller = NewSegmentViewController(interactor: interactor,
-                                                   router: router)
+                                                  router: router)
         router.controller = controller
         
         return controller

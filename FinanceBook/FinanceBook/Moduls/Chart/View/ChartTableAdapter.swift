@@ -16,6 +16,7 @@ protocol IChartTableAdapter: AnyObject {
     var tableView: UITableView? { get set }
     var onCellTappedHandler: ((NewsResponse) -> ())? { get set }
     var onCellDeleteHandler: ((ChartDTO ,SegmentDTO) -> ())? { get set }
+    var delete: ((ChartDTO) -> ())? { get set }
     func setCharts(_ chart: [ChartDTO])
 }
 
@@ -25,12 +26,15 @@ final class ChartTableAdapter: NSObject {
     var onCellTappedHandler: ((NewsResponse) -> ())?
     var onCellDeleteHandler: ((ChartDTO ,SegmentDTO) -> ())?
     weak var delegate: ChartTableAdapterDelegate?
+    var delete: ((ChartDTO) -> ())?
     weak var tableView: UITableView? {
         didSet {
             self.tableView?.delegate = self
             self.tableView?.dataSource = self
             self.tableView?.register(ChartCell.self,
                                      forCellReuseIdentifier: ChartCell.id)
+            self.tableView?.allowsSelection = false
+            self.tableView?.showsVerticalScrollIndicator = false
         }
     }
 }
@@ -40,7 +44,7 @@ extension ChartTableAdapter: IChartTableAdapter {
     func setCharts(_ chart: [ChartDTO]) {
         self.articleArray = chart
         self.tableView?.reloadData()
-//        onCellDeleteHandler?(articleArray[2])
+        self.delete?(articleArray[0])
     }
 }
 
@@ -57,7 +61,7 @@ extension ChartTableAdapter: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView,
                    heightForHeaderInSection section: Int) -> CGFloat {
-        40
+        50
     }
     
     func tableView(_ tableView: UITableView,
@@ -83,15 +87,6 @@ extension ChartTableAdapter: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView,
-                   didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-        let article = articleArray[indexPath.row]
-        print(indexPath.section)
-        print(indexPath.row)
-//        self.onCellTappedHandler?(article)
-    }
-    
-    func tableView(_ tableView: UITableView,
                    canEditRowAt indexPath: IndexPath) -> Bool {
         true
     }
@@ -100,7 +95,6 @@ extension ChartTableAdapter: UITableViewDelegate, UITableViewDataSource {
                    commit editingStyle: UITableViewCell.EditingStyle,
                    forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            //            let employeeRequest = EmployeeRequest(employee: employeeArray[indexPath.row])
             let chart = articleArray[indexPath.section]
             let segment = chart.segment[indexPath.row]
             self.onCellDeleteHandler?(chart, segment)
@@ -108,12 +102,15 @@ extension ChartTableAdapter: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView,
-                            viewForHeaderInSection section: Int) -> UIView? {
-        print(#function)
+                   viewForHeaderInSection section: Int) -> UIView? {
         let header = ChartHeaderView()
-        let amount = articleArray[section].amount
+        let chart = articleArray[section]
         
-        header.setup(withTitle: "\(amount)",section: section, delegate: self)
+        header.setCollapsed(articleArray[section].expanded)
+        
+        header.setup(section: section,
+                     chart: chart,
+                     delegate: self)
         return header
     }
 }
@@ -122,12 +119,14 @@ extension ChartTableAdapter: ChartHeaderViewDelegate {
     
     func toggleSection(header: ChartHeaderView, section: Int) {
         
-        articleArray[section].expanded = !articleArray[section].expanded
+        let expanded = !articleArray[section].expanded
+        articleArray[section].expanded = expanded
+        header.setCollapsed(expanded)
         
-        tableView?.beginUpdates()
         for row in 0..<articleArray[section].segment.count {
-            tableView?.reloadRows(at: [IndexPath(row: row, section: section)], with: .automatic)
+            
+            tableView?.reloadRows(at: [IndexPath(row: row, section: section)],
+                                  with: .automatic)
         }
-        tableView?.endUpdates()
     }
 }
