@@ -10,17 +10,9 @@ import UIKit
 final class PieChart: UIView {
     
     private var segments = [ChartDTO]()
+    private var total = CGFloat()
     
-    var segmentLabelFont: UIFont = UIFont.systemFont(ofSize: 10) {
-        didSet {
-            textAttributes[.font] = segmentLabelFont
-            setNeedsDisplay()
-        }
-    }
-    
-    var segmentLabelFormatter = SegmentLabelFormatter.nameWithValue {
-        didSet { setNeedsDisplay() }
-    }
+    private var segmentLabelFont: UIFont = .systemFont(ofSize: 15)
     
     private let paragraphStyle: NSParagraphStyle = {
         var style = NSMutableParagraphStyle()
@@ -59,7 +51,18 @@ extension PieChart {
     
     func updateChart(_ chart: [ChartDTO]) {
         self.segments = chart
+        self.total = self.getTotalSum(chart)
         self.setNeedsDisplay()
+    }
+    
+    func getTotalSum(_ chart: [ChartDTO]) -> CGFloat {
+        var total = CGFloat()
+        
+        for i in 0..<chart.count {
+            total += chart[i].amount
+        }
+        
+        return total
     }
 }
 
@@ -90,12 +93,12 @@ private extension PieChart {
                 segmentCenter = segmentCenter
                     .projected(by: radius * 0.8, angle: halfAngle)
             }
-            
-            let textToRender = segmentLabelFormatter.getLabel(for: segment) as NSString
-            let textRenderSize = textToRender.size(withAttributes: textAttributes)
+            let textString = String(format: "%g", (segment.amount/self.total * 100).rounded())
+            let text = "\(textString)%"
+            let textRenderSize = text.size(withAttributes: textAttributes)
             let renderRect = CGRect(centeredOn: segmentCenter,
                                     size: textRenderSize)
-            textToRender.draw(in: renderRect, withAttributes: textAttributes)
+            text.draw(in: renderRect, withAttributes: textAttributes)
         }
     }
     
@@ -142,27 +145,4 @@ extension CGPoint {
         return CGPoint(x: x + value * cos(angle),
                        y: y + value * sin(angle))
     }
-}
-
-
-struct SegmentLabelFormatter {
-    private let getLabel: (ChartDTO) -> String
-    
-    init(_ getLabel: @escaping (ChartDTO) -> String) {
-        self.getLabel = getLabel
-    }
-    
-    func getLabel(for segment: ChartDTO) -> String {
-        return getLabel(segment)
-    }
-}
-
-extension SegmentLabelFormatter {
-    static let nameWithValue = SegmentLabelFormatter { segment in
-        let formattedValue = NumberFormatter()
-            .string(from: segment.amount as NSNumber) ?? "\(segment.amount)"
-        return "\(segment.name) (\(formattedValue))"
-    }
-    
-    static let nameOnly = SegmentLabelFormatter { $0.name }
 }
