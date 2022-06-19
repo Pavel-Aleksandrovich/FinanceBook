@@ -8,7 +8,9 @@
 import UIKit
 
 protocol INewSegmentRouter: AnyObject {
-    func dismiss()
+    func popToRoot()
+    func showErrorAlert(_ error: String)
+    func showSuccessAlert(complition: @escaping() -> ())
 }
 
 final class NewSegmentRouter {
@@ -18,7 +20,19 @@ final class NewSegmentRouter {
 
 extension NewSegmentRouter: INewSegmentRouter {
     
-    func dismiss() {
+    func popToRoot() {
         self.controller?.navigationController?.popToRootViewController(animated: true)
+    }
+    
+    func showErrorAlert(_ error: String) {
+        let alert = AlertAssembly.createErrorAlert(error)
+        self.controller?.present(alert, animated: true)
+    }
+    
+    func showSuccessAlert(complition: @escaping() -> ()) {
+        let alert = AlertAssembly.createSuccessAlert {
+            complition()
+        }
+        self.controller?.present(alert, animated: true)
     }
 }

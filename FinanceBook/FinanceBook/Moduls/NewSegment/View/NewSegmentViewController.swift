@@ -7,7 +7,10 @@
 
 import UIKit
 
-protocol INewSegmentViewController: AnyObject {}
+protocol INewSegmentViewController: AnyObject {
+    func showError(_ error: String)
+    func showSuccess()
+}
 
 final class NewSegmentViewController: UIViewController {
     
@@ -35,10 +38,34 @@ final class NewSegmentViewController: UIViewController {
         self.interactor.onViewAttached(controller: self,
                                        view: self.mainView)
         self.setSaveButtonTappedHandler()
+        self.navigationController?.navigationBar.tintColor = MainAttributs.color
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.tabBarController?.tabBar.isHidden = true
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.tabBarController?.tabBar.isHidden = false
     }
 }
 
-extension NewSegmentViewController: INewSegmentViewController {}
+extension NewSegmentViewController: INewSegmentViewController {
+    
+    func showError(_ error: String) {
+        func showError(_ error: String) {
+            self.router.showErrorAlert(error)
+        }
+    }
+    
+    func showSuccess() {
+        self.router.showSuccessAlert { [ weak self ] in
+            self?.router.popToRoot()
+        }
+    }
+}
 
 private extension NewSegmentViewController {
     

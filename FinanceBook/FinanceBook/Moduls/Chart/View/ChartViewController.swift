@@ -40,9 +40,6 @@ final class ChartViewController: UIViewController {
                                        tableAdapter: self.tableAdapter)
         self.createAddSegmentBarButton()
         self.setOnCellDeleteHandler()
-//        tableAdapter.delete = { chart in
-//            self.interactor.deleteChart(chart: chart)
-//        }
     }
     
     override func viewWillAppear(_ animated: Bool) {

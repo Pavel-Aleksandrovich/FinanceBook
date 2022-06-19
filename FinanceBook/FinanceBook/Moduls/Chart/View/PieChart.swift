@@ -85,9 +85,10 @@ private extension PieChart {
             let textString = String(format: "%g", (segment.amount/self.total * 100).rounded())
             let text = "\(textString)%"
             
-            let font: UIFont = .systemFont(ofSize: 14)
+            let font: UIFont = .systemFont(ofSize: 16)
             
-            let attributes = [NSAttributedString.Key.font : font as Any]
+            let attributes = [NSAttributedString.Key.font : font as Any,
+                              NSAttributedString.Key.foregroundColor: UIColor.white]
             
             let textRenderSize = text.size(withAttributes: attributes)
             let renderRect = getCGRect(centeredOn: segmentCenter,

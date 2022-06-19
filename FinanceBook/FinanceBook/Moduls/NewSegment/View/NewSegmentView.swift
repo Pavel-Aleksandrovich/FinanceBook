@@ -12,37 +12,22 @@ protocol INewSegmentView: AnyObject {
     var saveButtonTappedHandler: ((Segment) -> ())? { get set }
 }
 
-final class NewSegmentView: UIView {
+final class NewSegmentView: BaseView {
     
-    var saveButtonTappedHandler: ((Segment) -> ())?
     private let saveButton = UIButton()
-    private let dateTextField = UITextField()
-    private let sumTextField = UITextField()
-    private let categoryTextField = UITextField()
-    private let toolbar = UIToolbar()
     private let datePicker = UIDatePicker()
-    private var cPicker: CategoryPicker?
-    private var type: TypeSection = .car
+    private let dateTextField = CustomTextField()
+    private let numberTextField = CustomTextField()
+    private let categoryTextField = CustomTextField()
+    private let categoryPicker = CategoryPicker()
+    private let keyboardObserver = KeyboardObserver()
+    var saveButtonTappedHandler: ((Segment) -> ())?
     
-    init() {
-        super.init(frame: .zero)
-        self.backgroundColor = .white
-        self.makeSaveButtonConstraints()
-        self.configSaveButton()
-        self.configLabels()
-        configureAppearance()
-        configureToolbar()
-        
-        cPicker = CategoryPicker(viewController: self,
-                                     textField: categoryTextField) { type in
-            print(type)
-            self.type = type
-            self.categoryTextField.text = type.rawValue
-        }
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    override init() {
+        super.init()
+        self.configAppearance()
+        self.makeConstraints()
+        self.setHandlers()
     }
 }
 
@@ -50,22 +35,43 @@ extension NewSegmentView: INewSegmentView {}
 
 private extension NewSegmentView {
     
+    func configAppearance() {
+        self.configView()
+        self.configSaveButton()
+        self.configDatePicker()
+        self.configCategoryTextField()
+        self.configNumberTextField()
+        self.configDateTextField()
+    }
+    
+    func configView() {
+        self.backgroundColor = .white
+    }
+    
     func configSaveButton() {
         self.saveButton.titleLabel?.text = "saveButton"
         self.saveButton.backgroundColor = .gray
+        self.saveButton.layer.cornerRadius = 30
+        self.saveButton.backgroundColor = MainAttributs.color
+        self.saveButton.setTitle("Save", for: .normal)
+        self.saveButton.setTitleColor(.white, for: .normal)
+        self.saveButton.clipsToBounds = true
         self.saveButton.addTarget(self,
                                   action: #selector(saveButtonTapped),
                                   for: .touchUpInside)
     }
     
     @objc func saveButtonTapped() {
+        let type = TypeSection.allCases[self.categoryPicker.selectedRow(inComponent: 0)]
+        
         guard let dateString = self.dateTextField.text,
-              let color = self.type.color,
-              let amountString = self.sumTextField.text,
+              let color = type.color,
+              let amountString = self.numberTextField.text,
               let name = self.categoryTextField.text else { return }
         
         if let amount = Int(amountString),
-           let date = self.getDateFrom(string: dateString) {
+           let date = self.getDateFrom(string: dateString),
+           !name.isEmpty {
             
             let segment = Segment(name: name,
                                   color: color,
@@ -73,13 +79,34 @@ private extension NewSegmentView {
                                   date: date)
             self.saveButtonTappedHandler?(segment)
         }
-        
     }
     
-    func getDateFrom(string: String) -> Date? {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd/MM/yyyy"
-        return dateFormatter.date(from: string)
+    func configDatePicker() {
+        self.datePicker.preferredDatePickerStyle = .wheels
+        self.datePicker.sizeToFit()
+        self.datePicker.datePickerMode = .date
+    }
+    
+    func configCategoryTextField() {
+        self.categoryTextField.placeholder = "Choose Category"
+        self.categoryTextField.inputView = categoryPicker
+    }
+    
+    func configNumberTextField() {
+        self.numberTextField.placeholder = "Enter Sum"
+        self.numberTextField.keyboardType = .numberPad
+    }
+    
+    func configDateTextField() {
+        self.dateTextField.placeholder = "Choose Date"
+        self.dateTextField.inputView = self.datePicker
+    }
+    
+    func makeConstraints() {
+        self.makeSaveButtonConstraints()
+        self.makeDateTextFieldConstraints()
+        self.makeNumberTextFieldConstraints()
+        self.makeCategoryTextFieldConstraints()
     }
     
     func makeSaveButtonConstraints() {
@@ -91,69 +118,110 @@ private extension NewSegmentView {
         }
     }
     
-    func configLabels() {
+    func makeDateTextFieldConstraints() {
         self.addSubview(self.dateTextField)
-        self.addSubview(self.sumTextField)
-        self.addSubview(self.categoryTextField)
-        
         self.dateTextField.snp.makeConstraints { make in
             make.top.equalTo(self.safeAreaLayoutGuide).inset(20)
             make.leading.trailing.equalToSuperview().inset(20)
         }
-        
-        self.sumTextField.snp.makeConstraints { make in
+    }
+    
+    func makeNumberTextFieldConstraints() {
+        self.addSubview(self.numberTextField)
+        self.numberTextField.snp.makeConstraints { make in
             make.top.equalTo(self.dateTextField.snp.bottom).inset(-20)
             make.leading.trailing.equalToSuperview().inset(20)
         }
-        
+    }
+    
+    func makeCategoryTextFieldConstraints() {
+        self.addSubview(self.categoryTextField)
         self.categoryTextField.snp.makeConstraints { make in
-            make.top.equalTo(self.sumTextField.snp.bottom).inset(-20)
+            make.top.equalTo(self.numberTextField.snp.bottom).inset(-20)
             make.leading.trailing.equalToSuperview().inset(20)
         }
-        
-        categoryTextField.placeholder = "Choose Category"
-        sumTextField.placeholder = "Enter Sum"
-        sumTextField.keyboardType = .numberPad
-        dateTextField.placeholder = "Choose Date"
     }
     
-    private func configureAppearance() {
-        if #available(iOS 13.4, *) {
-            datePicker.preferredDatePickerStyle = .wheels
-            datePicker.sizeToFit()
+    func setHandlers() {
+        self.setDateTextFieldToolbarHandler()
+        self.setNumberTextFieldToolbarHandler()
+        self.setCategoryTextFieldToolbarHandler()
+        self.setKeyboardHandler()
+    }
+    
+    func setDateTextFieldToolbarHandler() {
+        self.dateTextField.onToolbarTappedHandler { [ weak self ] result in
+            switch result {
+            case .done:
+                self?.dateToolbarDoneButtonTapped()
+            case .cancel: break
+            }
         }
-        datePicker.datePickerMode = .date
-        
-        dateTextField.inputAccessoryView = toolbar
-        dateTextField.inputView = datePicker
     }
     
-    private func configureToolbar() {
-        let doneButton = UIBarButtonItem(title: "Done",
-                                         style: .plain,
-                                         target: self,
-                                         action: #selector(doneButtonTapped))
-        let spaceButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace,
-                                          target: nil,
-                                          action: nil)
-        let cancelButton = UIBarButtonItem(title: "Cancel",
-                                           style: .plain,
-                                           target: self,
-                                           action: #selector(cancelButtonTapped))
-        
-        toolbar.sizeToFit()
-        toolbar.setItems([cancelButton, spaceButton, doneButton],
-                         animated: false)
+    func setNumberTextFieldToolbarHandler() {
+        self.numberTextField.onToolbarTappedHandler { [ weak self ] result in
+            switch result {
+            case .done: break
+            case .cancel:
+                self?.numberTextField.text = .none
+            }
+        }
     }
     
-    @objc private func doneButtonTapped() {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "dd/MM/yyyy"
-        dateTextField.text = formatter.string(from: datePicker.date)
-        self.endEditing(true)
+    func setCategoryTextFieldToolbarHandler() {
+        self.categoryTextField.onToolbarTappedHandler { [ weak self ] result in
+            switch result {
+            case .done:
+                self?.categoryToolbarDoneButtonTapped()
+            case .cancel: break
+            }
+        }
     }
     
-    @objc private func cancelButtonTapped() {
-        self.endEditing(true)
+    func dateToolbarDoneButtonTapped() {
+        dateTextField.text = DateConverter.toStringFrom(date: datePicker.date)
+    }
+    
+    func categoryToolbarDoneButtonTapped() {
+        let name = TypeSection.allCases[self.categoryPicker.selectedRow(inComponent: 0)].name
+        self.categoryTextField.text = name
+    }
+    
+    func getDateFrom(string: String) -> Date? {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd MMMM yy"
+        return dateFormatter.date(from: string)
+    }
+    
+    func setKeyboardHandler() {
+        self.keyboardObserver.addKeyboardObservers { result in
+            switch result {
+            case .show(let height):
+                self.keyboardWillShow(height: height)
+            case .hide:
+                self.keyboardWillHide()
+            }
+        }
+    }
+    
+    func keyboardWillShow(height: CGFloat) {
+        self.saveButton.snp.updateConstraints { make in
+            make.bottom.equalTo(self.safeAreaLayoutGuide).inset(height)
+        }
+        self.configButtonAnimate()
+    }
+    
+    func keyboardWillHide() {
+        self.saveButton.snp.updateConstraints { make in
+            make.bottom.equalTo(self.safeAreaLayoutGuide).inset(50)
+        }
+        self.configButtonAnimate()
+    }
+    
+    func configButtonAnimate() {
+        UIView.animate(withDuration: 0.25) {
+            self.layoutIfNeeded()
+        }
     }
 }

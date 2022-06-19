@@ -30,13 +30,13 @@ extension NewSegmentPresenter: INewSegmentPresenter {
     
     func showError(_ error: Error) {
         DispatchQueue.main.async {
-//            self.controller?.showError(error.localizedDescription)
+            self.controller?.showError(error.localizedDescription)
         }
     }
     
     func showSuccess() {
         DispatchQueue.main.async {
-//            self.controller?.showSuccess()
+            self.controller?.showSuccess()
         }
     }
 }

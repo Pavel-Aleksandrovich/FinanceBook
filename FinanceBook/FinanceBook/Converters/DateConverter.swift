@@ -10,7 +10,7 @@ import Foundation
 enum DateConverter {
     static func toStringFrom(date: Date) -> String {
         let formatter = DateFormatter()
-        formatter.dateFormat = "dd MMMM yyг."
+        formatter.dateFormat = "dd MMMM yy"
         
         return formatter.string(from: date)
     }

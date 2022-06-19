@@ -12,7 +12,6 @@ protocol IChartInteractor: AnyObject {
                         view: IChartView,
                         tableAdapter: IChartTableAdapter)
     func loadData()
-    func deleteChart(chart: ChartDTO)
     func deleteSegment(_ segment: SegmentDTO, from chart: ChartDTO)
 }
 
@@ -51,13 +50,12 @@ extension ChartInteractor: IChartInteractor {
     func deleteSegment(_ segment: SegmentDTO, from chart: ChartDTO) {
         self.dataManager.deleteSegment(segment,
                                        from: chart) { [ weak self ] result in
-            print(result)
-        }
-    }
-    
-    func deleteChart(chart: ChartDTO) {
-        self.dataManager.delete(segment: chart) { result in
-            print(result)
+            switch result {
+            case .success():
+                self?.loadData()
+            case .failure(let error):
+                print(error)
+            }
         }
     }
 }

@@ -32,15 +32,9 @@ extension NewSegmentInteractor: INewSegmentInteractor {
         self.dataManager.create(segment: chart) { [ weak self ] result in
             switch result {
             case .success():
-                DispatchQueue.main.async {
-                    print("success")
-                }
-                
+                    self?.presenter.showSuccess()
             case .failure(let error):
-                DispatchQueue.main.async {
-                    print(error)
-                }
-                
+                self?.presenter.showError(error)
             }
         }
     }
