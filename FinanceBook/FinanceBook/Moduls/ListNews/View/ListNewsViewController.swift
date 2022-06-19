@@ -85,7 +85,8 @@ private extension ListNewsViewController {
         self.languageBarButton = UIBarButtonItem(title: "US",
                                                  style: .done,
                                                  target: self,
-                                                 action: #selector(self.languageButtonTapped))
+                                                 action:#selector
+                                                 (self.languageButtonTapped))
         
         self.navigationItem.rightBarButtonItem = self.languageBarButton
     }

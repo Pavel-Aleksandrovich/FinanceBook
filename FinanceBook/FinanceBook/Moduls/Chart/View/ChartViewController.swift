@@ -65,6 +65,7 @@ private extension ChartViewController {
         let item = UIBarButtonItem(barButtonSystemItem: .add,
                                    target: self,
                                    action: #selector(self.addSegmentButtonTapped))
+        item.tintColor = MainAttributs.color
         self.navigationItem.rightBarButtonItem = item
     }
     

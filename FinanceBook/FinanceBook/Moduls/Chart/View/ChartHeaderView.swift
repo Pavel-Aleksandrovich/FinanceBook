@@ -19,15 +19,13 @@ final class ChartHeaderView: UITableViewHeaderFooterView {
     private let arrowLabel = UILabel()
     private let imageView = CategoryImageView()
     private let nameLabel = UILabel()
+    private let amountLabel = UILabel()
     
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
         self.addGestureRecognizer()
         self.configView()
-        self.makeArrowLabelConstraints()
-        self.makeImageViewConstraints()
-        self.makeNameLabelConstraints()
-        self.nameLabel.textColor = .white
+        self.makeConstraints()
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -43,7 +41,7 @@ extension ChartHeaderView {
         
         self.delegate = delegate
         self.section = section
-        self.textLabel?.text = "\(chart.amount)"
+        self.amountLabel.text = NumberConverter.toStringFrom(int: Int(chart.amount))
         self.imageView.configImageView(chart: chart)
         self.nameLabel.text = chart.name
     }
@@ -62,11 +60,6 @@ extension ChartHeaderView {
 
 private extension ChartHeaderView {
     
-    func configView() {
-        self.textLabel?.textColor = .white
-        self.contentView.backgroundColor = Main.color
-    }
-    
     func addGestureRecognizer() {
         let gesture = UITapGestureRecognizer(target: self,
                                              action: #selector
@@ -75,13 +68,39 @@ private extension ChartHeaderView {
     }
     
     @objc func selectHeaderAction(gesterRecognizer: UITapGestureRecognizer) {
-        guard let cell = gesterRecognizer.view as? ChartHeaderView else { return }
-        self.delegate?.toggleSection(header: self, section: cell.section!)
+        guard let cell = gesterRecognizer.view as? ChartHeaderView,
+              let section = cell.section else { return }
+        self.delegate?.toggleSection(header: self, section: section)
+    }
+    
+    func configView() {
+        self.configAmountLabel()
+        self.configNameLabel()
+        self.configArrowLabel()
+        self.contentView.backgroundColor = MainAttributs.color
+    }
+    
+    func configAmountLabel() {
+        self.amountLabel.textColor = .white
+    }
+    
+    func configNameLabel() {
+        self.nameLabel.textColor = .white
+    }
+    
+    func configArrowLabel() {
+        self.arrowLabel.text = ">"
+        self.arrowLabel.textColor = .white
+    }
+    
+    func makeConstraints() {
+        self.makeArrowLabelConstraints()
+        self.makeAmountLabelConstraints()
+        self.makeImageViewConstraints()
+        self.makeNameLabelConstraints()
     }
     
     func makeArrowLabelConstraints() {
-        self.arrowLabel.text = ">"
-        self.arrowLabel.textColor = .white
         self.addSubview(self.arrowLabel)
         self.arrowLabel.snp.makeConstraints { make in
             make.bottom.top.equalToSuperview()
@@ -90,10 +109,19 @@ private extension ChartHeaderView {
         }
     }
     
+    func makeAmountLabelConstraints() {
+        self.addSubview(self.amountLabel)
+        self.amountLabel.snp.makeConstraints { make in
+            make.leading.equalToSuperview().inset(10)
+            make.top.bottom.equalToSuperview()
+            make.width.equalTo(120)
+        }
+    }
+    
     func makeImageViewConstraints() {
         self.addSubview(self.imageView)
         self.imageView.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(100)
+            make.leading.equalTo(self.amountLabel.snp.trailing)
             make.centerY.equalToSuperview()
             make.width.height.equalTo(40)
         }

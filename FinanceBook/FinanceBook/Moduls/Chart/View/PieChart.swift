@@ -12,19 +12,6 @@ final class PieChart: UIView {
     private var segments = [ChartDTO]()
     private var total = CGFloat()
     
-    private var segmentLabelFont: UIFont = .systemFont(ofSize: 15)
-    
-    private let paragraphStyle: NSParagraphStyle = {
-        var style = NSMutableParagraphStyle()
-        style.alignment = .center
-        guard let style = style.copy() as? NSParagraphStyle else { return NSParagraphStyle() }
-        return style
-    }()
-    
-    private lazy var textAttributes: [NSAttributedString.Key: Any] = [
-        .paragraphStyle: self.paragraphStyle, .font: self.segmentLabelFont
-    ]
-    
     init() {
         super.init(frame: .zero)
         self.isOpaque = false
@@ -38,7 +25,7 @@ final class PieChart: UIView {
         
         guard let ctx = UIGraphicsGetCurrentContext() else { return }
         let radius = min(frame.width, frame.height) * 0.5
-        let viewCenter = bounds.center
+        let viewCenter = self.getCenter(fromBounds: bounds)
         
         self.configSegmentsColor(viewCenter: viewCenter,
                                  radius: radius,
@@ -90,15 +77,22 @@ private extension PieChart {
             
             var segmentCenter = viewCenter
             if segments.count > 1 {
-                segmentCenter = segmentCenter
-                    .projected(by: radius * 0.8, angle: halfAngle)
+                segmentCenter = self.projected(by: radius * 0.8,
+                                               angle: halfAngle,
+                                               center: segmentCenter)
             }
+            
             let textString = String(format: "%g", (segment.amount/self.total * 100).rounded())
             let text = "\(textString)%"
-            let textRenderSize = text.size(withAttributes: textAttributes)
-            let renderRect = CGRect(centeredOn: segmentCenter,
-                                    size: textRenderSize)
-            text.draw(in: renderRect, withAttributes: textAttributes)
+            
+            let font: UIFont = .systemFont(ofSize: 14)
+            
+            let attributes = [NSAttributedString.Key.font : font as Any]
+            
+            let textRenderSize = text.size(withAttributes: attributes)
+            let renderRect = getCGRect(centeredOn: segmentCenter,
+                                       size: textRenderSize)
+            text.draw(in: renderRect, withAttributes: attributes)
         }
     }
     
@@ -122,27 +116,22 @@ private extension PieChart {
             ctx.fillPath()
         }
     }
-}
-
-extension CGRect {
     
-    init(centeredOn center: CGPoint, size: CGSize) {
-        self.init(origin: CGPoint(x: center.x - size.width * 0.5,
-                                  y: center.y - size.height * 0.5),
-                  size: size)
+    func projected(by value: CGFloat,
+                   angle: CGFloat,
+                   center: CGPoint) -> CGPoint {
+        return CGPoint(x: center.x + value * cos(angle),
+                       y: center.y + value * sin(angle))
     }
     
-    var center: CGPoint {
-        return CGPoint(x: origin.x + size.width * 0.5,
-                       y: origin.y + size.height * 0.5)
+    func getCenter(fromBounds: CGRect) -> CGPoint {
+        CGPoint(x: fromBounds.origin.x + fromBounds.size.width * 0.5,
+                y: fromBounds.origin.y + fromBounds.size.height * 0.5)
     }
-}
-
-extension CGPoint {
     
-    func projected(by value: CGFloat, angle: CGFloat) -> CGPoint {
-        
-        return CGPoint(x: x + value * cos(angle),
-                       y: y + value * sin(angle))
+    func getCGRect(centeredOn center: CGPoint, size: CGSize) -> CGRect {
+        CGRect(origin: CGPoint(x: center.x - size.width * 0.5,
+                               y: center.y - size.height * 0.5),
+               size: size)
     }
 }

@@ -26,7 +26,9 @@ final class CollectionViewAdapter: NSObject {
             self.collectionView?.dataSource = self
             self.collectionView?.register(CollectionCell.self,
                                          forCellWithReuseIdentifier: Constants.reuseIdentifier)
-            self.collectionView?.selectItem(at: [0, 0], animated: true, scrollPosition: [])
+            self.collectionView?.selectItem(at: [0, 0],
+                                            animated: true,
+                                            scrollPosition: [])
         }
     }
 }
@@ -50,9 +52,10 @@ extension CollectionViewAdapter: UICollectionViewDelegate, UICollectionViewDataS
     
     func collectionView(_ collectionView: UICollectionView,
                         didSelectItemAt indexPath: IndexPath) {
-        collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+        collectionView.scrollToItem(at: indexPath,
+                                    at: .centeredHorizontally,
+                                    animated: true)
         self.onCellTappedHandler?(Category.allCases[indexPath.item].rawValue)
-        print(indexPath.item)
     }
     
     func collectionView(_ collectionView: UICollectionView,

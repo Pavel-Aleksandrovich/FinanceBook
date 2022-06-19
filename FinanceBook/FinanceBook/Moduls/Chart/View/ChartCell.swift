@@ -13,12 +13,14 @@ final class ChartCell: UITableViewCell {
     static let id = String(describing: ChartCell.self)
     
     private let titleLabel = BaseLabel()
-    private let newsImageView = UIImageView()
+    private let dateLabel = BaseLabel()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.makeConstraints()
-        self.titleLabel.textColor = Main.color
+        self.titleLabel.textColor = MainAttributs.color
+        self.dateLabel.font = .systemFont(ofSize: 14)
+        self.dateLabel.textColor = .lightGray
     }
     
     required init?(coder: NSCoder) {
@@ -29,34 +31,33 @@ final class ChartCell: UITableViewCell {
 extension ChartCell {
     
     func update(article: SegmentDTO) {
-        self.titleLabel.text = String(article.value)
+        self.titleLabel.text = NumberConverter.toStringFrom(int: article.value)
+        self.dateLabel.text = DateConverter.toStringFrom(date: article.date)
     }
 }
 
 private extension ChartCell {
     
     func makeConstraints() {
-        self.addSubview()
+        self.makeDateLabelConstraints()
         self.makeTitleLabelConstraints()
     }
     
-    func addSubview() {
-        self.addSubview(self.titleLabel)
-        self.addSubview(self.newsImageView)
-    }
-    
-    func makeNewsImageViewConstraints() {
-        self.newsImageView.backgroundColor = .gray
-        self.newsImageView.snp.makeConstraints { make in
-            make.top.bottom.leading.equalToSuperview().inset(10)
-            make.width.equalTo(self.newsImageView.snp.height)
+    func makeDateLabelConstraints() {
+        self.addSubview(self.dateLabel)
+        self.dateLabel.snp.makeConstraints { make in
+            make.top.bottom.equalToSuperview()
+            make.trailing.equalToSuperview().inset(20)
+            make.width.equalTo(100)
         }
     }
     
     func makeTitleLabelConstraints() {
+        self.addSubview(self.titleLabel)
         self.titleLabel.snp.makeConstraints { make in
-            make.top.bottom.trailing.equalToSuperview()
+            make.top.bottom.equalToSuperview()
             make.leading.equalToSuperview().inset(30)
+            make.trailing.equalTo(self.dateLabel.snp.leading)
         }
     }
 }

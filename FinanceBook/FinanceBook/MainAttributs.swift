@@ -7,6 +7,6 @@
 
 import UIKit
 
-enum Main {
+enum MainAttributs {
     static let color = #colorLiteral(red: 0.1882352941, green: 0.2246394455, blue: 0.2823529412, alpha: 1)
 }

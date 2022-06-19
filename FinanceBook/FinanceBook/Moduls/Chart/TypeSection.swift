@@ -32,6 +32,20 @@ enum TypeSection: String, CaseIterable {
         }
     }
     
+    var name: String? {
+        switch self {
+        case .home: return "Home"
+        case .sport: return "Sport"
+        case .pets: return "Pets"
+        case .transport: return "Transport"
+        case .car: return "Car"
+        case .food: return "Food"
+        case .shopping: return "Shopping"
+        case .entertainment: return "Entertainment"
+        case .health: return "Health"
+        }
+    }
+    
     var image: UIImage? {
         switch self {
         case .home: return UIImage(named: self.rawValue)
