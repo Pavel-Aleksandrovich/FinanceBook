@@ -7,12 +7,12 @@
 
 import UIKit
 
+enum Action {
+    case done
+    case cancel
+}
+
 final class CustomTextField: UITextField {
-    
-    enum Action {
-        case done
-        case cancel
-    }
     
     private var tapHandler: ((Action) -> ())?
     
@@ -23,9 +23,12 @@ final class CustomTextField: UITextField {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+}
+
+extension CustomTextField {
     
-    func onToolbarTappedHandler(handler: @escaping(Action) -> ()) {
-        self.tapHandler = handler
+    func onToolbarTappedHandler(complition: @escaping(Action) -> ()) {
+        self.tapHandler = complition
         let toolbar = UIToolbar()
         
         let doneButton = UIBarButtonItem(barButtonSystemItem: .done,
@@ -44,10 +47,21 @@ final class CustomTextField: UITextField {
         doneButton.tintColor = MainAttributs.color
         toolbar.sizeToFit()
         toolbar.setItems([cancelButton, spaceButton, doneButton],
-                             animated: false)
+                         animated: false)
         self.inputAccessoryView = toolbar
     }
     
+    func createShakeAnimation() {
+        let shakeAnimation = CAKeyframeAnimation(keyPath: "position.x")
+        shakeAnimation.values = [0, -15, 15, -15, 15, 0]
+        shakeAnimation.keyTimes = [0, 0.2, 0.4, 0.6, 0.8, 1]
+        shakeAnimation.duration = 0.4
+        shakeAnimation.isAdditive = true
+        self.layer.add(shakeAnimation, forKey: nil)
+    }
+}
+
+private extension CustomTextField {
     @objc func cancelButtonTapped() {
         self.tapHandler?(.cancel)
         self.endEditing(true)

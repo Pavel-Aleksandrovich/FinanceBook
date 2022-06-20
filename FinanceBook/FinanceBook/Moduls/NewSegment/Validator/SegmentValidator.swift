@@ -22,21 +22,21 @@ extension SegmentValidator: ISegmentValidator {
         let checkName = self.checkName(viewModel?.name)
         
         if let error = checkName.error {
-            complition(.error(error))
+            complition(.error(.name))
         } else {
             complition(.success(.name))
         }
         
         let checkAmount = self.checkAmount(viewModel?.amount)
         if let error = checkAmount.error {
-            complition(.error(error))
+            complition(.error(.amount))
         } else {
             complition(.success(.amount))
         }
         
         let checkDate = self.checkDate(viewModel?.date)
         if let error = checkDate.error {
-            complition(.error(error))
+            complition(.error(.date))
         } else {
             complition(.success(.date))
         }

@@ -5,7 +5,7 @@
 //  Created by pavel mishanin on 17.06.2022.
 //
 
-import UIKit
+import Foundation
 
 protocol INewSegmentInteractor: AnyObject {
     func onViewAttached(controller: INewSegmentViewController,
@@ -33,7 +33,11 @@ extension NewSegmentInteractor: INewSegmentInteractor {
     
     func createChart(_ viewModel: ViewModelRequest?) {
         let result = self.validator.check(viewModel: viewModel) { [ weak self ] result in
-            self?.presenter.setValidateResult(result)
+            switch result {
+            case .success(_): break
+            case .error(let errorResult):
+                self?.presenter.setValidateError(errorResult)
+            }
         }
         
         if result == true {
@@ -45,7 +49,11 @@ extension NewSegmentInteractor: INewSegmentInteractor {
     
     func checkTextFields(viewModel: ViewModelRequest) {
         let _ = self.validator.check(viewModel: viewModel) { [ weak self ] result in
-            self?.presenter.setValidateResult(result)
+            switch result {
+            case .success(let successResult):
+                self?.presenter.setValidateSuccess(successResult)
+            case .error(_): break
+            }
         }
     }
     
@@ -62,7 +70,7 @@ private extension NewSegmentInteractor {
         self.dataManager.create(segment: chart) { [ weak self ] result in
             switch result {
             case .success():
-                    self?.presenter.showSuccess()
+                self?.presenter.showSuccess()
             case .failure(let error):
                 self?.presenter.showError(error)
             }

@@ -17,15 +17,24 @@ protocol INewSegmentView: AnyObject {
     var saveButtonTappedHandler: (() -> ())? { get set }
     func updateSaveButtonState(_ state: ButtonState)
     func getViewModel() -> ViewModelRequest
+    func showErrorDateTextField()
+    func showErrorCategoryNameTextField()
+    func showErrorNumberTextField()
 }
 
 final class NewSegmentView: BaseView {
     
     private let saveButton = UIButton()
     private let datePicker = UIDatePicker()
-    private let dateTextField = CustomTextField()
-    private let numberTextField = CustomTextField()
-    private let categoryTextField = CustomTextField()
+    private let dateTextField = TextFieldView(settings:
+            .init(header: "Date",
+                  placeholder: "Enter Date"))
+    private let numberTextField = TextFieldView(settings:
+            .init(header: "Number",
+                  placeholder: "Enter Sum"))
+    private let categoryNameTextField = TextFieldView(settings:
+            .init(header: "Type",
+                  placeholder: "Enter Type"))
     private let categoryPicker = CategoryPicker()
     private let keyboardObserver = KeyboardObserver()
     
@@ -55,12 +64,24 @@ extension NewSegmentView: INewSegmentView {
         let date = self.dateTextField.text
         let color = TypeSection.allCases[self.categoryPicker.selectedRow(inComponent: 0)].color
         let amount = self.numberTextField.text
-        let name = self.categoryTextField.text
+        let name = self.categoryNameTextField.text
         
         return ViewModelRequest(name: name,
                                 amount: amount,
                                 date: date,
                                 color: color)
+    }
+    
+    func showErrorDateTextField() {
+        self.dateTextField.showShakeAnimation()
+    }
+    
+    func showErrorCategoryNameTextField() {
+        self.categoryNameTextField.showShakeAnimation()
+    }
+    
+    func showErrorNumberTextField() {
+        self.numberTextField.showShakeAnimation()
     }
 }
 
@@ -104,15 +125,13 @@ private extension NewSegmentView {
     }
     
     func configCategoryTextField() {
-        self.categoryTextField.placeholder = "Choose Category"
-        self.categoryTextField.inputView = self.categoryPicker
-        self.categoryTextField.addTarget(self,
-                                         action: #selector(self.textFieldDidChange),
-                                         for: .editingDidEnd)
+        self.categoryNameTextField.inputView = self.categoryPicker
+        self.categoryNameTextField.addTarget(self,
+                                             action: #selector(self.textFieldDidChange),
+                                             for: .editingDidEnd)
     }
     
     func configNumberTextField() {
-        self.numberTextField.placeholder = "Enter Sum"
         self.numberTextField.keyboardType = .numberPad
         self.numberTextField.addTarget(self,
                                        action: #selector(self.textFieldDidChange),
@@ -120,7 +139,6 @@ private extension NewSegmentView {
     }
     
     func configDateTextField() {
-        self.dateTextField.placeholder = "Choose Date"
         self.dateTextField.inputView = self.datePicker
         self.dateTextField.addTarget(self,
                                      action: #selector(self.textFieldDidChange),
@@ -164,8 +182,8 @@ private extension NewSegmentView {
     }
     
     func makeCategoryTextFieldConstraints() {
-        self.addSubview(self.categoryTextField)
-        self.categoryTextField.snp.makeConstraints { make in
+        self.addSubview(self.categoryNameTextField)
+        self.categoryNameTextField.snp.makeConstraints { make in
             make.top.equalTo(self.numberTextField.snp.bottom).inset(-20)
             make.leading.trailing.equalToSuperview().inset(20)
         }
@@ -199,7 +217,7 @@ private extension NewSegmentView {
     }
     
     func setCategoryTextFieldToolbarHandler() {
-        self.categoryTextField.onToolbarTappedHandler { [ weak self ] result in
+        self.categoryNameTextField.onToolbarTappedHandler { [ weak self ] result in
             switch result {
             case .done:
                 self?.categoryToolbarDoneButtonTapped()
@@ -214,7 +232,7 @@ private extension NewSegmentView {
     
     func categoryToolbarDoneButtonTapped() {
         let name = TypeSection.allCases[self.categoryPicker.selectedRow(inComponent: 0)].name
-        self.categoryTextField.text = name
+        self.categoryNameTextField.text = name
     }
     
     func setKeyboardHandler() {

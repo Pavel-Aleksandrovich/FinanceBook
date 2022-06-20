@@ -47,8 +47,8 @@ private extension ChartCell {
         self.addSubview(self.dateLabel)
         self.dateLabel.snp.makeConstraints { make in
             make.top.bottom.equalToSuperview()
-            make.trailing.equalToSuperview().inset(20)
-            make.width.equalTo(100)
+            make.trailing.equalToSuperview()
+            make.width.equalTo(120)
         }
     }
     

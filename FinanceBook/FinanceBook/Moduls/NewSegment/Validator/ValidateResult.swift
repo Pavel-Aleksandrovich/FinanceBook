@@ -9,7 +9,7 @@ import Foundation
 
 enum ValidateResult {
     case success(ValidateSuccess)
-    case error(String)
+    case error(ValidateError)
 }
 
 enum ValidateSuccess {
@@ -19,10 +19,8 @@ enum ValidateSuccess {
     case all
 }
 
-enum ValidateError: String {
-    case name = "Enter name"
-    case amount = "Enter emount"
-    case amount2 = "Error number"
-    case date = "Enter date"
-    case date2 = "Error date"
+enum ValidateError {
+    case name
+    case amount
+    case date
 }

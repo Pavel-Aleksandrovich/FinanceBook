@@ -12,7 +12,8 @@ protocol INewSegmentPresenter: AnyObject {
                         view: INewSegmentView)
     func showError(_ error: Error)
     func showSuccess()
-    func setValidateResult(_ result: ValidateResult)
+    func setValidateSuccess(_ result: ValidateSuccess)
+    func setValidateError(_ result: ValidateError)
 }
 
 final class NewSegmentPresenter {
@@ -41,26 +42,27 @@ extension NewSegmentPresenter: INewSegmentPresenter {
         }
     }
     
-    func setValidateResult(_ result: ValidateResult) {
+    func setValidateSuccess(_ result: ValidateSuccess) {
         switch result {
-        case .success(let validateSuccess):
-            switch validateSuccess {
-            case .name:
-                print("NAME SUCCESS")
-                self.view?.updateSaveButtonState(.off)
-            case .amount:
-                print("AMOUNT SUCCESS")
-                self.view?.updateSaveButtonState(.off)
-            case .date:
-                print("DATE SUCCESS")
-                self.view?.updateSaveButtonState(.off)
-            case .all:
-                print("ALL SUCCESS")
-                self.view?.updateSaveButtonState(.on)
-            }
-        case .error(let string):
-//            switch stri
-            print(string)
+        case .name:
+            self.view?.updateSaveButtonState(.off)
+        case .amount:
+            self.view?.updateSaveButtonState(.off)
+        case .date:
+            self.view?.updateSaveButtonState(.off)
+        case .all:
+            self.view?.updateSaveButtonState(.on)
+        }
+    }
+    
+    func setValidateError(_ result: ValidateError) {
+        switch result {
+        case .name:
+            self.view?.showErrorCategoryNameTextField()
+        case .amount:
+            self.view?.showErrorNumberTextField()
+        case .date:
+            self.view?.showErrorDateTextField()
         }
     }
 }
