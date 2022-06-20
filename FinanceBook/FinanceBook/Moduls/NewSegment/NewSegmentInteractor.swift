@@ -11,7 +11,7 @@ protocol INewSegmentInteractor: AnyObject {
     func onViewAttached(controller: INewSegmentViewController,
                         view: INewSegmentView)
     func createChart(_ viewModel: ViewModelRequest?)
-    func checkTextFields(viewModel: ViewModelRequest)
+    func checkTextFields(viewModel: ViewModelRequest?)
 }
 
 final class NewSegmentInteractor {
@@ -41,13 +41,13 @@ extension NewSegmentInteractor: INewSegmentInteractor {
         }
         
         if result == true {
-            let chartRequest = ChartRequest(viewModel: viewModel)
+            let chartRequest = ChartRequestDto(viewModel: viewModel)
             guard let chartRequest = chartRequest else { return }
             self.save(chart: chartRequest)
         }
     }
     
-    func checkTextFields(viewModel: ViewModelRequest) {
+    func checkTextFields(viewModel: ViewModelRequest?) {
         let _ = self.validator.check(viewModel: viewModel) { [ weak self ] result in
             switch result {
             case .success(let successResult):
@@ -66,7 +66,7 @@ extension NewSegmentInteractor: INewSegmentInteractor {
 
 private extension NewSegmentInteractor {
     
-    func save(chart: ChartRequest) {
+    func save(chart: ChartRequestDto) {
         self.dataManager.create(segment: chart) { [ weak self ] result in
             switch result {
             case .success():

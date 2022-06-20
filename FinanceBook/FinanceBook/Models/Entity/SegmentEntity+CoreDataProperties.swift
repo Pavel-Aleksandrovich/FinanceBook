@@ -29,7 +29,7 @@ extension SegmentEntity : Identifiable {
 
 extension SegmentEntity {
     
-    func setValues(from segment: ChartRequest) {
+    func setValues(from segment: ChartRequestDto) {
         self.id = segment.idSegment
         self.date = segment.date
         self.value = Int64(segment.amount)

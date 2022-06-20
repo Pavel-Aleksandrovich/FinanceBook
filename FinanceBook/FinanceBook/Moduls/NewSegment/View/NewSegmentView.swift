@@ -15,6 +15,7 @@ enum ButtonState {
 
 protocol INewSegmentView: AnyObject {
     var saveButtonTappedHandler: (() -> ())? { get set }
+    
     func updateSaveButtonState(_ state: ButtonState)
     func getViewModel() -> ViewModelRequest
     func showErrorDateTextField()

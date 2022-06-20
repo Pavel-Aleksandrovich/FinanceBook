@@ -7,27 +7,21 @@
 
 import UIKit
 
-struct ChartDTO {
+struct ChartDTOResponse {
     let id: UUID
     let name: String
     let color: Data
-    let segment: [SegmentDTO]
-    var expanded: Bool
+    let segment: [SegmentDTOResponse]
     
-    var amount: CGFloat {
-        return CGFloat(segment.map { $0.value }.reduce(0, +))
-    }
-    
-    init(chart: ChartEntity, segment: [SegmentDTO]) {
+    init(chart: ChartEntity, segment: [SegmentDTOResponse]) {
         self.id = chart.id
         self.name = chart.name
         self.color = chart.color
         self.segment = segment
-        self.expanded = false
     }
 }
 
-struct SegmentDTO {
+struct SegmentDTOResponse {
     let id: UUID
     let value: Int
     let date: Date

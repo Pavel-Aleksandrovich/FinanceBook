@@ -12,9 +12,7 @@ protocol IChartPresenter: AnyObject {
                         view: IChartView,
                         tableAdapter: IChartTableAdapter)
     func showError(_ error: Error)
-    func showSuccess()
-    func setSegments(_ segment: [Segment])
-    func setCharts(_ chart: [ChartDTO])
+    func setCharts(_ chart: [ChartDTOResponse])
 }
 
 final class ChartPresenter {
@@ -38,26 +36,25 @@ extension ChartPresenter: IChartPresenter {
     
     func showError(_ error: Error) {
         DispatchQueue.main.async {
-//            self.controller?.showError(error.localizedDescription)
+            self.controller?.showError(error.localizedDescription)
         }
     }
     
-    func showSuccess() {
+    func setCharts(_ chart: [ChartDTOResponse]) {
+        let chartViewModel = self.getViewModel(from: chart)
+        
         DispatchQueue.main.async {
-//            self.controller?.showSuccess()
+            self.tableAdapter?.setCharts(chartViewModel)
+            self.view?.setCharts(chartViewModel)
         }
     }
+}
+
+private extension ChartPresenter {
     
-    func setSegments(_ segment: [Segment]) {
-        DispatchQueue.main.async {
-//            self.tableAdapter?.setSegments(segment)
-        }
-    }
-    
-    func setCharts(_ chart: [ChartDTO]) {
-        DispatchQueue.main.async {
-            self.tableAdapter?.setCharts(chart)
-            self.view?.setCharts(chart)
-        }
+    func getViewModel(from array: [ChartDTOResponse]) -> [ChartViewModelResponse] {
+        
+        array.map { ChartViewModelResponse(chart: $0,
+                                           segment: $0.segment.map { SegmentViewModelResponse(segment: $0) } ) }
     }
 }

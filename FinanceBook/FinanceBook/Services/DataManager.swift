@@ -18,15 +18,11 @@ protocol INewsDataManager {
 }
 
 protocol IChartDataManager {
-    func getListSegments(completion: @escaping(Result<([ChartDTO]),
+    func getListSegments(completion: @escaping(Result<([ChartDTOResponse]),
                                                Error>) -> ())
-    func create(segment: ChartRequest,
+    func create(segment: ChartRequestDto,
                 completion: @escaping(Result<(), Error>) -> ())
-    func delete(segment: ChartDTO,
-                completion: @escaping(Result<(),
-                                      Error>) -> ())
-    func deleteSegment(_ segment: SegmentDTO,
-                       from chart: ChartDTO,
+    func deleteSegment(_ viewModel: DeleteViewModelRequest,
                        completion: @escaping (Result<(), Error>) -> ())
 }
 
@@ -80,7 +76,7 @@ extension DataManager: INewsDataManager {
 
 extension DataManager: IChartDataManager {
     
-    func getListSegments(completion: @escaping (Result<([ChartDTO]),
+    func getListSegments(completion: @escaping (Result<([ChartDTOResponse]),
                                                 Error>) -> ()) {
         DispatchQueue.global(qos: .userInteractive).async {
             do {
@@ -92,7 +88,7 @@ extension DataManager: IChartDataManager {
         }
     }
     
-    func create(segment: ChartRequest,
+    func create(segment: ChartRequestDto,
                 completion: @escaping (Result<(), Error>) -> ()) {
         DispatchQueue.global(qos: .userInteractive).async {
             do {
@@ -104,24 +100,12 @@ extension DataManager: IChartDataManager {
         }
     }
     
-    func deleteSegment(_ segment: SegmentDTO,
-                       from chart: ChartDTO,
+    func deleteSegment(_ viewModel: DeleteViewModelRequest,
                        completion: @escaping (Result<(), Error>) -> ()) {
         
         DispatchQueue.global(qos: .userInteractive).async {
             do {
-                try self.coreDataStorage.deleteSegment(segment, from: chart)
-                completion(.success(()))
-            } catch {
-                completion(.failure(error))
-            }
-        }
-    }
-    func delete(segment: ChartDTO,
-                completion: @escaping (Result<(), Error>) -> ()) {
-        DispatchQueue.global(qos: .userInteractive).async {
-            do {
-                try self.coreDataStorage.delete(chart: segment)
+                try self.coreDataStorage.deleteSegment(viewModel)
                 completion(.success(()))
             } catch {
                 completion(.failure(error))

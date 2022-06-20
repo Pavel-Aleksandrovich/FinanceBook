@@ -30,7 +30,7 @@ final class ChartCell: UITableViewCell {
 
 extension ChartCell {
     
-    func update(article: SegmentDTO) {
+    func update(article: SegmentViewModelResponse) {
         self.titleLabel.text = NumberConverter.toStringFrom(int: article.value)
         self.dateLabel.text = DateConverter.toStringFrom(date: article.date)
     }

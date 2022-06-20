@@ -72,9 +72,8 @@ private extension NewSegmentViewController {
     
     func setCheckTextFieldsHandler() {
         self.mainView.checkTextFieldsHandler = { [ weak self ] in
-            if let viewModel = self?.mainView.getViewModel() {
+            let viewModel = self?.mainView.getViewModel()
                 self?.interactor.checkTextFields(viewModel: viewModel)
-            }
         }
     }
     

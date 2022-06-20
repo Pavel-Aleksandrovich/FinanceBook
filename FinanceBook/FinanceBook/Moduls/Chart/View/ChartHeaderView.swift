@@ -16,6 +16,7 @@ final class ChartHeaderView: UITableViewHeaderFooterView {
 
     weak var delegate: ChartHeaderViewDelegate?
     private var section: Int?
+    
     private let arrowLabel = UILabel()
     private let imageView = CategoryImageView()
     private let nameLabel = UILabel()
@@ -36,7 +37,7 @@ final class ChartHeaderView: UITableViewHeaderFooterView {
 extension ChartHeaderView {
     
     func setup(section: Int,
-               chart: ChartDTO,
+               chart: ChartViewModelResponse,
                delegate: ChartHeaderViewDelegate) {
         
         self.delegate = delegate

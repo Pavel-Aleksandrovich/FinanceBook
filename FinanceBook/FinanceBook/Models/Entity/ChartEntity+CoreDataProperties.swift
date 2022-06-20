@@ -45,7 +45,7 @@ extension ChartEntity : Identifiable {
 }
 
 extension ChartEntity {
-    func setValues(from chart: ChartRequest) {
+    func setValues(from chart: ChartRequestDto) {
         self.id = chart.id
         self.name = chart.name
         self.color = chart.color

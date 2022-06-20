@@ -10,7 +10,7 @@ import SnapKit
 
 protocol IChartView: AnyObject {
     func getTableView() -> UITableView
-    func setCharts(_ chart: [ChartDTO])
+    func setCharts(_ chart: [ChartViewModelResponse])
 }
 
 final class ChartView: UIView {
@@ -21,6 +21,8 @@ final class ChartView: UIView {
     init() {
         super.init(frame: .zero)
         self.backgroundColor = .white
+        self.tableView.allowsSelection = false
+        self.tableView.showsVerticalScrollIndicator = false
         
         self.makeChartConstraints()
         self.makeTableViewConstraints()
@@ -37,7 +39,7 @@ extension ChartView: IChartView {
         self.tableView
     }
     
-    func setCharts(_ chart: [ChartDTO]) {
+    func setCharts(_ chart: [ChartViewModelResponse]) {
         self.pieChartView.updateChart(chart)
         print(chart.count)
     }

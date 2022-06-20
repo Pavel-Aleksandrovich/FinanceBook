@@ -9,6 +9,7 @@ import UIKit
 
 protocol IChartRouter: AnyObject {
     func showAddSegmentModul()
+    func showErrorAlert(_ error: String)
 }
 
 final class ChartRouter {
@@ -20,7 +21,12 @@ extension ChartRouter: IChartRouter {
     
     func showAddSegmentModul() {
         let vc = NewSegmentAssembly.build()
-//        let nav = UINavigationController(rootViewController: vc)
-        self.controller?.navigationController?.pushViewController(vc, animated: true)
+        self.controller?.navigationController?.pushViewController(vc,
+                                                                  animated: true)
+    }
+    
+    func showErrorAlert(_ error: String) {
+        let alert = AlertAssembly.createErrorAlert(error)
+        self.controller?.present(alert, animated: true)
     }
 }

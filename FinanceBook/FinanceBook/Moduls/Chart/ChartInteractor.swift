@@ -12,7 +12,7 @@ protocol IChartInteractor: AnyObject {
                         view: IChartView,
                         tableAdapter: IChartTableAdapter)
     func loadData()
-    func deleteSegment(_ segment: SegmentDTO, from chart: ChartDTO)
+    func deleteSegment(_ viewModel: DeleteViewModelRequest)
 }
 
 final class ChartInteractor {
@@ -42,19 +42,18 @@ extension ChartInteractor: IChartInteractor {
             case .success(let model):
                 self?.presenter.setCharts(model)
             case .failure(let error):
-                print(error.localizedDescription)
+                self?.presenter.showError(error)
             }
         }
     }
     
-    func deleteSegment(_ segment: SegmentDTO, from chart: ChartDTO) {
-        self.dataManager.deleteSegment(segment,
-                                       from: chart) { [ weak self ] result in
+    func deleteSegment(_ viewModel: DeleteViewModelRequest) {
+        self.dataManager.deleteSegment(viewModel) { [ weak self ] result in
             switch result {
             case .success():
                 self?.loadData()
             case .failure(let error):
-                print(error)
+                self?.presenter.showError(error)
             }
         }
     }

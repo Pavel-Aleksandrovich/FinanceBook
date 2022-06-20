@@ -29,7 +29,7 @@ final class CategoryImageView: UIImageView {
 
 extension CategoryImageView {
     
-    func configImageView(chart: ChartDTO) {
+    func configImageView(chart: ChartViewModelResponse) {
         self.imageView.image = UIImage(named: chart.name)
         self.backgroundColor = ColorConverter.toColor(fromData: chart.color)
     }

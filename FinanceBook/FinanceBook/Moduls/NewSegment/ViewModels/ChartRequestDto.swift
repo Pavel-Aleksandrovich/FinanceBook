@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct ChartRequest {
+struct ChartRequestDto {
     let id: UUID
     let idSegment: UUID
     let name: String
@@ -15,18 +15,18 @@ struct ChartRequest {
     let amount: Int
     let date: Date
     
-    init(segments: Segment) {
-        self.id = segments.id
-        self.idSegment = segments.segment.id
-        self.name = segments.name
-        self.color = ColorConverter.toData(fromColor: segments.color) ?? Data()
-        self.amount = segments.segment.amount
-        self.date = segments.segment.date
-    }
+//    init(segments: Segment) {
+//        self.id = segments.id
+//        self.idSegment = segments.segment.id
+//        self.name = segments.name
+//        self.color = ColorConverter.toData(fromColor: segments.color) ?? Data()
+//        self.amount = segments.segment.amount
+//        self.date = segments.segment.date
+//    }
     
     init?(viewModel: ViewModelRequest?) {
-        self.id = UUID()
-        self.idSegment = UUID()
+        self.id = viewModel?.id ?? UUID()
+        self.idSegment = viewModel?.idSegment ?? UUID()
         
         guard let name = viewModel?.name else { return nil }
         self.name = name

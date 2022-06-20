@@ -7,7 +7,9 @@
 
 import UIKit
 
-protocol IChartViewController: AnyObject {}
+protocol IChartViewController: AnyObject {
+    func showError(_ error: String)
+}
 
 final class ChartViewController: UIViewController {
     
@@ -48,13 +50,17 @@ final class ChartViewController: UIViewController {
     }
 }
 
-extension ChartViewController: IChartViewController {}
+extension ChartViewController: IChartViewController {
+    func showError(_ error: String) {
+        self.router.showErrorAlert(error)
+    }
+}
 
 private extension ChartViewController {
     
     func setOnCellDeleteHandler() {
-        self.tableAdapter.onCellDeleteHandler = { [ weak self ] chart, segment in
-            self?.interactor.deleteSegment(segment, from: chart)
+        self.tableAdapter.onCellDeleteHandler = { [ weak self ] viewModel in
+            self?.interactor.deleteSegment(viewModel)
         }
     }
     

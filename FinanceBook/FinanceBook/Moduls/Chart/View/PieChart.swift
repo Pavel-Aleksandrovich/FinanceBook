@@ -9,7 +9,7 @@ import UIKit
 
 final class PieChart: UIView {
     
-    private var segments = [ChartDTO]()
+    private var segments = [ChartViewModelResponse]()
     private var total = CGFloat()
     
     init() {
@@ -36,26 +36,18 @@ final class PieChart: UIView {
 
 extension PieChart {
     
-    func updateChart(_ chart: [ChartDTO]) {
+    func updateChart(_ chart: [ChartViewModelResponse]) {
         self.segments = chart
         self.total = self.getTotalSum(chart)
         self.setNeedsDisplay()
-    }
-    
-    func getTotalSum(_ chart: [ChartDTO]) -> CGFloat {
-        var total = CGFloat()
-        
-        for i in 0..<chart.count {
-            total += chart[i].amount
-        }
-        
-        return total
     }
 }
 
 private extension PieChart {
     
-    func forEachSegment(complition: (ChartDTO, _ startAngle: CGFloat, _ endAngle: CGFloat) -> ()) {
+    func forEachSegment(complition: (ChartViewModelResponse,
+                                     _ startAngle: CGFloat,
+                                     _ endAngle: CGFloat) -> ()) {
         
         let valueCount = segments.lazy.map { $0.amount }.reduce(0, +)
         
@@ -134,5 +126,15 @@ private extension PieChart {
         CGRect(origin: CGPoint(x: center.x - size.width * 0.5,
                                y: center.y - size.height * 0.5),
                size: size)
+    }
+    
+    func getTotalSum(_ chart: [ChartViewModelResponse]) -> CGFloat {
+        var total = CGFloat()
+        
+        for i in 0..<chart.count {
+            total += chart[i].amount
+        }
+        
+        return total
     }
 }

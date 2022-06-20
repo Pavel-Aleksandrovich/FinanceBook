@@ -14,37 +14,31 @@ protocol ChartTableAdapterDelegate: AnyObject {
 protocol IChartTableAdapter: AnyObject {
     var delegate: ChartTableAdapterDelegate? { get set }
     var tableView: UITableView? { get set }
-    var onCellTappedHandler: ((NewsResponse) -> ())? { get set }
-    var onCellDeleteHandler: ((ChartDTO ,SegmentDTO) -> ())? { get set }
-    var delete: ((ChartDTO) -> ())? { get set }
-    func setCharts(_ chart: [ChartDTO])
+    var onCellDeleteHandler: ((DeleteViewModelRequest) -> ())? { get set }
+    
+    func setCharts(_ chart: [ChartViewModelResponse])
 }
 
 final class ChartTableAdapter: NSObject {
     
-    private var articleArray: [ChartDTO] = []
-    var onCellTappedHandler: ((NewsResponse) -> ())?
-    var onCellDeleteHandler: ((ChartDTO ,SegmentDTO) -> ())?
+    private var articleArray: [ChartViewModelResponse] = []
+    var onCellDeleteHandler: ((DeleteViewModelRequest) -> ())?
     weak var delegate: ChartTableAdapterDelegate?
-    var delete: ((ChartDTO) -> ())?
     weak var tableView: UITableView? {
         didSet {
             self.tableView?.delegate = self
             self.tableView?.dataSource = self
             self.tableView?.register(ChartCell.self,
                                      forCellReuseIdentifier: ChartCell.id)
-            self.tableView?.allowsSelection = false
-            self.tableView?.showsVerticalScrollIndicator = false
         }
     }
 }
 
 extension ChartTableAdapter: IChartTableAdapter {
 
-    func setCharts(_ chart: [ChartDTO]) {
+    func setCharts(_ chart: [ChartViewModelResponse]) {
         self.articleArray = chart
         self.tableView?.reloadData()
-        self.delete?(articleArray[0])
     }
 }
 
@@ -97,7 +91,10 @@ extension ChartTableAdapter: UITableViewDelegate, UITableViewDataSource {
         if editingStyle == .delete {
             let chart = articleArray[indexPath.section]
             let segment = chart.segment[indexPath.row]
-            self.onCellDeleteHandler?(chart, segment)
+            let viewModel = DeleteViewModelRequest(id: chart.id,
+                                                   idSegment: segment.id,
+                                                   segmentsCount: chart.segment.count)
+            self.onCellDeleteHandler?(viewModel)
         }
     }
     
@@ -124,7 +121,6 @@ extension ChartTableAdapter: ChartHeaderViewDelegate {
         header.setCollapsed(expanded)
         
         for row in 0..<articleArray[section].segment.count {
-            
             tableView?.reloadRows(at: [IndexPath(row: row, section: section)],
                                   with: .automatic)
         }
