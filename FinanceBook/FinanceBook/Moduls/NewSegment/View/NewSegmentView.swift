@@ -8,8 +8,15 @@
 import UIKit
 import SnapKit
 
+enum ButtonState {
+    case on
+    case off
+}
+
 protocol INewSegmentView: AnyObject {
-    var saveButtonTappedHandler: ((Segment) -> ())? { get set }
+    var saveButtonTappedHandler: (() -> ())? { get set }
+    func updateSaveButtonState(_ state: ButtonState)
+    func getViewModel() -> ViewModelRequest
 }
 
 final class NewSegmentView: BaseView {
@@ -21,7 +28,9 @@ final class NewSegmentView: BaseView {
     private let categoryTextField = CustomTextField()
     private let categoryPicker = CategoryPicker()
     private let keyboardObserver = KeyboardObserver()
-    var saveButtonTappedHandler: ((Segment) -> ())?
+    
+    var saveButtonTappedHandler: (() -> ())?
+    var checkTextFieldsHandler: (() -> ())?
     
     override init() {
         super.init()
@@ -31,7 +40,29 @@ final class NewSegmentView: BaseView {
     }
 }
 
-extension NewSegmentView: INewSegmentView {}
+extension NewSegmentView: INewSegmentView {
+    
+    func updateSaveButtonState(_ state: ButtonState) {
+        switch state {
+        case .on:
+            self.saveButton.alpha = 1
+        case .off:
+            self.saveButton.alpha = 0.2
+        }
+    }
+    
+    func getViewModel() -> ViewModelRequest {
+        let date = self.dateTextField.text
+        let color = TypeSection.allCases[self.categoryPicker.selectedRow(inComponent: 0)].color
+        let amount = self.numberTextField.text
+        let name = self.categoryTextField.text
+        
+        return ViewModelRequest(name: name,
+                                amount: amount,
+                                date: date,
+                                color: color)
+    }
+}
 
 private extension NewSegmentView {
     
@@ -49,6 +80,7 @@ private extension NewSegmentView {
     }
     
     func configSaveButton() {
+        self.saveButton.alpha = 0.2
         self.saveButton.titleLabel?.text = "saveButton"
         self.saveButton.backgroundColor = .gray
         self.saveButton.layer.cornerRadius = 30
@@ -57,28 +89,12 @@ private extension NewSegmentView {
         self.saveButton.setTitleColor(.white, for: .normal)
         self.saveButton.clipsToBounds = true
         self.saveButton.addTarget(self,
-                                  action: #selector(saveButtonTapped),
+                                  action: #selector(self.saveButtonTapped),
                                   for: .touchUpInside)
     }
     
     @objc func saveButtonTapped() {
-        let type = TypeSection.allCases[self.categoryPicker.selectedRow(inComponent: 0)]
-        
-        guard let dateString = self.dateTextField.text,
-              let color = type.color,
-              let amountString = self.numberTextField.text,
-              let name = self.categoryTextField.text else { return }
-        
-        if let amount = Int(amountString),
-           let date = self.getDateFrom(string: dateString),
-           !name.isEmpty {
-            
-            let segment = Segment(name: name,
-                                  color: color,
-                                  amount: amount,
-                                  date: date)
-            self.saveButtonTappedHandler?(segment)
-        }
+        self.saveButtonTappedHandler?()
     }
     
     func configDatePicker() {
@@ -89,17 +105,30 @@ private extension NewSegmentView {
     
     func configCategoryTextField() {
         self.categoryTextField.placeholder = "Choose Category"
-        self.categoryTextField.inputView = categoryPicker
+        self.categoryTextField.inputView = self.categoryPicker
+        self.categoryTextField.addTarget(self,
+                                         action: #selector(self.textFieldDidChange),
+                                         for: .editingDidEnd)
     }
     
     func configNumberTextField() {
         self.numberTextField.placeholder = "Enter Sum"
         self.numberTextField.keyboardType = .numberPad
+        self.numberTextField.addTarget(self,
+                                       action: #selector(self.textFieldDidChange),
+                                       for: .editingChanged)
     }
     
     func configDateTextField() {
         self.dateTextField.placeholder = "Choose Date"
         self.dateTextField.inputView = self.datePicker
+        self.dateTextField.addTarget(self,
+                                     action: #selector(self.textFieldDidChange),
+                                     for: .editingDidEnd)
+    }
+    
+    @objc func textFieldDidChange() {
+        self.checkTextFieldsHandler?()
     }
     
     func makeConstraints() {
@@ -186,12 +215,6 @@ private extension NewSegmentView {
     func categoryToolbarDoneButtonTapped() {
         let name = TypeSection.allCases[self.categoryPicker.selectedRow(inComponent: 0)].name
         self.categoryTextField.text = name
-    }
-    
-    func getDateFrom(string: String) -> Date? {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd MMMM yy"
-        return dateFormatter.date(from: string)
     }
     
     func setKeyboardHandler() {

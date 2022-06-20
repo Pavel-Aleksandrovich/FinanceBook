@@ -14,4 +14,10 @@ enum DateConverter {
         
         return formatter.string(from: date)
     }
+    
+    static func getDateFrom(string: String) -> Date? {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd MMMM yy"
+        return dateFormatter.date(from: string)
+    }
 }

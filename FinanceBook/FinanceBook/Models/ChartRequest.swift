@@ -23,4 +23,26 @@ struct ChartRequest {
         self.amount = segments.segment.amount
         self.date = segments.segment.date
     }
+    
+    init?(viewModel: ViewModelRequest?) {
+        self.id = UUID()
+        self.idSegment = UUID()
+        
+        guard let name = viewModel?.name else { return nil }
+        self.name = name
+        
+        guard let amountString = viewModel?.amount,
+              let amount = Int(amountString) else { return nil }
+        self.amount = amount
+        
+        guard let dateString = viewModel?.date,
+              let date = DateConverter.getDateFrom(string: dateString)
+        else { return nil }
+        self.date = date
+        
+        guard let color = viewModel?.color,
+              let colorData = ColorConverter.toData(fromColor: color)
+        else { return  nil }
+        self.color = colorData
+    }
 }

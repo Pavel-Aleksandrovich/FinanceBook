@@ -24,13 +24,6 @@ struct Segment {
         self.color = color
         self.segment = SegmentRequest(id: UUID(), amount: amount, date: date)
     }
-    
-//    init(from chartDto: ChartDTO) {
-//        self.id = chartDto.id
-//        self.name = chartDto.name
-//        self.color = ColorConverter.toColor(fromData: chartDto.color)
-//        self.value = chartDto.amount
-//    }
 }
 
 struct SegmentRequest {

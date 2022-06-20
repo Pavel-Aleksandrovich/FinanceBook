@@ -13,8 +13,10 @@ enum NewSegmentAssembly {
         
         let presenter = NewSegmentPresenter()
         let dataManager = DataManager()
+        let validator = SegmentValidator()
         let interactor = NewSegmentInteractor(presenter: presenter,
-                                              dataManager: dataManager)
+                                              dataManager: dataManager,
+                                              validator: validator)
         let router = NewSegmentRouter()
         let controller = NewSegmentViewController(interactor: interactor,
                                                   router: router)

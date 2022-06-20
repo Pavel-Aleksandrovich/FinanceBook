@@ -35,6 +35,5 @@ extension CategoryPicker: UIPickerViewDelegate, UIPickerViewDataSource {
                     titleForRow row: Int,
                     forComponent component: Int) -> String? {
         TypeSection.allCases[row].name
-        
     }
 }

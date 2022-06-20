@@ -38,6 +38,7 @@ final class NewSegmentViewController: UIViewController {
         self.interactor.onViewAttached(controller: self,
                                        view: self.mainView)
         self.setSaveButtonTappedHandler()
+        self.setCheckTextFieldsHandler()
         self.navigationController?.navigationBar.tintColor = MainAttributs.color
     }
     
@@ -69,10 +70,18 @@ extension NewSegmentViewController: INewSegmentViewController {
 
 private extension NewSegmentViewController {
     
+    func setCheckTextFieldsHandler() {
+        self.mainView.checkTextFieldsHandler = { [ weak self ] in
+            if let viewModel = self?.mainView.getViewModel() {
+                self?.interactor.checkTextFields(viewModel: viewModel)
+            }
+        }
+    }
+    
     func setSaveButtonTappedHandler() {
-        self.mainView.saveButtonTappedHandler = { [ weak self ] segment in
-            self?.interactor.createChart(segment)
-//            self?.router.dismiss()
+        self.mainView.saveButtonTappedHandler = { [ weak self ] in
+            let viewModel = self?.mainView.getViewModel()
+            self?.interactor.createChart(viewModel)
         }
     }
 }
