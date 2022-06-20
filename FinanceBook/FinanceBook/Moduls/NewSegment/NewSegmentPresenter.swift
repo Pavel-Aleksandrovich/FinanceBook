@@ -20,6 +20,8 @@ final class NewSegmentPresenter {
     
     private weak var view: INewSegmentView?
     private weak var controller: INewSegmentViewController?
+    
+    private let mainQueue = DispatchQueue.main
 }
 
 extension NewSegmentPresenter: INewSegmentPresenter {
@@ -31,13 +33,13 @@ extension NewSegmentPresenter: INewSegmentPresenter {
     }
     
     func showError(_ error: Error) {
-        DispatchQueue.main.async {
+        self.mainQueue.async {
             self.controller?.showError(error.localizedDescription)
         }
     }
     
     func showSuccess() {
-        DispatchQueue.main.async {
+        self.mainQueue.async {
             self.controller?.showSuccess()
         }
     }

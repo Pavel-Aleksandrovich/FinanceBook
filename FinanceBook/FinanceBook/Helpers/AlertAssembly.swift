@@ -30,9 +30,9 @@ enum AlertAssembly {
         return alert
     }
     
-    static func createErrorAlert(_ error: String) -> UIAlertController {
+    static func createAlert(_ title: String) -> UIAlertController {
         
-        let alert = UIAlertController(title: error,
+        let alert = UIAlertController(title: title,
                                       message: nil,
                                       preferredStyle: .alert)
         let okAction = UIAlertAction(title: Constants.errorAlertOkActionTitle,

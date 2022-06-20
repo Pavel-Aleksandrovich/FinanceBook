@@ -28,6 +28,7 @@ extension FavoriteNewsRouter: IFavoriteNewsRouter {
     }
     
     func showErrorAlert(_ error: String) {
-        print(#function)
+        let alert = AlertAssembly.createAlert(error)
+        self.controller?.present(alert, animated: true)
     }
 }

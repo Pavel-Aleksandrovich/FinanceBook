@@ -17,19 +17,14 @@ final class ListNewsView: UIView {
     
     private let layout = UICollectionViewFlowLayout()
     private let tableView = UITableView()
+    
     private var collectionView: UICollectionView!
     
     init() {
         super.init(frame: .zero)
         self.backgroundColor = .white
-        self.layout.minimumInteritemSpacing = 5
-        self.layout.scrollDirection = .horizontal
-        
-        self.collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        self.collectionView.backgroundColor = .clear
-        self.collectionView.showsHorizontalScrollIndicator = false
-        self.makeCollectionViewConstraints()
-        self.makeTableViewConstraints()
+        self.configAppearance()
+        self.makeConstraints()
     }
     
     required init?(coder: NSCoder) {
@@ -49,6 +44,28 @@ extension ListNewsView: IListNewsView {
 }
 
 private extension ListNewsView {
+    
+    func configAppearance() {
+        self.configLayout()
+        self.configCollectionView()
+    }
+    
+    func configLayout() {
+        self.layout.minimumInteritemSpacing = 5
+        self.layout.scrollDirection = .horizontal
+    }
+    
+    func configCollectionView() {
+        self.collectionView = UICollectionView(frame: .zero,
+                                               collectionViewLayout: layout)
+        self.collectionView.backgroundColor = .clear
+        self.collectionView.showsHorizontalScrollIndicator = false
+    }
+    
+    func makeConstraints() {
+        self.makeCollectionViewConstraints()
+        self.makeTableViewConstraints()
+    }
     
     func makeTableViewConstraints() {
         self.addSubview(self.tableView)

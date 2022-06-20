@@ -16,7 +16,6 @@ protocol ICollectionViewAdapter {
 final class CollectionViewAdapter: NSObject {
     
     private enum Constants {
-        static let reuseIdentifier = String(describing: CollectionCell.self)
     }
     
     var onCellTappedHandler: ((String) -> ())?
@@ -25,7 +24,7 @@ final class CollectionViewAdapter: NSObject {
             self.collectionView?.delegate = self
             self.collectionView?.dataSource = self
             self.collectionView?.register(CollectionCell.self,
-                                         forCellWithReuseIdentifier: Constants.reuseIdentifier)
+                                          forCellWithReuseIdentifier: CollectionCell.id)
             self.collectionView?.selectItem(at: [0, 0],
                                             animated: true,
                                             scrollPosition: [])
@@ -67,7 +66,7 @@ extension CollectionViewAdapter: UICollectionViewDelegate, UICollectionViewDataS
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: Constants.reuseIdentifier,
+            withReuseIdentifier: CollectionCell.id,
             for: indexPath) as? CollectionCell else { return UICollectionViewCell() }
         
         let category = Category.allCases[indexPath.item].rawValue

@@ -9,7 +9,6 @@ import UIKit
 
 protocol IListNewsRouter: AnyObject {
     func showArticleDetails(_ article: Article)
-    func showAlert(complition: @escaping() -> ())
     func showErrorAlert(_ error: String)
     func showLanguageAlert(complition: @escaping(String) -> ())
 }
@@ -34,9 +33,8 @@ extension ListNewsRouter: IListNewsRouter {
         self.controller?.present(alert, animated: true)
     }
     
-    func showAlert(complition: @escaping() -> ()) {
-    }
-    
     func showErrorAlert(_ error: String) {
+        let alert = AlertAssembly.createAlert(error)
+        self.controller?.present(alert, animated: true)
     }
 }

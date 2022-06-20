@@ -15,23 +15,26 @@ final class KeyboardObserver {
     }
     
     private var onKeyboardStateChangeHandler: ((KeyboardState) -> ())?
+    private let observer = NotificationCenter.default
     
     deinit {
-        NotificationCenter.default.removeObserver(self)
+        self.observer.removeObserver(self)
     }
-    
+}
+
+extension KeyboardObserver {
     func addKeyboardObservers(complition: @escaping(KeyboardState) -> ()) {
         self.onKeyboardStateChangeHandler = complition
         
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(keyboardWillShow),
-                                               name: UIResponder.keyboardWillShowNotification,
-                                               object: nil)
+        self.observer.addObserver(self,
+                                  selector: #selector(self.keyboardWillShow),
+                                  name: UIResponder.keyboardWillShowNotification,
+                                  object: nil)
         
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(keyboardWillHide),
-                                               name: UIResponder.keyboardWillHideNotification,
-                                               object: nil)
+        self.observer.addObserver(self,
+                                  selector: #selector(self.keyboardWillHide),
+                                  name: UIResponder.keyboardWillHideNotification,
+                                  object: nil)
     }
 }
 
@@ -39,7 +42,8 @@ private extension KeyboardObserver {
     
     @objc func keyboardWillShow(notification: Notification) {
         let userInfo = notification.userInfo
-        guard let keyboardFrame = (userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else { return }
+        guard let keyboardFrame = (userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as?
+                                   NSValue)?.cgRectValue else { return }
         
         let keyboardTop = keyboardFrame.height
         self.onKeyboardStateChangeHandler?(.show(keyboardTop))

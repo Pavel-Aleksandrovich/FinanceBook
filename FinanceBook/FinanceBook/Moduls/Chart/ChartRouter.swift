@@ -26,7 +26,7 @@ extension ChartRouter: IChartRouter {
     }
     
     func showErrorAlert(_ error: String) {
-        let alert = AlertAssembly.createErrorAlert(error)
+        let alert = AlertAssembly.createAlert(error)
         self.controller?.present(alert, animated: true)
     }
 }

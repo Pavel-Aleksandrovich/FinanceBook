@@ -20,7 +20,9 @@ final class NewsDetailsInteractor {
     private let dataManager: INewsDataManager
     private let networkManager = NetworkManager()
     
-    init(presenter: INewsDetailsPresenter, dataManager: INewsDataManager, article: Article) {
+    init(presenter: INewsDetailsPresenter,
+         dataManager: INewsDataManager,
+         article: Article) {
         self.presenter = presenter
         self.dataManager = dataManager
         self.setData(article: article)
@@ -31,12 +33,13 @@ extension NewsDetailsInteractor: INewsDetailsInteractor {
     
     func loadImageDataFrom(url: String?) {
         guard let url = url else { return }
+        
         self.networkManager.loadImageDataFrom(url: url) { [ weak self ] result in
             switch result {
             case .success(let data):
                 self?.presenter.setImageDate(data)
             case .failure(let error):
-                print(error)
+                self?.presenter.showError(error)
             }
         }
     }
@@ -52,7 +55,6 @@ extension NewsDetailsInteractor: INewsDetailsInteractor {
                 self?.presenter.showError(error)
             }
         }
-        print(#function)
     }
     
     func onViewAttached(controller: INewsDetailsViewController,

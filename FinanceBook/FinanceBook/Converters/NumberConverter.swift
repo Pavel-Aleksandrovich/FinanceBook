@@ -8,11 +8,13 @@
 import Foundation
 
 enum NumberConverter {
+    
     static func toStringFrom(int: Int) -> String {
         let formatter = NumberFormatter()
         formatter.numberStyle = .decimal
         formatter.groupingSeparator = " "
         let string = formatter.string(from: NSNumber(value: int)) ?? ""
+        
         return string + " ₽"
     }
 }

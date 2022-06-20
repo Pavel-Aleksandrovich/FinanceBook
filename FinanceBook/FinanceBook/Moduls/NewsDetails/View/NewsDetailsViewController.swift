@@ -17,7 +17,7 @@ final class NewsDetailsViewController: UIViewController {
     private let mainView = NewsDetailsView()
     private let interactor: INewsDetailsInteractor
     private let router: INewsDetailsRouter
-
+    
     init(interactor: INewsDetailsInteractor,
          router: INewsDetailsRouter) {
         self.interactor = interactor
@@ -37,30 +37,36 @@ final class NewsDetailsViewController: UIViewController {
         super.viewDidLoad()
         self.interactor.onViewAttached(controller: self,
                                        view: self.mainView)
-        self.createExitBarButton()
-        self.createFavoriteBarButton()
+        self.configView()
     }
 }
 
 extension NewsDetailsViewController: INewsDetailsViewController {
     
     func showError(_ error: String) {
-        
+        self.router.showErrorAlert(error)
     }
     
     func showSuccess() {
-        self.router.showSuccessAlert()
+        self.router.showErrorAlert("News was added to favorite")
     }
 }
 
 private extension NewsDetailsViewController {
     
+    func configView() {
+        self.createExitBarButton()
+        self.createFavoriteBarButton()
+    }
+    
     func createExitBarButton() {
         let image = UIImage(systemName: "xmark.circle")
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: image,
-                                                            style: .plain,
-                                                            target: self,
-                                                            action: #selector(exitButtonTapped))
+        let item = UIBarButtonItem(image: image,
+                                   style: .plain,
+                                   target: self,
+                                   action: #selector
+                                   (self.exitButtonTapped))
+        navigationItem.rightBarButtonItem = item
     }
     
     @objc func exitButtonTapped() {
@@ -69,10 +75,12 @@ private extension NewsDetailsViewController {
     
     func createFavoriteBarButton() {
         let image = UIImage(systemName: "heart")
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: image,
-                                                           style: .plain,
-                                                           target: self,
-                                                           action: #selector(favoriteButtonTapped))
+        let item = UIBarButtonItem(image: image,
+                                   style: .plain,
+                                   target: self,
+                                   action: #selector
+                                   (self.favoriteButtonTapped))
+        navigationItem.leftBarButtonItem = item
     }
     
     @objc func favoriteButtonTapped() {

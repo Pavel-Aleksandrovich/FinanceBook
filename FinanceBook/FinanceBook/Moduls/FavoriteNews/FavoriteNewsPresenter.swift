@@ -21,6 +21,8 @@ final class FavoriteNewsPresenter {
     private weak var view: IFavoriteNewsView?
     private weak var controller: IFavoriteNewsViewController?
     private weak var tableAdapter: IFavoriteNewsTableAdapter?
+    
+    private let mainQueue = DispatchQueue.main
 }
 
 extension FavoriteNewsPresenter: IFavoriteNewsPresenter {
@@ -35,19 +37,19 @@ extension FavoriteNewsPresenter: IFavoriteNewsPresenter {
     }
     
     func setFavoriteNews(_ news: [NewsResponse]) {
-        DispatchQueue.main.async {
+        self.mainQueue.async {
             self.tableAdapter?.setFavoriteNews(news)
         }
     }
     
     func showError(_ error: Error) {
-        DispatchQueue.main.async {
+        self.mainQueue.async {
             self.controller?.showError(error.localizedDescription)
         }
     }
     
     func deleteNewsAt(_ id: UUID) {
-        DispatchQueue.main.async {
+        self.mainQueue.async {
             self.tableAdapter?.deleteNewsAt(id)
         }
     }

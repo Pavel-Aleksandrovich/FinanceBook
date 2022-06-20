@@ -29,6 +29,7 @@ protocol IChartDataManager {
 final class DataManager {
     
     private let coreDataStorage: CoreDataStorage
+    private let globalQueue = DispatchQueue.global(qos: .userInitiated)
     
     init(coreDataStorage: CoreDataStorage = .shared) {
         self.coreDataStorage = coreDataStorage
@@ -39,7 +40,7 @@ extension DataManager: INewsDataManager {
     
     func getListNews(completion: @escaping(Result<([NewsResponse]),
                                            Error>) -> ()) {
-        DispatchQueue.global(qos: .userInteractive).async {
+        self.globalQueue.async {
             do {
                 let news = try self.coreDataStorage.getListNews()
                 completion(.success(news))
@@ -51,7 +52,7 @@ extension DataManager: INewsDataManager {
     
     func create(news: NewsRequest,
                 completion: @escaping(Result<(), Error>) -> ()) {
-        DispatchQueue.global(qos: .userInteractive).async {
+        self.globalQueue.async {
             do {
                 try self.coreDataStorage.create(news: news)
                 completion(.success(()))
@@ -63,7 +64,7 @@ extension DataManager: INewsDataManager {
     
     func delete(news: NewsResponse,
                 completion: @escaping(Result<(), Error>) -> ()) {
-        DispatchQueue.global(qos: .userInteractive).async {
+        self.globalQueue.async {
             do {
                 try self.coreDataStorage.delete(news: news)
                 completion(.success(()))
@@ -78,7 +79,7 @@ extension DataManager: IChartDataManager {
     
     func getListSegments(completion: @escaping (Result<([ChartDTOResponse]),
                                                 Error>) -> ()) {
-        DispatchQueue.global(qos: .userInteractive).async {
+        self.globalQueue.async {
             do {
                 let segments = try self.coreDataStorage.getCharts()
                 completion(.success(segments))
@@ -90,7 +91,7 @@ extension DataManager: IChartDataManager {
     
     func create(segment: ChartRequestDto,
                 completion: @escaping (Result<(), Error>) -> ()) {
-        DispatchQueue.global(qos: .userInteractive).async {
+        self.globalQueue.async {
             do {
                 try self.coreDataStorage.create(chart: segment)
                 completion(.success(()))
@@ -103,7 +104,7 @@ extension DataManager: IChartDataManager {
     func deleteSegment(_ viewModel: DeleteViewModelRequest,
                        completion: @escaping (Result<(), Error>) -> ()) {
         
-        DispatchQueue.global(qos: .userInteractive).async {
+        self.globalQueue.async {
             do {
                 try self.coreDataStorage.deleteSegment(viewModel)
                 completion(.success(()))

@@ -10,11 +10,11 @@ import UIKit
 enum ColorConverter {
     
     static func toColor(fromData: Data) -> UIColor? {
-        return try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(fromData) as? UIColor
+        try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(fromData) as? UIColor
     }
     
     static func toData(fromColor: UIColor) -> Data? {
-        return try? NSKeyedArchiver.archivedData(withRootObject: fromColor,
-                                                 requiringSecureCoding: false)
+        try? NSKeyedArchiver.archivedData(withRootObject: fromColor,
+                                          requiringSecureCoding: false)
     }
 }

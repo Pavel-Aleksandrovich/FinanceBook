@@ -15,6 +15,10 @@ protocol IChartView: AnyObject {
 
 final class ChartView: UIView {
     
+    private enum Constants {
+        static let chartMultiplied = 0.8
+    }
+        
     private let pieChartView = PieChart()
     private let tableView = UITableView()
     
@@ -52,7 +56,7 @@ private extension ChartView {
         self.pieChartView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalTo(self.safeAreaLayoutGuide)
-            make.width.equalTo(self.snp.width).multipliedBy(0.8)
+            make.width.equalTo(self.snp.width).multipliedBy(Constants.chartMultiplied)
             make.height.equalTo(self.pieChartView.snp.width)
         }
     }

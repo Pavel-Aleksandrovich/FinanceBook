@@ -9,6 +9,10 @@ import UIKit
 
 final class CategoryPicker: UIPickerView {
     
+    private enum Constants {
+        static let numberOfComponents = 1
+    }
+        
     init() {
         super.init(frame: .zero)
         self.delegate = self
@@ -23,7 +27,7 @@ final class CategoryPicker: UIPickerView {
 extension CategoryPicker: UIPickerViewDelegate, UIPickerViewDataSource {
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        1
+        Constants.numberOfComponents
     }
     
     func pickerView(_ pickerView: UIPickerView,

@@ -20,6 +20,8 @@ final class ChartPresenter {
     private weak var view: IChartView?
     private weak var controller: IChartViewController?
     private weak var tableAdapter: IChartTableAdapter?
+    
+    private let mainQueue = DispatchQueue.main
 }
 
 extension ChartPresenter: IChartPresenter {
@@ -35,7 +37,7 @@ extension ChartPresenter: IChartPresenter {
     }
     
     func showError(_ error: Error) {
-        DispatchQueue.main.async {
+        self.mainQueue.async {
             self.controller?.showError(error.localizedDescription)
         }
     }
@@ -43,7 +45,7 @@ extension ChartPresenter: IChartPresenter {
     func setCharts(_ chart: [ChartDTOResponse]) {
         let chartViewModel = self.getViewModel(from: chart)
         
-        DispatchQueue.main.async {
+        self.mainQueue.async {
             self.tableAdapter?.setCharts(chartViewModel)
             self.view?.setCharts(chartViewModel)
         }

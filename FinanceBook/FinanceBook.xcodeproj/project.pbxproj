@@ -418,13 +418,14 @@
 		84A406FE285984830013387C /* FinanceBook */ = {
 			isa = PBXGroup;
 			children = (
-				84272C7D285CA5A2005B1955 /* Converters */,
 				84272C90285E2203005B1955 /* MainAttributs.swift */,
 				84272C8D285DC288005B1955 /* CustomUI */,
 				845AE6FF2859E4DB0021F7B7 /* Moduls */,
 				84A4073A285990A60013387C /* Models */,
+				84272C88285D93DE005B1955 /* Entity */,
 				84A4074128599C410013387C /* Services */,
 				84272C52285B5E39005B1955 /* Helpers */,
+				84272C7D285CA5A2005B1955 /* Converters */,
 				84A40717285989310013387C /* Application */,
 				84A407162859881D0013387C /* Resources */,
 			);
@@ -454,7 +455,6 @@
 		84A4073A285990A60013387C /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				84272C88285D93DE005B1955 /* Entity */,
 				84A4074428599DB80013387C /* News.swift */,
 				84A407462859B4EC0013387C /* NewsResponse.swift */,
 				84272C45285AF686005B1955 /* NewsRequest.swift */,

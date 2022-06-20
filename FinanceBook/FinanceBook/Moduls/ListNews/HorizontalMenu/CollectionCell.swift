@@ -9,6 +9,8 @@ import UIKit
 
 final class CollectionCell: UICollectionViewCell {
     
+    static let id = String(describing: CollectionCell.self)
+    
     private let categoryLabel = UILabel()
     
     override var isSelected: Bool {
@@ -19,10 +21,8 @@ final class CollectionCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        configAppearance()
-        configLayout()
-        backgroundColor = .systemGray4
-        layer.cornerRadius = 5
+        self.configAppearance()
+        self.configLayout()
     }
     
     required init?(coder: NSCoder) {
@@ -33,7 +33,7 @@ final class CollectionCell: UICollectionViewCell {
 extension CollectionCell {
     
     func config(_ category: String) {
-        categoryLabel.text = category
+        self.categoryLabel.text = category
     }
 }
 
@@ -42,22 +42,28 @@ private extension CollectionCell {
     // MARK: - Appearance
     
     func configAppearance() {
-        configImageNameLabel()
+        self.configImageNameLabel()
+        self.configView()
+    }
+    
+    func configView() {
+        self.backgroundColor = .systemGray4
+        self.layer.cornerRadius = 5
     }
     
     func configImageNameLabel() {
-        categoryLabel.textAlignment = .center
+        self.categoryLabel.textAlignment = .center
     }
     
     // MARK: - Constraints | Layout
     
     func configLayout() {
-        makeImageNameLabelConstraints()
+        self.makeImageNameLabelConstraints()
     }
     
     func makeImageNameLabelConstraints() {
-        addSubview(categoryLabel)
-        categoryLabel.snp.makeConstraints { make in
+        self.addSubview(self.categoryLabel)
+        self.categoryLabel.snp.makeConstraints { make in
             make.center.equalToSuperview()
         }
     }

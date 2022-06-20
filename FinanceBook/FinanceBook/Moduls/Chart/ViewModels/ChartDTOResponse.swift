@@ -5,7 +5,7 @@
 //  Created by pavel mishanin on 18.06.2022.
 //
 
-import UIKit
+import Foundation
 
 struct ChartDTOResponse {
     let id: UUID

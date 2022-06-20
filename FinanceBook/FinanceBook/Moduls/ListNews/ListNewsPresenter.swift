@@ -11,11 +11,10 @@ protocol IListNewsPresenter: AnyObject {
     func onViewAttached(controller: IListNewsViewController,
                         view: IListNewsView,
                         tableAdapter: IListNewsTableAdapter)
-    func deleteCompanyAt(_ id: UUID)
     func showError(_ error: Error)
     func setNews(_ news: News)
     func clearData()
-    func setLanguageBarButtonTitle(title: String?)
+    func setLanguageBarButtonTitle(title: String)
 }
 
 final class ListNewsPresenter {
@@ -23,6 +22,8 @@ final class ListNewsPresenter {
     private weak var view: IListNewsView?
     private weak var controller: IListNewsViewController?
     private weak var tableAdapter: IListNewsTableAdapter?
+    
+    private let mainQueue = DispatchQueue.main
 }
 
 extension ListNewsPresenter: IListNewsPresenter {
@@ -36,33 +37,27 @@ extension ListNewsPresenter: IListNewsPresenter {
         self.tableAdapter?.tableView = self.view?.getTableView()
     }
     
-    func deleteCompanyAt(_ id: UUID) {
-        DispatchQueue.main.async {
-//            self.tableAdapter?.deleteCompanyAt(id)
-        }
-    }
-    
     func showError(_ error: Error) {
-        DispatchQueue.main.async {
-            //            self.controller?.showError(error.localizedDescription)
+        self.mainQueue.async {
+            self.controller?.showError(error.localizedDescription)
         }
     }
     
     func setNews(_ news: News) {
-        DispatchQueue.main.async {
+        self.mainQueue.async {
             self.tableAdapter?.setNews(news)
         }
     }
     
     func clearData() {
-        DispatchQueue.main.async {
+        self.mainQueue.async {
             self.tableAdapter?.clearData()
         }
     }
     
-    func setLanguageBarButtonTitle(title: String?) {
-        guard let title = title else { return }
-        DispatchQueue.main.async {
+    func setLanguageBarButtonTitle(title: String) {
+        
+        self.mainQueue.async {
             self.controller?.setLanguageBarButtonTitle(title: title)
         }
     }

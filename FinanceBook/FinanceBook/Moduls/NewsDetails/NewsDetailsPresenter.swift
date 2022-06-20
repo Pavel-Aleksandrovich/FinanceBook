@@ -20,6 +20,8 @@ final class NewsDetailsPresenter {
     
     private weak var view: INewsDetailsView?
     private weak var controller: INewsDetailsViewController?
+    
+    private let mainQueue = DispatchQueue.main
 }
 
 extension NewsDetailsPresenter: INewsDetailsPresenter {
@@ -31,25 +33,25 @@ extension NewsDetailsPresenter: INewsDetailsPresenter {
     }
     
     func showError(_ error: Error) {
-        DispatchQueue.main.async {
+        self.mainQueue.async {
             self.controller?.showError(error.localizedDescription)
         }
     }
     
     func showSuccess() {
-        DispatchQueue.main.async {
+        self.mainQueue.async {
             self.controller?.showSuccess()
         }
     }
     
     func setNews(_ article: Article) {
-        DispatchQueue.main.async {
+        self.mainQueue.async {
             self.view?.update(article: article)
         }
     }
     
     func setImageDate(_ data: Data) {
-        DispatchQueue.main.async {
+        self.mainQueue.async {
             self.view?.setImage(data: data)
         }
     }

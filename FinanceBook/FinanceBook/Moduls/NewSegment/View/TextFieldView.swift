@@ -20,11 +20,14 @@ final class TextFieldView: UIView {
     }
     
     private enum Constants {
-        static let corner: CGFloat = 16
+        static let textFieldCornerRadius: CGFloat = 16
         static let emptyViewWidth = 16
-        static let tfHeight = 40
-        static let topOffset = 8
-        static let borderWidth: CGFloat = 2
+        static let textFieldHeight = 40
+        static let textFieldTopOffset = 8
+        static let textFieldBorderWidth: CGFloat = 2
+        
+        static let headerLabelDefaultPlaceholder = "Start typing here"
+        static let headerLabelFontSize: CGFloat = 18
     }
     
     public override var inputView: UIView? {
@@ -90,21 +93,27 @@ extension TextFieldView {
 
 private extension TextFieldView {
     
+    func configView(with settings: Settings) {
+        self.headerLabel.text = settings.header
+        self.textField.placeholder = settings.placeholder
+    }
+    
     func configAppearance() {
         self.configHeaderLabel()
         self.configTextField()
     }
     
     func configHeaderLabel() {
-        self.headerLabel.font = UIFont.systemFont(ofSize: 18, weight: .bold)
-        self.headerLabel.text = "Start typing here"
+        self.headerLabel.font = UIFont.systemFont(ofSize: Constants.headerLabelFontSize,
+                                                  weight: .bold)
+        self.headerLabel.text = Constants.headerLabelDefaultPlaceholder
         self.headerLabel.textColor = MainAttributs.color
     }
     
     func configTextField() {
-        textField.layer.borderWidth = Constants.borderWidth
+        textField.layer.borderWidth = Constants.textFieldBorderWidth
         textField.layer.borderColor = MainAttributs.color.cgColor
-        textField.layer.cornerRadius = Constants.corner
+        textField.layer.cornerRadius = Constants.textFieldCornerRadius
         let emptyView = UIView(frame: .init(x: .zero,
                                             y: .zero,
                                             width: Constants.emptyViewWidth,
@@ -130,14 +139,9 @@ private extension TextFieldView {
     func makeTextFieldConstraints() {
         self.addSubview(self.textField)
         self.textField.snp.makeConstraints { make in
-            make.top.equalTo(self.headerLabel.snp.bottom).offset(Constants.topOffset)
+            make.top.equalTo(self.headerLabel.snp.bottom).offset(Constants.textFieldTopOffset)
             make.leading.trailing.bottom.equalToSuperview()
-            make.height.equalTo(Constants.tfHeight)
+            make.height.equalTo(Constants.textFieldHeight)
         }
-    }
-    
-    func configView(with settings: Settings) {
-        self.headerLabel.text = settings.header
-        self.textField.placeholder = settings.placeholder
     }
 }

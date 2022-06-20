@@ -18,13 +18,14 @@ final class ListNewsViewController: UIViewController {
         static let barButtonTitle = "Add Company"
     }
     
-    private var languageBarButton = UIBarButtonItem()
     private let cell = ListNewsCell()
     private let mainView = ListNewsView()
     private let tableAdapter: IListNewsTableAdapter
-    private var collectionAdapter: ICollectionViewAdapter
     private let interactor: IListNewsInteractor
     private let router: IListNewsRouter
+    
+    private var collectionAdapter: ICollectionViewAdapter
+    private var languageBarButton = UIBarButtonItem()
 
     init(interactor: IListNewsInteractor,
          router: IListNewsRouter,
