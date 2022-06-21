@@ -15,7 +15,6 @@ final class ListNewsCell: UITableViewCell {
     private let activityIndicator = UIActivityIndicatorView(style: .large)
     private let titleLabel = BaseLabel()
     private let newsImageView = UIImageView()
-    private let networkManager = NetworkManager()
     
     override init(style: UITableViewCell.CellStyle,
                   reuseIdentifier: String?) {
@@ -33,24 +32,13 @@ extension ListNewsCell {
     
     func update(article: Article) {
         self.titleLabel.text = article.title
-        self.setImage(url: article.urlToImage)
     }
     
-    func setImage(url: String?) {
-        self.activityIndicator.startAnimating()
-//        self.newsImageView.image = UIImage(data: data)
-        guard let url = url else { return }
-
-        self.networkManager.loadImageDataFrom(url: url) { result in
-            switch result {
-            case .success(let image):
-                DispatchQueue.main.async {
-                    self.newsImageView.image = image
-                }
-            case .failure(_): break
-            }
-        }
-        if self.newsImageView.image != nil {
+    func setImage(_ image: UIImage?) {
+        self.newsImageView.image = image
+        if self.newsImageView.image == nil {
+            self.activityIndicator.startAnimating()
+        } else {
             self.activityIndicator.stopAnimating()
         }
     }
@@ -72,7 +60,6 @@ private extension ListNewsCell {
     }
     
     func makeNewsImageViewConstraints() {
-        self.newsImageView.backgroundColor = .gray
         self.newsImageView.snp.makeConstraints { make in
             make.top.bottom.leading.equalToSuperview().inset(10)
             make.width.equalTo(self.newsImageView.snp.height)

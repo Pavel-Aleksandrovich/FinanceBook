@@ -13,8 +13,10 @@ enum NewsDetailsAssembly {
         
         let presenter = NewsDetailsPresenter()
         let dataManager = DataManager()
+        let networkManager = NewsNetworkManager()
         let interactor = NewsDetailsInteractor(presenter: presenter,
                                                dataManager: dataManager,
+                                               networkManager: networkManager,
                                                article: article)
         let router = NewsDetailsRouter()
         let controller = NewsDetailsViewController(interactor: interactor,

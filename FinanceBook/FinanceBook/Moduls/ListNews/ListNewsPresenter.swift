@@ -56,7 +56,6 @@ extension ListNewsPresenter: IListNewsPresenter {
     }
     
     func setLanguageBarButtonTitle(title: String) {
-        
         self.mainQueue.async {
             self.controller?.setLanguageBarButtonTitle(title: title)
         }

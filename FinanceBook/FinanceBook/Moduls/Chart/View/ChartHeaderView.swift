@@ -18,14 +18,14 @@ final class ChartHeaderView: UITableViewHeaderFooterView {
     private var section: Int?
     
     private let arrowLabel = UILabel()
-    private let imageView = CategoryImageView()
+    private let imageView = UIImageView()
     private let nameLabel = UILabel()
     private let amountLabel = UILabel()
     
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
         self.addGestureRecognizer()
-        self.configView()
+        self.configAppearance()
         self.makeConstraints()
     }
 
@@ -43,7 +43,7 @@ extension ChartHeaderView {
         self.delegate = delegate
         self.section = section
         self.amountLabel.text = NumberConverter.toStringFrom(int: Int(chart.amount))
-        self.imageView.configImageView(chart: chart)
+        self.imageView.backgroundColor = ColorConverter.toColor(fromData: chart.color)
         self.nameLabel.text = chart.name
     }
     
@@ -74,11 +74,16 @@ private extension ChartHeaderView {
         self.delegate?.toggleSection(header: self, section: section)
     }
     
-    func configView() {
+    func configAppearance() {
+        self.configImageView()
         self.configAmountLabel()
         self.configNameLabel()
         self.configArrowLabel()
-        self.contentView.backgroundColor = MainAttributs.color
+        self.configView()
+    }
+    
+    func configImageView() {
+        self.imageView.layer.cornerRadius = 20
     }
     
     func configAmountLabel() {
@@ -92,6 +97,10 @@ private extension ChartHeaderView {
     func configArrowLabel() {
         self.arrowLabel.text = ">"
         self.arrowLabel.textColor = .white
+    }
+    
+    func configView() {
+        self.contentView.backgroundColor = MainAttributs.color
     }
     
     func makeConstraints() {

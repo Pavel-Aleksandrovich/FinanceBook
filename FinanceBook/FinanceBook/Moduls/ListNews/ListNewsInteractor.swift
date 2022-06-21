@@ -30,10 +30,11 @@ final class ListNewsInteractor {
     }
     
     private let presenter: IListNewsPresenter
-    private let networkManager = NetworkManager()
+    private let networkManager: INewsNetworkManager
     
-    init(presenter: IListNewsPresenter) {
+    init(presenter: IListNewsPresenter, networkManager: INewsNetworkManager) {
         self.presenter = presenter
+        self.networkManager = networkManager
     }
 }
 
@@ -68,8 +69,7 @@ extension ListNewsInteractor: IListNewsInteractor {
         let language = self.language ?? "us"
         
         self.networkManager.loadNews(language: language,
-                                     category: category,
-                                     page: 1) { [ weak self ] result in
+                                     category: category) { [ weak self ] result in
             switch result {
             case .success(let news):
                 self?.presenter.setNews(news)

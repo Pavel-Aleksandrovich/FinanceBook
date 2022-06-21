@@ -15,12 +15,11 @@ final class ChartCell: UITableViewCell {
     private let titleLabel = BaseLabel()
     private let dateLabel = BaseLabel()
     
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+    override init(style: UITableViewCell.CellStyle,
+                  reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.makeConstraints()
-        self.titleLabel.textColor = MainAttributs.color
-        self.dateLabel.font = .systemFont(ofSize: 14)
-        self.dateLabel.textColor = .lightGray
+        self.configAppearance()
     }
     
     required init?(coder: NSCoder) {
@@ -37,6 +36,20 @@ extension ChartCell {
 }
 
 private extension ChartCell {
+    
+    func configAppearance() {
+        self.configTitleLabel()
+        self.configDateLabel()
+    }
+    
+    func configTitleLabel() {
+        self.titleLabel.textColor = MainAttributs.color
+    }
+    
+    func configDateLabel() {
+        self.dateLabel.font = .systemFont(ofSize: 14)
+        self.dateLabel.textColor = .lightGray
+    }
     
     func makeConstraints() {
         self.makeDateLabelConstraints()

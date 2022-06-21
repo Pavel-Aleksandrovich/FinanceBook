@@ -18,13 +18,15 @@ final class NewsDetailsInteractor {
     
     private let presenter: INewsDetailsPresenter
     private let dataManager: INewsDataManager
-    private let networkManager = NetworkManager()
+    private let networkManager: INewsNetworkManager
     
     init(presenter: INewsDetailsPresenter,
          dataManager: INewsDataManager,
+         networkManager: INewsNetworkManager,
          article: NewsRequest) {
         self.presenter = presenter
         self.dataManager = dataManager
+        self.networkManager = networkManager
         self.setData(article: article)
     }
 }

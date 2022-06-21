@@ -48,16 +48,15 @@ final class ListNewsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.collectionAdapter.collectionView = self.mainView.getCollectionView()
         self.interactor.onViewAttached(controller: self,
                                        view: self.mainView,
                                        tableAdapter: self.tableAdapter)
+        self.collectionAdapter.collectionView = self.mainView.getCollectionView()
         self.setOnCellTappedHandler()
         self.interactor.loadNews(language: nil, category: nil)
-        self.tableAdapter.delegate = self
         self.setOnCellCollectionTappedHandler()
         self.createLanguageBarButton()
-        self.createLanguageBarButton()
+        self.tableAdapter.delegate = self
     }
 }
 

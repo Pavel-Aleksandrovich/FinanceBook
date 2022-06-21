@@ -7,23 +7,18 @@
 
 import UIKit
 
-protocol ChartTableAdapterDelegate: AnyObject {
-    func loadImageData(url: String?, complition: @escaping(Data) -> ())
-}
-
 protocol IChartTableAdapter: AnyObject {
-    var delegate: ChartTableAdapterDelegate? { get set }
     var tableView: UITableView? { get set }
     var onCellDeleteHandler: ((DeleteViewModelRequest) -> ())? { get set }
-    
     func setCharts(_ chart: [ChartViewModelResponse])
 }
 
 final class ChartTableAdapter: NSObject {
     
     private var articleArray: [ChartViewModelResponse] = []
+    
     var onCellDeleteHandler: ((DeleteViewModelRequest) -> ())?
-    weak var delegate: ChartTableAdapterDelegate?
+    
     weak var tableView: UITableView? {
         didSet {
             self.tableView?.delegate = self

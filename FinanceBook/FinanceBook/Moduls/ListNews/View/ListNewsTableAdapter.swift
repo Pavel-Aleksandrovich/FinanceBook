@@ -21,9 +21,10 @@ protocol IListNewsTableAdapter: AnyObject {
 
 final class ListNewsTableAdapter: NSObject {
     
-    private var isLoading = false
     private var articleArray: [Article] = []
+    
     var onCellTappedHandler: ((NewsRequest) -> ())?
+    
     weak var delegate: ListNewsTableAdapterDelegate?
     weak var tableView: UITableView? {
         didSet {
@@ -63,11 +64,15 @@ extension ListNewsTableAdapter: UITableViewDelegate, UITableViewDataSource {
                    cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         guard let cell = tableView.dequeueReusableCell(withIdentifier: ListNewsCell.id,
-                                                       for: indexPath) as? ListNewsCell else { return UITableViewCell() }
+                                                       for: indexPath) as? ListNewsCell
+        else { return UITableViewCell() }
         
         let article = articleArray[indexPath.row]
         
         cell.update(article: article)
+        self.delegate?.loadImageData(url: article.urlToImage, complition: { image in
+            cell.setImage(image)
+        })
         
         return cell
     }

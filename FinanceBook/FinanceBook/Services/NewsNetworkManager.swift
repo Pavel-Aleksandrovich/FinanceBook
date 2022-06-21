@@ -7,17 +7,29 @@
 
 import UIKit
 
-final class NetworkManager {
+protocol INewsNetworkManager: AnyObject {
+    func loadNews(language: String,
+                  category: String,
+                  completion: @escaping (Result<NewsDTO, Error>) -> ())
+    func loadImageDataFrom(url: String,
+                           completion: @escaping(Result<UIImage?,
+                                                 Error>) -> ())
+}
+
+final class NewsNetworkManager {
     
     private enum Api {
-        static let current = "https://api.weatherapi.com/v1/current.json?key=1d91263cb358427082175537220406&q="
-        static let history = "https://api.weatherapi.com/v1/history.json?key=1d91263cb358427082175537220406&q="
+        static let key = "&apiKey=7d0b341870634da093c7dd7b06db9891"
+        static let defaultKey = "&apiKey=b21393dbff084185b011f3acdc9bd5fb"
     }
     
     private enum EndPoints {
-        static let date = "&dt="
-        static let https = "https:"
+        static let country = "country="
+        static let category = "&category="
+        static let page = "&pageSize=100"
     }
+    
+    private let baseUrl = "https://newsapi.org/v2/top-headlines?"
     
     private let session: URLSession
     private let cache = NSCache<NSString, UIImage>()
@@ -27,19 +39,19 @@ final class NetworkManager {
             self.session = URLSession(configuration: configuration)
         }
         else {
-            self.session = URLSession(configuration: URLSessionConfiguration.default)
+            self.session = URLSession(configuration: .default)
         }
     }
 }
-//7d0b341870634da093c7dd7b06db9891
-extension NetworkManager {
+
+extension NewsNetworkManager: INewsNetworkManager {
     
     func loadNews(language: String,
                   category: String,
-                  page: Int,
                   completion: @escaping (Result<NewsDTO, Error>) -> ()) {
-        let api = "https://newsapi.org/v2/top-headlines?country=\(language)&pageSize=100&category=\(category)&apiKey=b21393dbff084185b011f3acdc9bd5fb"
-        //        let api = "https://newsapi.org/v2/top-headlines?country=us&page=\(page)&apiKey=b21393dbff084185b011f3acdc9bd5fb"
+        let api = self.baseUrl + EndPoints.country + language
+        + EndPoints.page + EndPoints.category + category + Api.defaultKey
+
         self.loadData(api: api, completion: completion)
     }
     
@@ -61,7 +73,7 @@ extension NetworkManager {
                 }
                 
                 guard let data = data else { return }
-                
+
                 guard let image = UIImage(data: data) else { return }
                 
                 self.cache.setObject(image, forKey: cacheKey)
@@ -71,7 +83,7 @@ extension NetworkManager {
     }
 }
 
-private extension NetworkManager {
+private extension NewsNetworkManager {
     
     func loadData<T: Decodable>(api: String,
                                 completion: @escaping (Result<T, Error>) -> ()) {

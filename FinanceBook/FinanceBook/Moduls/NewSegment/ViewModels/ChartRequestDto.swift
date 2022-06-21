@@ -15,15 +15,6 @@ struct ChartRequestDto {
     let amount: Int
     let date: Date
     
-//    init(segments: Segment) {
-//        self.id = segments.id
-//        self.idSegment = segments.segment.id
-//        self.name = segments.name
-//        self.color = ColorConverter.toData(fromColor: segments.color) ?? Data()
-//        self.amount = segments.segment.amount
-//        self.date = segments.segment.date
-//    }
-    
     init?(viewModel: ViewModelRequest?) {
         self.id = viewModel?.id ?? UUID()
         self.idSegment = viewModel?.idSegment ?? UUID()

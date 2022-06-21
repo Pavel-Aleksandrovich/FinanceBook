@@ -23,17 +23,5 @@ struct ViewModelRequest {
         self.date = date
         self.color = color
     }
-//
-//    init(chart: ChartDTO, segment: SegmentDTO) {
-//        self.id = chart.id
-//        self.idSegment = segment.id
-//        self.name = chart.name
-//        self.amount = chart.
-//        self.date = DateConverter.toStringFrom(date: segment.date)
-//        self.color = ColorConverter.toColor(fromData: chart.color)
-//
-//
-//
-//    }
 }
 
