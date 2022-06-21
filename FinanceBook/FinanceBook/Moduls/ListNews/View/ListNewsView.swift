@@ -25,6 +25,10 @@ final class ListNewsView: UIView {
         self.backgroundColor = .white
         self.configAppearance()
         self.makeConstraints()
+        self.tableView.register(ListNewsCell.self,
+                                 forCellReuseIdentifier: ListNewsCell.id)
+        self.tableView.register(ListNewsErrorCell.self,
+                                 forCellReuseIdentifier: ListNewsErrorCell.id)
     }
     
     required init?(coder: NSCoder) {

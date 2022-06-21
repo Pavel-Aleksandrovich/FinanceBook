@@ -7,21 +7,37 @@
 
 import UIKit
 
+enum Country: String {
+    case us
+    case ru
+    
+    var name: String {
+        switch self {
+        case .us: return "US"
+        case .ru: return "RU"
+        }
+    }
+}
+
 enum AlertAssembly {
     
     private enum Constants {
         static let errorAlertOkActionTitle = "Ok"
     }
     
-    static func createLanguageAlert(complition: @escaping(String) -> ()) -> UIAlertController {
+    static func createLanguageAlert(complition: @escaping(Country) -> ()) -> UIAlertController {
         
-        let alert = UIAlertController(title: "Choose Language", message: nil, preferredStyle: .actionSheet)
+        let alert = UIAlertController(title: "Choose Language",
+                                      message: nil,
+                                      preferredStyle: .actionSheet)
         
-        let us = UIAlertAction(title: "us", style: .default) { _ in
-            complition("us")
+        let us = UIAlertAction(title: "us",
+                               style: .default) { _ in
+            complition(.us)
         }
-        let ru = UIAlertAction(title: "ru", style: .default) { _ in
-            complition("ru")
+        let ru = UIAlertAction(title: "ru",
+                               style: .default) { _ in
+            complition(.ru)
         }
         
         alert.addAction(us)
@@ -55,8 +71,8 @@ enum AlertAssembly {
             complition()
         }
         
-        alert.addAction(continueAction)
         alert.addAction(goBackAction)
+        alert.addAction(continueAction)
         
         return alert
     }

@@ -8,7 +8,7 @@
 import UIKit
 
 protocol INewsNetworkManager: AnyObject {
-    func loadNews(language: String,
+    func loadNews(country: String,
                   category: String,
                   completion: @escaping (Result<NewsDTO, Error>) -> ())
     func loadImageDataFrom(url: String,
@@ -46,11 +46,11 @@ final class NewsNetworkManager {
 
 extension NewsNetworkManager: INewsNetworkManager {
     
-    func loadNews(language: String,
+    func loadNews(country: String,
                   category: String,
                   completion: @escaping (Result<NewsDTO, Error>) -> ()) {
-        let api = self.baseUrl + EndPoints.country + language
-        + EndPoints.page + EndPoints.category + category + Api.defaultKey
+        let api = self.baseUrl + EndPoints.country + country + EndPoints.page
+        + EndPoints.category + category + Api.key
 
         self.loadData(api: api, completion: completion)
     }

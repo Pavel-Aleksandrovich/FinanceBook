@@ -36,18 +36,12 @@ extension FavoriteNewsCell {
 private extension FavoriteNewsCell {
     
     func makeConstraints() {
-        self.addSubview()
         self.makeNewsImageViewConstraints()
         self.makeTitleLabelConstraints()
     }
     
-    func addSubview() {
-        self.addSubview(self.titleLabel)
-        self.addSubview(self.newsImageView)
-    }
-    
     func makeNewsImageViewConstraints() {
-        self.newsImageView.backgroundColor = .gray
+        self.addSubview(self.newsImageView)
         self.newsImageView.snp.makeConstraints { make in
             make.top.bottom.leading.equalToSuperview().inset(10)
             make.width.equalTo(self.newsImageView.snp.height)
@@ -55,6 +49,7 @@ private extension FavoriteNewsCell {
     }
     
     func makeTitleLabelConstraints() {
+        self.addSubview(self.titleLabel)
         self.titleLabel.snp.makeConstraints { make in
             make.top.bottom.trailing.equalToSuperview().inset(10)
             make.leading.equalTo(self.newsImageView.snp.trailing).inset(-10)

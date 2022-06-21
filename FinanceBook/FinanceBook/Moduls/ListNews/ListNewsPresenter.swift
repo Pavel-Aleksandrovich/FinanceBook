@@ -12,9 +12,8 @@ protocol IListNewsPresenter: AnyObject {
                         view: IListNewsView,
                         tableAdapter: IListNewsTableAdapter)
     func showError(_ error: Error)
-    func setNews(_ news: NewsDTO)
-    func clearData()
-    func setLanguageBarButtonTitle(title: String)
+    func setNewsSuccessState(_ news: NewsDTO)
+    func setCountryBarButtonTitle(title: String)
 }
 
 final class ListNewsPresenter {
@@ -43,21 +42,15 @@ extension ListNewsPresenter: IListNewsPresenter {
         }
     }
     
-    func setNews(_ news: NewsDTO) {
+    func setNewsSuccessState(_ news: NewsDTO) {
         self.mainQueue.async {
-            self.tableAdapter?.setNews(news)
+            self.tableAdapter?.setNewsState(.success(news.articles))
         }
     }
     
-    func clearData() {
+    func setCountryBarButtonTitle(title: String) {
         self.mainQueue.async {
-            self.tableAdapter?.clearData()
-        }
-    }
-    
-    func setLanguageBarButtonTitle(title: String) {
-        self.mainQueue.async {
-            self.controller?.setLanguageBarButtonTitle(title: title)
+            self.controller?.setCountryBarButtonTitle(title: title)
         }
     }
 }

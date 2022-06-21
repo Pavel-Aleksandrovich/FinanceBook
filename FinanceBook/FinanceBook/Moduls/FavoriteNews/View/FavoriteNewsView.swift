@@ -20,6 +20,11 @@ final class FavoriteNewsView: UIView {
         super.init(frame: .zero)
         self.backgroundColor = .white
         self.makeTableViewConstraints()
+        
+        self.tableView.register(FavoriteNewsCell.self,
+                                 forCellReuseIdentifier: FavoriteNewsCell.id)
+        self.tableView.register(FavoriteNewsDefaultCell.self,
+                                 forCellReuseIdentifier: FavoriteNewsDefaultCell.id)
     }
     
     required init?(coder: NSCoder) {

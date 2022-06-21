@@ -33,7 +33,7 @@ extension FavoriteNewsInteractor: IFavoriteNewsInteractor {
         self.dataManager.getListNews { [ weak self ] result in
             switch result {
             case .success(let model):
-                self?.presenter.setFavoriteNews(model)
+                self?.presenter.setFavoriteNewsState(model)
             case .failure(let error):
                 print(error)
             }
@@ -44,7 +44,7 @@ extension FavoriteNewsInteractor: IFavoriteNewsInteractor {
         self.dataManager.delete(news: news) { [ weak self ] result in
             switch result {
             case .success():
-                self?.presenter.deleteNewsAt(news.id)
+                self?.loadNews()
             case .failure(let error):
                 self?.presenter.showError(error)
             }

@@ -16,10 +16,3 @@ struct Article: Codable {
     let description: String?
     let urlToImage: String?
 }
-
-struct NewsViewModel: Codable {
-    let title: String
-    let description: String
-    let url: String
-}
-

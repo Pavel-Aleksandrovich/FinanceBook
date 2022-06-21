@@ -11,41 +11,31 @@ protocol IFavoriteNewsTableAdapter: AnyObject {
     var tableView: UITableView? { get set }
     var onCellTappedHandler: ((FavoriteNewsViewModel) -> ())? { get set }
     var onCellDeleteHandler: ((FavoriteNewsRequest) -> ())? { get set }
-    func setFavoriteNews(_ news: [FavoriteNewsViewModel])
-    func deleteNewsAt(_ id: UUID)
+    func setFavoriteNewsState(_ state: FavoriteNewsState)
 }
-
+enum FavoriteNewsState {
+    case success([FavoriteNewsViewModel])
+    case empty
+}
 final class FavoriteNewsTableAdapter: NSObject {
     
-    private var articleArray: [FavoriteNewsViewModel] = []
+    private var state: FavoriteNewsState = .empty
     
     var onCellTappedHandler: ((FavoriteNewsViewModel) -> ())?
     var onCellDeleteHandler: ((FavoriteNewsRequest) -> ())?
-    
+    // здесь может сделать проставлять значения через функцию setTableView(_ tableView: UITableView)
     weak var tableView: UITableView? {
         didSet {
             self.tableView?.delegate = self
             self.tableView?.dataSource = self
-            self.tableView?.register(FavoriteNewsCell.self,
-                                     forCellReuseIdentifier: FavoriteNewsCell.id)
         }
     }
 }
 
 extension FavoriteNewsTableAdapter: IFavoriteNewsTableAdapter {
     
-    func deleteNewsAt(_ id: UUID) {
-        let index = self.articleArray.firstIndex { $0.id == id }
-        if let index = index {
-            self.articleArray.remove(at: index)
-            let indexPath = IndexPath(row: index, section: 0)
-            self.tableView?.deleteRows(at: [indexPath], with: .fade)
-            self.tableView?.reloadData()
-        }
-    }
-    
-    func setFavoriteNews(_ news: [FavoriteNewsViewModel]) {
-        self.articleArray = news
+    func setFavoriteNewsState(_ state: FavoriteNewsState) {
+        self.state = state
         self.tableView?.reloadData()
     }
 }
@@ -54,46 +44,73 @@ extension FavoriteNewsTableAdapter: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView,
                    numberOfRowsInSection section: Int) -> Int {
-        articleArray.count
+        switch self.state {
+        case .success(let array): return array.count
+        case .empty: return 1
+        }
     }
     
     func tableView(_ tableView: UITableView,
                    heightForRowAt indexPath: IndexPath) -> CGFloat {
-        150
+        switch self.state {
+        case .success(_): return 150
+        case .empty: return UIScreen.main.bounds.size.height * 0.8
+        }
     }
     
     func tableView(_ tableView: UITableView,
                    cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: FavoriteNewsCell.id,
-                                                       for: indexPath) as? FavoriteNewsCell else { return UITableViewCell() }
+        switch self.state {
+        case .success(let array):
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: FavoriteNewsCell.id,
+                                                           for: indexPath) as? FavoriteNewsCell
+            else { return UITableViewCell() }
+            
+            let news = array[indexPath.row]
+            cell.update(article: news)
+            
+            return cell
+        case .empty:
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: FavoriteNewsDefaultCell.id,
+                                                           for: indexPath) as? FavoriteNewsDefaultCell
+            else { return UITableViewCell() }
+            
+            return cell
+        }
         
-        let news = articleArray[indexPath.row]
-        cell.update(article: news)
-        
-        return cell
     }
     
     func tableView(_ tableView: UITableView,
                    didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-        let article = articleArray[indexPath.row]
-        self.onCellTappedHandler?(article)
+        switch self.state {
+        case .success(_): break
+        case .empty: break
+        }
+//        tableView.deselectRow(at: indexPath, animated: true)
+//        let article = articleArray[indexPath.row]
+//        self.onCellTappedHandler?(article)
     }
     
     func tableView(_ tableView: UITableView,
                    canEditRowAt indexPath: IndexPath) -> Bool {
-        true
+        switch self.state {
+        case .success(_): return true
+        case .empty: return false
+        }
     }
     
     func tableView(_ tableView: UITableView,
                    commit editingStyle: UITableViewCell.EditingStyle,
                    forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            
-            let article = articleArray[indexPath.row]
-            let request = FavoriteNewsRequest(viewModel: article)
-            self.onCellDeleteHandler?(request)
+        switch self.state {
+        case .success(let array):
+            if editingStyle == .delete {
+                let article = array[indexPath.row]
+                let request = FavoriteNewsRequest(viewModel: article)
+                self.onCellDeleteHandler?(request)
+            }
+        case .empty: break
         }
     }
 }

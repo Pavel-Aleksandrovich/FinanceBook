@@ -12,8 +12,7 @@ protocol IFavoriteNewsPresenter: AnyObject {
                         view: IFavoriteNewsView,
                         tableAdapter: IFavoriteNewsTableAdapter)
     func showError(_ error: Error)
-    func setFavoriteNews(_ news: [FavoriteNewsResponse])
-    func deleteNewsAt(_ id: UUID)
+    func setFavoriteNewsState(_ news: [FavoriteNewsResponse])
 }
 
 final class FavoriteNewsPresenter {
@@ -36,23 +35,23 @@ extension FavoriteNewsPresenter: IFavoriteNewsPresenter {
         self.tableAdapter?.tableView = self.view?.getTableView()
     }
     
-    func setFavoriteNews(_ news: [FavoriteNewsResponse]) {
-        let viewModel = news.map { FavoriteNewsViewModel(viewModel: $0) }
-        
-        self.mainQueue.async {
-            self.tableAdapter?.setFavoriteNews(viewModel)
+    func setFavoriteNewsState(_ news: [FavoriteNewsResponse]) {
+        if news.isEmpty {
+            self.mainQueue.async {
+            self.tableAdapter?.setFavoriteNewsState(.empty)
+            }
+        } else {
+            let viewModel = news.map { FavoriteNewsViewModel(viewModel: $0) }
+            
+            self.mainQueue.async {
+                self.tableAdapter?.setFavoriteNewsState(.success(viewModel))
+            }
         }
     }
     
     func showError(_ error: Error) {
         self.mainQueue.async {
             self.controller?.showError(error.localizedDescription)
-        }
-    }
-    
-    func deleteNewsAt(_ id: UUID) {
-        self.mainQueue.async {
-            self.tableAdapter?.deleteNewsAt(id)
         }
     }
 }

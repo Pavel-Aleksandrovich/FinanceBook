@@ -108,7 +108,7 @@ extension CoreDataStorage {
         let fetchRequest = SegmentEntity.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "id = %@",
                                              viewModel.idSegment.description)
-        
+        //Сделать проверку в интеракторе
         if viewModel.segmentsCount == 1 {
             try self.delete(chartId: viewModel.id)
         } else {
@@ -119,7 +119,7 @@ extension CoreDataStorage {
         }
     }
     
-    func delete(chartId: UUID) throws {
+    private func delete(chartId: UUID) throws {
         let fetchRequest = ChartEntity.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "id = %@",
                                              chartId.description)

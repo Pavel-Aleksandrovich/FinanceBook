@@ -9,7 +9,7 @@ import UIKit
 
 protocol IListNewsViewController: AnyObject {
     func showError(_ error: String)
-    func setLanguageBarButtonTitle(title: String)
+    func setCountryBarButtonTitle(title: String)
 }
 
 final class ListNewsViewController: UIViewController {
@@ -25,7 +25,7 @@ final class ListNewsViewController: UIViewController {
     private let router: IListNewsRouter
     
     private var collectionAdapter: ICollectionViewAdapter
-    private var languageBarButton = UIBarButtonItem()
+    private var countryBarButton = UIBarButtonItem()
 
     init(interactor: IListNewsInteractor,
          router: IListNewsRouter,
@@ -53,9 +53,9 @@ final class ListNewsViewController: UIViewController {
                                        tableAdapter: self.tableAdapter)
         self.collectionAdapter.collectionView = self.mainView.getCollectionView()
         self.setOnCellTappedHandler()
-        self.interactor.loadNews(language: nil, category: nil)
+        self.interactor.loadNews(country: nil, category: nil)
         self.setOnCellCollectionTappedHandler()
-        self.createLanguageBarButton()
+        self.createCountryBarButton()
         self.tableAdapter.delegate = self
     }
 }
@@ -66,33 +66,33 @@ extension ListNewsViewController: IListNewsViewController {
         self.router.showErrorAlert(error)
     }
     
-    func setLanguageBarButtonTitle(title: String) {
-        self.languageBarButton.title = title
+    func setCountryBarButtonTitle(title: String) {
+        self.countryBarButton.title = title
     }
 }
 
 extension ListNewsViewController: ListNewsTableAdapterDelegate {
     
-    func loadImageData(url: String?, complition: @escaping (UIImage?) -> ()) {
-        self.interactor.loadImageDataFrom(url: url, complition: complition)
+    func loadImageData(url: String?, completion: @escaping (UIImage?) -> ()) {
+        self.interactor.loadImageDataFrom(url: url, complition: completion)
     }
 }
 
 private extension ListNewsViewController {
     
-    func createLanguageBarButton() {
-        self.languageBarButton = UIBarButtonItem(title: "US",
+    func createCountryBarButton() {
+        self.countryBarButton = UIBarButtonItem(title: "US",
                                                  style: .done,
                                                  target: self,
                                                  action:#selector
-                                                 (self.languageButtonTapped))
+                                                 (self.countryButtonTapped))
         
-        self.navigationItem.rightBarButtonItem = self.languageBarButton
+        self.navigationItem.rightBarButtonItem = self.countryBarButton
     }
     
-    @objc func languageButtonTapped() {
-        self.router.showLanguageAlert { [ weak self ] language in
-            self?.interactor.loadNews(language: language, category: nil)
+    @objc func countryButtonTapped() {
+        self.router.showCountryAlert { [ weak self ] country in
+            self?.interactor.loadNews(country: country, category: nil)
         }
     }
     
@@ -104,7 +104,7 @@ private extension ListNewsViewController {
     
     func setOnCellCollectionTappedHandler() {
         self.collectionAdapter.onCellTappedHandler = { [ weak self ] category in
-            self?.interactor.loadNews(language: nil, category: category)
+            self?.interactor.loadNews(country: nil, category: category)
         }
     }
 }

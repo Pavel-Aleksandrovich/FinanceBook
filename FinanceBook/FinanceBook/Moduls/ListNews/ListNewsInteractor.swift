@@ -11,23 +11,15 @@ protocol IListNewsInteractor: AnyObject {
     func onViewAttached(controller: IListNewsViewController,
                         view: IListNewsView,
                         tableAdapter: IListNewsTableAdapter)
-    func loadNews(language: String?, category: String?)
+    func loadNews(country: Country?, category: String?)
     func loadImageDataFrom(url: String?, complition: @escaping(UIImage?) -> ())
 }
 
 final class ListNewsInteractor {
     
-    private var category: String? = Category.general.rawValue {
-        didSet {
-            self.presenter.clearData()
-        }
-    }
+    private var category: String = Category.general.rawValue
     
-    private var language: String? = "us" {
-        didSet {
-            self.languageDidUpdate()
-        }
-    }
+    private var country: Country = .us
     
     private let presenter: IListNewsPresenter
     private let networkManager: INewsNetworkManager
@@ -56,23 +48,22 @@ extension ListNewsInteractor: IListNewsInteractor {
         }
     }
     
-    func loadNews(language: String? = nil, category: String? = nil) {
+    func loadNews(country: Country? = nil, category: String? = nil) {
         
-        if category != nil {
+        if let category = category {
             self.category = category
         }
-        let category = self.category ?? Category.general.rawValue
-        
-        if language != nil {
-            self.language = language
+    
+        if let country = country {
+            self.country = country
+            self.presenter.setCountryBarButtonTitle(title: country.name)
         }
-        let language = self.language ?? "us"
         
-        self.networkManager.loadNews(language: language,
-                                     category: category) { [ weak self ] result in
+        self.networkManager.loadNews(country: self.country.rawValue,
+                                     category: self.category) { [ weak self ] result in
             switch result {
             case .success(let news):
-                self?.presenter.setNews(news)
+                self?.presenter.setNewsSuccessState(news)
             case .failure(let error):
                 self?.presenter.showError(error)
             }
@@ -85,15 +76,5 @@ extension ListNewsInteractor: IListNewsInteractor {
         self.presenter.onViewAttached(controller: controller,
                                       view: view,
                                       tableAdapter: tableAdapter)
-    }
-}
-
-private extension ListNewsInteractor {
-    
-    func languageDidUpdate() {
-        self.presenter.clearData()
-        
-        guard let title = self.language else { return }
-        self.presenter.setLanguageBarButtonTitle(title: title)
     }
 }

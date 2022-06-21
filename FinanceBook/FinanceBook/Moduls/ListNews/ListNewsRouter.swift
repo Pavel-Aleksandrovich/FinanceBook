@@ -10,7 +10,7 @@ import UIKit
 protocol IListNewsRouter: AnyObject {
     func showArticleDetails(_ article: NewsRequest)
     func showErrorAlert(_ error: String)
-    func showLanguageAlert(complition: @escaping(String) -> ())
+    func showCountryAlert(complition: @escaping(Country) -> ())
 }
 
 final class ListNewsRouter {
@@ -25,9 +25,9 @@ extension ListNewsRouter: IListNewsRouter {
         self.controller?.present(vc, animated: true)
     }
     
-    func showLanguageAlert(complition: @escaping(String) -> ()) {
-        let alert = AlertAssembly.createLanguageAlert { language in
-            complition(language)
+    func showCountryAlert(complition: @escaping(Country) -> ()) {
+        let alert = AlertAssembly.createLanguageAlert { country in
+            complition(country)
         }
         self.controller?.present(alert, animated: true)
     }

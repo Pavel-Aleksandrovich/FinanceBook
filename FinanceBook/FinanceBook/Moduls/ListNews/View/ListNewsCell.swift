@@ -47,19 +47,13 @@ extension ListNewsCell {
 private extension ListNewsCell {
     
     func makeConstraints() {
-        self.addSubview()
         self.makeNewsImageViewConstraints()
         self.makeTitleLabelConstraints()
         self.makeActivityIndicatorConstraints()
     }
     
-    func addSubview() {
-        self.addSubview(self.titleLabel)
-        self.addSubview(self.newsImageView)
-        self.newsImageView.addSubview(self.activityIndicator)
-    }
-    
     func makeNewsImageViewConstraints() {
+        self.addSubview(self.newsImageView)
         self.newsImageView.snp.makeConstraints { make in
             make.top.bottom.leading.equalToSuperview().inset(10)
             make.width.equalTo(self.newsImageView.snp.height)
@@ -67,6 +61,7 @@ private extension ListNewsCell {
     }
     
     func makeTitleLabelConstraints() {
+        self.addSubview(self.titleLabel)
         self.titleLabel.snp.makeConstraints { make in
             make.top.bottom.trailing.equalToSuperview().inset(10)
             make.leading.equalTo(self.newsImageView.snp.trailing).inset(-10)
@@ -74,6 +69,7 @@ private extension ListNewsCell {
     }
     
     func makeActivityIndicatorConstraints() {
+        self.addSubview(self.activityIndicator)
         self.activityIndicator.snp.makeConstraints { make in
             make.center.equalTo(self.newsImageView.snp.center)
         }
