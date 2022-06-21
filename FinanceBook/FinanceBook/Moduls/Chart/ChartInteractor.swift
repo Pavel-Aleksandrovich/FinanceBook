@@ -48,7 +48,29 @@ extension ChartInteractor: IChartInteractor {
     }
     
     func deleteSegment(_ viewModel: DeleteViewModelRequest) {
-        self.dataManager.deleteSegment(viewModel) { [ weak self ] result in
+        if viewModel.segmentsCount == 1 {
+            self.deleteChartBy(id: viewModel.id)
+        } else {
+            self.deleteSegmentBy(id: viewModel.idSegment)
+        }
+    }
+}
+
+private extension ChartInteractor {
+    
+    func deleteSegmentBy(id: UUID) {
+        self.dataManager.deleteSegmentBy(id: id) { [ weak self ] result in
+            switch result {
+            case .success():
+                self?.loadData()
+            case .failure(let error):
+                self?.presenter.showError(error)
+            }
+        }
+    }
+    
+    func deleteChartBy(id: UUID) {
+        self.dataManager.deleteChartBy(id: id) { [ weak self ] result in
             switch result {
             case .success():
                 self?.loadData()

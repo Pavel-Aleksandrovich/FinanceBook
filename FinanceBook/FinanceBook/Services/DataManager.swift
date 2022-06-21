@@ -22,7 +22,9 @@ protocol IChartDataManager {
                                                Error>) -> ())
     func create(segment: ChartRequestDto,
                 completion: @escaping(Result<(), Error>) -> ())
-    func deleteSegment(_ viewModel: DeleteViewModelRequest,
+    func deleteSegmentBy(id: UUID,
+                       completion: @escaping (Result<(), Error>) -> ())
+    func deleteChartBy(id: UUID,
                        completion: @escaping (Result<(), Error>) -> ())
 }
 
@@ -101,12 +103,25 @@ extension DataManager: IChartDataManager {
         }
     }
     
-    func deleteSegment(_ viewModel: DeleteViewModelRequest,
+    func deleteSegmentBy(id: UUID,
                        completion: @escaping (Result<(), Error>) -> ()) {
         
         self.globalQueue.async {
             do {
-                try self.coreDataStorage.deleteSegment(viewModel)
+                try self.coreDataStorage.deleteSegmentBy(id: id)
+                completion(.success(()))
+            } catch {
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    func deleteChartBy(id: UUID,
+                       completion: @escaping (Result<(), Error>) -> ()) {
+        
+        self.globalQueue.async {
+            do {
+                try self.coreDataStorage.deleteChartBy(id: id)
                 completion(.success(()))
             } catch {
                 completion(.failure(error))

@@ -71,12 +71,12 @@ extension CoreDataStorage {
         var chartDto: [ChartDTOResponse] = []
         
         let chart = try self.getChartEntity()
-            
-            for i in 0..<chart.count {
-                let segment = try self.getSegments(from: chart[i])
-                let segmentDto = segment.compactMap { SegmentDTOResponse(segment: $0) }
-                chartDto.append(ChartDTOResponse(chart: chart[i], segment: segmentDto))
-            }
+        
+        for i in 0..<chart.count {
+            let segment = try self.getSegments(from: chart[i])
+            let segmentDto = segment.compactMap { SegmentDTOResponse(segment: $0) }
+            chartDto.append(ChartDTOResponse(chart: chart[i], segment: segmentDto))
+        }
         
         return chartDto
     }
@@ -98,31 +98,26 @@ extension CoreDataStorage {
                     try self.add(segment: chart, to: savedChart[i])
                 }
             }
-            
         }
         
         self.saveContext()
     }
     
-    func deleteSegment(_ viewModel: DeleteViewModelRequest) throws {
+    func deleteSegmentBy(id: UUID) throws {
         let fetchRequest = SegmentEntity.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "id = %@",
-                                             viewModel.idSegment.description)
-        //Сделать проверку в интеракторе
-        if viewModel.segmentsCount == 1 {
-            try self.delete(chartId: viewModel.id)
-        } else {
-            if let segmentForDelete = try self.context.fetch(fetchRequest).first {
-                context.delete(segmentForDelete)
-                self.saveContext()
-            }
+                                             id.description)
+        
+        if let segmentForDelete = try self.context.fetch(fetchRequest).first {
+            context.delete(segmentForDelete)
+            self.saveContext()
         }
     }
     
-    private func delete(chartId: UUID) throws {
+    func deleteChartBy(id: UUID) throws {
         let fetchRequest = ChartEntity.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "id = %@",
-                                             chartId.description)
+                                             id.description)
         
         let charts = try self.context.fetch(fetchRequest)
         if let chartForDelete = charts.first {
@@ -149,9 +144,9 @@ private extension CoreDataStorage {
         let fetchRequest = SegmentEntity.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "chart.id = %@",
                                              chart.id.description)
-
+        
         let segment = try context.fetch(fetchRequest)
-
+        
         return segment
     }
     
