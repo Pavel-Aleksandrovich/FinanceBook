@@ -12,7 +12,7 @@ protocol IFavoriteNewsPresenter: AnyObject {
                         view: IFavoriteNewsView,
                         tableAdapter: IFavoriteNewsTableAdapter)
     func showError(_ error: Error)
-    func setFavoriteNews(_ news: [NewsResponse])
+    func setFavoriteNews(_ news: [FavoriteNewsResponse])
     func deleteNewsAt(_ id: UUID)
 }
 
@@ -36,9 +36,11 @@ extension FavoriteNewsPresenter: IFavoriteNewsPresenter {
         self.tableAdapter?.tableView = self.view?.getTableView()
     }
     
-    func setFavoriteNews(_ news: [NewsResponse]) {
+    func setFavoriteNews(_ news: [FavoriteNewsResponse]) {
+        let viewModel = news.map { FavoriteNewsViewModel(viewModel: $0) }
+        
         self.mainQueue.async {
-            self.tableAdapter?.setFavoriteNews(news)
+            self.tableAdapter?.setFavoriteNews(viewModel)
         }
     }
     

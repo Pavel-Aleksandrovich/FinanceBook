@@ -8,15 +8,14 @@
 import UIKit
 
 protocol ListNewsTableAdapterDelegate: AnyObject {
-    func loadImageData(url: String?, complition: @escaping(Data) -> ())
+    func loadImageData(url: String?, complition: @escaping(UIImage?) -> ())
 }
 
 protocol IListNewsTableAdapter: AnyObject {
     var delegate: ListNewsTableAdapterDelegate? { get set }
     var tableView: UITableView? { get set }
-    var onCellTappedHandler: ((Article) -> ())? { get set }
-    var scrollDidEndHandler: (() -> ())? { get set }
-    func setNews(_ news: News)
+    var onCellTappedHandler: ((NewsRequest) -> ())? { get set }
+    func setNews(_ news: NewsDTO)
     func clearData()
 }
 
@@ -24,8 +23,7 @@ final class ListNewsTableAdapter: NSObject {
     
     private var isLoading = false
     private var articleArray: [Article] = []
-    var onCellTappedHandler: ((Article) -> ())?
-    var scrollDidEndHandler: (() -> ())?
+    var onCellTappedHandler: ((NewsRequest) -> ())?
     weak var delegate: ListNewsTableAdapterDelegate?
     weak var tableView: UITableView? {
         didSet {
@@ -44,7 +42,7 @@ extension ListNewsTableAdapter: IListNewsTableAdapter {
         self.tableView?.reloadData()
     }
     
-    func setNews(_ news: News) {
+    func setNews(_ news: NewsDTO) {
         self.articleArray.append(contentsOf: news.articles)
         self.tableView?.reloadData()
     }
@@ -61,28 +59,6 @@ extension ListNewsTableAdapter: UITableViewDelegate, UITableViewDataSource {
         150
     }
     
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let offsetY = scrollView.contentOffset.y
-        let contentHeight = scrollView.contentSize.height
-        if (offsetY > contentHeight - scrollView.frame.height * 4) && !isLoading {
-            self.loadMoreData()
-        }
-    }
-    
-    private func loadMoreData() {
-        if !isLoading {
-            isLoading = true
-            DispatchQueue.global().async {
-                sleep(1)
-                self.scrollDidEndHandler?()
-                DispatchQueue.main.async {
-                    self.tableView?.reloadData()
-                    self.isLoading = false
-                }
-            }
-        }
-    }
-    
     func tableView(_ tableView: UITableView,
                    cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
@@ -90,10 +66,8 @@ extension ListNewsTableAdapter: UITableViewDelegate, UITableViewDataSource {
                                                        for: indexPath) as? ListNewsCell else { return UITableViewCell() }
         
         let article = articleArray[indexPath.row]
+        
         cell.update(article: article)
-        self.delegate?.loadImageData(url: article.urlToImage, complition: { imageData in
-            cell.setImage(data: imageData)
-        })
         
         return cell
     }
@@ -102,6 +76,14 @@ extension ListNewsTableAdapter: UITableViewDelegate, UITableViewDataSource {
                    didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let article = articleArray[indexPath.row]
-        self.onCellTappedHandler?(article)
+        
+        guard let title = article.title,
+              let desctiption = article.description,
+              let imageUrl = article.urlToImage else { return }
+        
+        let viewModel = NewsRequest(title: title,
+                                                desctiption: desctiption,
+                                                imageUrl: imageUrl)
+        self.onCellTappedHandler?(viewModel)
     }
 }

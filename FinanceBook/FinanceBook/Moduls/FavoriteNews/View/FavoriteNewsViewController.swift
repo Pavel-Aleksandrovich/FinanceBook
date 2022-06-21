@@ -61,7 +61,7 @@ private extension FavoriteNewsViewController {
     
     func setOnCellTappedHandler() {
         self.tableAdapter.onCellTappedHandler = { [ weak self ] article in
-            self?.router.showArticleDetails(article)
+//            self?.router.showArticleDetails(article)
         }
     }
     

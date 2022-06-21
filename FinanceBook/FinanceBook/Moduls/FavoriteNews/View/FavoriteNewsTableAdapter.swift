@@ -7,25 +7,21 @@
 
 import UIKit
 
-protocol FavoriteNewsTableAdapterDelegate: AnyObject {
-    func loadImageData(url: String?, complition: @escaping(Data) -> ())
-}
-
 protocol IFavoriteNewsTableAdapter: AnyObject {
-    var delegate: FavoriteNewsTableAdapterDelegate? { get set }
     var tableView: UITableView? { get set }
-    var onCellTappedHandler: ((NewsResponse) -> ())? { get set }
-    var onCellDeleteHandler: ((NewsResponse) -> ())? { get set }
-    func setFavoriteNews(_ news: [NewsResponse])
+    var onCellTappedHandler: ((FavoriteNewsViewModel) -> ())? { get set }
+    var onCellDeleteHandler: ((FavoriteNewsRequest) -> ())? { get set }
+    func setFavoriteNews(_ news: [FavoriteNewsViewModel])
     func deleteNewsAt(_ id: UUID)
 }
 
 final class FavoriteNewsTableAdapter: NSObject {
     
-    private var articleArray: [NewsResponse] = []
-    var onCellTappedHandler: ((NewsResponse) -> ())?
-    var onCellDeleteHandler: ((NewsResponse) -> ())?
-    weak var delegate: FavoriteNewsTableAdapterDelegate?
+    private var articleArray: [FavoriteNewsViewModel] = []
+    
+    var onCellTappedHandler: ((FavoriteNewsViewModel) -> ())?
+    var onCellDeleteHandler: ((FavoriteNewsRequest) -> ())?
+    
     weak var tableView: UITableView? {
         didSet {
             self.tableView?.delegate = self
@@ -48,7 +44,7 @@ extension FavoriteNewsTableAdapter: IFavoriteNewsTableAdapter {
         }
     }
     
-    func setFavoriteNews(_ news: [NewsResponse]) {
+    func setFavoriteNews(_ news: [FavoriteNewsViewModel]) {
         self.articleArray = news
         self.tableView?.reloadData()
     }
@@ -94,8 +90,10 @@ extension FavoriteNewsTableAdapter: UITableViewDelegate, UITableViewDataSource {
                    commit editingStyle: UITableViewCell.EditingStyle,
                    forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-//            let employeeRequest = EmployeeRequest(employee: employeeArray[indexPath.row])
-            self.onCellDeleteHandler?(articleArray[indexPath.row])
+            
+            let article = articleArray[indexPath.row]
+            let request = FavoriteNewsRequest(viewModel: article)
+            self.onCellDeleteHandler?(request)
         }
     }
 }

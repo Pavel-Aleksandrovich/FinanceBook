@@ -37,7 +37,8 @@ final class NewsDetailsViewController: UIViewController {
         super.viewDidLoad()
         self.interactor.onViewAttached(controller: self,
                                        view: self.mainView)
-        self.configView()
+        self.setOnFavoriteButtonTappedHandler()
+        
     }
 }
 
@@ -54,37 +55,10 @@ extension NewsDetailsViewController: INewsDetailsViewController {
 
 private extension NewsDetailsViewController {
     
-    func configView() {
-        self.createExitBarButton()
-        self.createFavoriteBarButton()
-    }
-    
-    func createExitBarButton() {
-        let image = UIImage(systemName: "xmark.circle")
-        let item = UIBarButtonItem(image: image,
-                                   style: .plain,
-                                   target: self,
-                                   action: #selector
-                                   (self.exitButtonTapped))
-        navigationItem.rightBarButtonItem = item
-    }
-    
-    @objc func exitButtonTapped() {
-        self.router.dismiss()
-    }
-    
-    func createFavoriteBarButton() {
-        let image = UIImage(systemName: "heart")
-        let item = UIBarButtonItem(image: image,
-                                   style: .plain,
-                                   target: self,
-                                   action: #selector
-                                   (self.favoriteButtonTapped))
-        navigationItem.leftBarButtonItem = item
-    }
-    
-    @objc func favoriteButtonTapped() {
-        let model = self.mainView.getModel()
-        self.interactor.addToFavorite(news: model)
+    func setOnFavoriteButtonTappedHandler() {
+        self.mainView.onFavoriteButtonTappedHandler = {
+            let model = self.mainView.getModel()
+            self.interactor.addToFavorite(news: model)
+        }
     }
 }

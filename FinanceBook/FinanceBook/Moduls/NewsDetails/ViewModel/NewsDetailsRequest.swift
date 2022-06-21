@@ -7,12 +7,12 @@
 
 import Foundation
 
-struct NewsRequest {
+struct NewsDetailsRequest {
     let id: UUID
     let title: String
     let desctiption: String
     let imageData: Data
-    
+
     init(title: String,
          desctiption: String,
          imageData: Data) {

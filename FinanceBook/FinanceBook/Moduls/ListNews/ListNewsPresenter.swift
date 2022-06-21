@@ -12,7 +12,7 @@ protocol IListNewsPresenter: AnyObject {
                         view: IListNewsView,
                         tableAdapter: IListNewsTableAdapter)
     func showError(_ error: Error)
-    func setNews(_ news: News)
+    func setNews(_ news: NewsDTO)
     func clearData()
     func setLanguageBarButtonTitle(title: String)
 }
@@ -43,7 +43,7 @@ extension ListNewsPresenter: IListNewsPresenter {
         }
     }
     
-    func setNews(_ news: News) {
+    func setNews(_ news: NewsDTO) {
         self.mainQueue.async {
             self.tableAdapter?.setNews(news)
         }

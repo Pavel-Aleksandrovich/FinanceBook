@@ -54,7 +54,6 @@ final class ListNewsViewController: UIViewController {
                                        tableAdapter: self.tableAdapter)
         self.setOnCellTappedHandler()
         self.interactor.loadNews(language: nil, category: nil)
-        self.setScrollDidEndHandler()
         self.tableAdapter.delegate = self
         self.setOnCellCollectionTappedHandler()
         self.createLanguageBarButton()
@@ -75,7 +74,7 @@ extension ListNewsViewController: IListNewsViewController {
 
 extension ListNewsViewController: ListNewsTableAdapterDelegate {
     
-    func loadImageData(url: String?, complition: @escaping (Data) -> ()) {
+    func loadImageData(url: String?, complition: @escaping (UIImage?) -> ()) {
         self.interactor.loadImageDataFrom(url: url, complition: complition)
     }
 }
@@ -95,12 +94,6 @@ private extension ListNewsViewController {
     @objc func languageButtonTapped() {
         self.router.showLanguageAlert { [ weak self ] language in
             self?.interactor.loadNews(language: language, category: nil)
-        }
-    }
-    
-    func setScrollDidEndHandler() {
-        self.tableAdapter.scrollDidEndHandler = {
-            self.interactor.loadNews(language: nil, category: nil)
         }
     }
     

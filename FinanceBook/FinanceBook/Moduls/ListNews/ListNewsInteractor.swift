@@ -5,21 +5,20 @@
 //  Created by pavel mishanin on 15.06.2022.
 //
 
-import Foundation
+import UIKit
 
 protocol IListNewsInteractor: AnyObject {
     func onViewAttached(controller: IListNewsViewController,
                         view: IListNewsView,
                         tableAdapter: IListNewsTableAdapter)
     func loadNews(language: String?, category: String?)
-    func loadImageDataFrom(url: String?, complition: @escaping(Data) -> ())
+    func loadImageDataFrom(url: String?, complition: @escaping(UIImage?) -> ())
 }
 
 final class ListNewsInteractor {
     
     private var category: String? = Category.general.rawValue {
         didSet {
-            self.page = 0
             self.presenter.clearData()
         }
     }
@@ -29,8 +28,6 @@ final class ListNewsInteractor {
             self.languageDidUpdate()
         }
     }
-    
-    private var page = 0
     
     private let presenter: IListNewsPresenter
     private let networkManager = NetworkManager()
@@ -43,7 +40,7 @@ final class ListNewsInteractor {
 extension ListNewsInteractor: IListNewsInteractor {
     
     func loadImageDataFrom(url: String?,
-                           complition: @escaping(Data) -> ()) {
+                           complition: @escaping(UIImage?) -> ()) {
         guard let url = url else { return }
         
         self.networkManager.loadImageDataFrom(url: url) { [ weak self ] result in
@@ -69,11 +66,10 @@ extension ListNewsInteractor: IListNewsInteractor {
             self.language = language
         }
         let language = self.language ?? "us"
-        self.page += 1
         
         self.networkManager.loadNews(language: language,
                                      category: category,
-                                     page: self.page) { [ weak self ] result in
+                                     page: 1) { [ weak self ] result in
             switch result {
             case .success(let news):
                 self?.presenter.setNews(news)
@@ -95,7 +91,6 @@ extension ListNewsInteractor: IListNewsInteractor {
 private extension ListNewsInteractor {
     
     func languageDidUpdate() {
-        self.page = 0
         self.presenter.clearData()
         
         guard let title = self.language else { return }

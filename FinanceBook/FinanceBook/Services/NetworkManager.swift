@@ -5,7 +5,7 @@
 //  Created by pavel mishanin on 15.06.2022.
 //
 
-import Foundation
+import UIKit
 
 final class NetworkManager {
     
@@ -20,6 +20,7 @@ final class NetworkManager {
     }
     
     private let session: URLSession
+    private let cache = NSCache<NSString, UIImage>()
     
     init(configuration: URLSessionConfiguration? = nil) {
         if let configuration = configuration {
@@ -36,32 +37,37 @@ extension NetworkManager {
     func loadNews(language: String,
                   category: String,
                   page: Int,
-                  completion: @escaping (Result<News, Error>) -> ()) {
-        let api = "https://newsapi.org/v2/top-headlines?country=\(language)&page=\(page)&category=\(category)&apiKey=b21393dbff084185b011f3acdc9bd5fb"
-//        let api = "https://newsapi.org/v2/top-headlines?country=us&page=\(page)&apiKey=b21393dbff084185b011f3acdc9bd5fb"
+                  completion: @escaping (Result<NewsDTO, Error>) -> ()) {
+        let api = "https://newsapi.org/v2/top-headlines?country=\(language)&pageSize=100&category=\(category)&apiKey=b21393dbff084185b011f3acdc9bd5fb"
+        //        let api = "https://newsapi.org/v2/top-headlines?country=us&page=\(page)&apiKey=b21393dbff084185b011f3acdc9bd5fb"
         self.loadData(api: api, completion: completion)
     }
     
     func loadImageDataFrom(url: String,
-                           completion: @escaping (Result<Data, Error>) -> ()) {
+                           completion: @escaping(Result<UIImage?,
+                                                 Error>) -> ()) {
+        let cacheKey = NSString(string: url)
         
-        let correctUrlString = url
-        guard let url = URL(string: correctUrlString) else { return }
-        let request = URLRequest(url: url)
-        
-        self.session.downloadTask(with: request) { url, response, error in
-            if let error = error {
-                completion(.failure(error))
-            }
-            guard let url = url else { return }
-            do {
-                let data = try Data(contentsOf: url)
-                completion(.success(data))
-            }
-            catch let error {
-                completion(.failure(error))
-            }
-        }.resume()
+        if let imageFromCache = cache.object(forKey: cacheKey) {
+            completion(.success(imageFromCache))
+        } else {
+            guard let url = URL(string: url) else { return }
+            let request = URLRequest(url: url)
+            
+            self.session.dataTask(with: request) { data, response, error in
+                
+                if let error = error {
+                    completion(.failure(error))
+                }
+                
+                guard let data = data else { return }
+                
+                guard let image = UIImage(data: data) else { return }
+                
+                self.cache.setObject(image, forKey: cacheKey)
+                completion(.success(image))
+            }.resume()
+        }
     }
 }
 

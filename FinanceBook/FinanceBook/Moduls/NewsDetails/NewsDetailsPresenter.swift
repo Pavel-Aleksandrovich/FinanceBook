@@ -5,15 +5,15 @@
 //  Created by pavel mishanin on 15.06.2022.
 //
 
-import Foundation
+import UIKit
 
 protocol INewsDetailsPresenter: AnyObject {
     func onViewAttached(controller: INewsDetailsViewController,
                         view: INewsDetailsView)
     func showError(_ error: Error)
     func showSuccess()
-    func setNews(_ article: Article)
-    func setImageDate(_ data: Data)
+    func setNews(_ article: NewsRequest)
+    func setImageDate(_ data: UIImage?)
 }
 
 final class NewsDetailsPresenter {
@@ -44,13 +44,13 @@ extension NewsDetailsPresenter: INewsDetailsPresenter {
         }
     }
     
-    func setNews(_ article: Article) {
+    func setNews(_ article: NewsRequest) {
         self.mainQueue.async {
             self.view?.update(article: article)
         }
     }
     
-    func setImageDate(_ data: Data) {
+    func setImageDate(_ data: UIImage?) {
         self.mainQueue.async {
             self.view?.setImage(data: data)
         }

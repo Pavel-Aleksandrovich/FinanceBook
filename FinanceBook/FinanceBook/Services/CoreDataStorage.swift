@@ -30,13 +30,13 @@ final class CoreDataStorage {
 
 extension CoreDataStorage {
     
-    func getListNews() throws -> [NewsResponse] {
+    func getListNews() throws -> [FavoriteNewsResponse] {
         let fetchRequest = NewsEntity.fetchRequest()
         let news = try self.context.fetch(fetchRequest)
-        return news.compactMap { NewsResponse(from: $0) }
+        return news.compactMap { FavoriteNewsResponse(from: $0) }
     }
     
-    func delete(news: NewsResponse) throws {
+    func delete(news: FavoriteNewsRequest) throws {
         
         let fetchRequest = NewsEntity.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "id = %@",
@@ -49,7 +49,7 @@ extension CoreDataStorage {
         }
     }
     
-    func create(news: NewsRequest) throws {
+    func create(news: NewsDetailsRequest) throws {
         
         guard let entity = NSEntityDescription.entity(forEntityName: "NewsEntity",
                                                       in: self.context) else { return }

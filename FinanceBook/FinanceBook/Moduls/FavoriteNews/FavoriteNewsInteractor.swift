@@ -12,7 +12,7 @@ protocol IFavoriteNewsInteractor: AnyObject {
                         view: IFavoriteNewsView,
                         tableAdapter: IFavoriteNewsTableAdapter)
     func loadNews()
-    func deleteNews(_ news: NewsResponse)
+    func deleteNews(_ news: FavoriteNewsRequest)
 }
 
 final class FavoriteNewsInteractor {
@@ -40,7 +40,7 @@ extension FavoriteNewsInteractor: IFavoriteNewsInteractor {
         }
     }
     
-    func deleteNews(_ news: NewsResponse) {
+    func deleteNews(_ news: FavoriteNewsRequest) {
         self.dataManager.delete(news: news) { [ weak self ] result in
             switch result {
             case .success():

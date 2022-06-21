@@ -27,9 +27,9 @@ final class FavoriteNewsCell: UITableViewCell {
 
 extension FavoriteNewsCell {
     
-    func update(article: NewsResponse) {
+    func update(article: FavoriteNewsViewModel) {
         self.titleLabel.text = article.title
-        self.newsImageView.image = UIImage(data: article.imageData)
+        self.newsImageView.image = UIImage(data: article.data)
     }
 }
 

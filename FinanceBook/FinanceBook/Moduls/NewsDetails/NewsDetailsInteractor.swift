@@ -10,8 +10,8 @@ import Foundation
 protocol INewsDetailsInteractor: AnyObject {
     func onViewAttached(controller: INewsDetailsViewController,
                         view: INewsDetailsView)
-    func loadImageDataFrom(url: String?)
-    func addToFavorite(news: NewsRequest?)
+    func loadImageDataFrom(url: String)
+    func addToFavorite(news: NewsDetailsRequest?)
 }
 
 final class NewsDetailsInteractor {
@@ -22,7 +22,7 @@ final class NewsDetailsInteractor {
     
     init(presenter: INewsDetailsPresenter,
          dataManager: INewsDataManager,
-         article: Article) {
+         article: NewsRequest) {
         self.presenter = presenter
         self.dataManager = dataManager
         self.setData(article: article)
@@ -31,8 +31,7 @@ final class NewsDetailsInteractor {
 
 extension NewsDetailsInteractor: INewsDetailsInteractor {
     
-    func loadImageDataFrom(url: String?) {
-        guard let url = url else { return }
+    func loadImageDataFrom(url: String) {
         
         self.networkManager.loadImageDataFrom(url: url) { [ weak self ] result in
             switch result {
@@ -44,7 +43,7 @@ extension NewsDetailsInteractor: INewsDetailsInteractor {
         }
     }
     
-    func addToFavorite(news: NewsRequest?) {
+    func addToFavorite(news: NewsDetailsRequest?) {
         guard let news = news else { return }
 
         self.dataManager.create(news: news) { [ weak self ] result in
@@ -66,8 +65,8 @@ extension NewsDetailsInteractor: INewsDetailsInteractor {
 
 private extension NewsDetailsInteractor {
     
-    func setData(article: Article) {
-        self.loadImageDataFrom(url: article.urlToImage)
+    func setData(article: NewsRequest) {
         self.presenter.setNews(article)
+        self.loadImageDataFrom(url: article.imageUrl)
     }
 }

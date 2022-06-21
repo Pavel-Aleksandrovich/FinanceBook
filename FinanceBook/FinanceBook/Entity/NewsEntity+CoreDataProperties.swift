@@ -29,7 +29,7 @@ extension NewsEntity : Identifiable {
 
 extension NewsEntity {
     
-    func setValue(from model: NewsRequest) {
+    func setValue(from model: NewsDetailsRequest) {
         self.id = model.id
         self.title = model.title
         self.content = model.desctiption

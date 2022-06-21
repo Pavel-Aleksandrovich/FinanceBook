@@ -7,16 +7,16 @@
 
 import Foundation
 
-struct NewsResponse {
+struct FavoriteNewsResponse {
     let id: UUID
     let title: String
-    let desctiption: String
+    let description: String
     let imageData: Data
     
     init(from model: NewsEntity) {
         self.id = model.id
         self.title = model.title
-        self.desctiption = model.content
+        self.description = model.content
         self.imageData = model.imageData
     }
 }

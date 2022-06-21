@@ -15,8 +15,10 @@ final class ListNewsCell: UITableViewCell {
     private let activityIndicator = UIActivityIndicatorView(style: .large)
     private let titleLabel = BaseLabel()
     private let newsImageView = UIImageView()
+    private let networkManager = NetworkManager()
     
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+    override init(style: UITableViewCell.CellStyle,
+                  reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.makeConstraints()
         self.activityIndicator.startAnimating()
@@ -31,11 +33,23 @@ extension ListNewsCell {
     
     func update(article: Article) {
         self.titleLabel.text = article.title
+        self.setImage(url: article.urlToImage)
     }
     
-    func setImage(data: Data) {
+    func setImage(url: String?) {
         self.activityIndicator.startAnimating()
-        self.newsImageView.image = UIImage(data: data)
+//        self.newsImageView.image = UIImage(data: data)
+        guard let url = url else { return }
+
+        self.networkManager.loadImageDataFrom(url: url) { result in
+            switch result {
+            case .success(let image):
+                DispatchQueue.main.async {
+                    self.newsImageView.image = image
+                }
+            case .failure(_): break
+            }
+        }
         if self.newsImageView.image != nil {
             self.activityIndicator.stopAnimating()
         }

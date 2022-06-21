@@ -8,11 +8,11 @@
 import Foundation
 
 protocol INewsDataManager {
-    func getListNews(completion: @escaping(Result<([NewsResponse]),
+    func getListNews(completion: @escaping(Result<([FavoriteNewsResponse]),
                                            Error>) -> ())
-    func create(news: NewsRequest,
+    func create(news: NewsDetailsRequest,
                 completion: @escaping(Result<(), Error>) -> ())
-    func delete(news: NewsResponse,
+    func delete(news: FavoriteNewsRequest,
                 completion: @escaping(Result<(),
                                       Error>) -> ())
 }
@@ -38,7 +38,7 @@ final class DataManager {
 
 extension DataManager: INewsDataManager {
     
-    func getListNews(completion: @escaping(Result<([NewsResponse]),
+    func getListNews(completion: @escaping(Result<([FavoriteNewsResponse]),
                                            Error>) -> ()) {
         self.globalQueue.async {
             do {
@@ -50,7 +50,7 @@ extension DataManager: INewsDataManager {
         }
     }
     
-    func create(news: NewsRequest,
+    func create(news: NewsDetailsRequest,
                 completion: @escaping(Result<(), Error>) -> ()) {
         self.globalQueue.async {
             do {
@@ -62,7 +62,7 @@ extension DataManager: INewsDataManager {
         }
     }
     
-    func delete(news: NewsResponse,
+    func delete(news: FavoriteNewsRequest,
                 completion: @escaping(Result<(), Error>) -> ()) {
         self.globalQueue.async {
             do {

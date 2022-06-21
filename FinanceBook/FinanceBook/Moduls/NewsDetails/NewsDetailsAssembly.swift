@@ -9,7 +9,7 @@ import UIKit
 
 enum NewsDetailsAssembly {
     
-    static func build(article: Article) -> UIViewController {
+    static func build(article: NewsRequest) -> UIViewController {
         
         let presenter = NewsDetailsPresenter()
         let dataManager = DataManager()

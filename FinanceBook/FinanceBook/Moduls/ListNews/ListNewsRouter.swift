@@ -8,7 +8,7 @@
 import UIKit
 
 protocol IListNewsRouter: AnyObject {
-    func showArticleDetails(_ article: Article)
+    func showArticleDetails(_ article: NewsRequest)
     func showErrorAlert(_ error: String)
     func showLanguageAlert(complition: @escaping(String) -> ())
 }
@@ -20,10 +20,9 @@ final class ListNewsRouter {
 
 extension ListNewsRouter: IListNewsRouter {
     
-    func showArticleDetails(_ article: Article) {
+    func showArticleDetails(_ article: NewsRequest) {
         let vc = NewsDetailsAssembly.build(article: article)
-        let nav = UINavigationController(rootViewController: vc)
-        self.controller?.present(nav, animated: true)
+        self.controller?.present(vc, animated: true)
     }
     
     func showLanguageAlert(complition: @escaping(String) -> ()) {
