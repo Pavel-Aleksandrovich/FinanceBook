@@ -6,7 +6,12 @@
 //
 
 import Foundation
+import UIKit
 
+protocol FavoriteNewsPresenterOutput: AnyObject {
+    func setViewController(controller: UIViewController,
+                           view: UIView)
+}
 protocol IFavoriteNewsPresenter: AnyObject {
     func onViewAttached(controller: IFavoriteNewsViewController,
                         view: IFavoriteNewsView,
@@ -53,5 +58,12 @@ extension FavoriteNewsPresenter: IFavoriteNewsPresenter {
         self.mainQueue.async {
             self.controller?.showError(error.localizedDescription)
         }
+    }
+}
+
+extension FavoriteNewsPresenter: FavoriteNewsPresenterOutput {
+    func setViewController(controller: UIViewController, view: UIView) {
+        self.controller = controller as? IFavoriteNewsViewController
+        self.view = view as? IFavoriteNewsView
     }
 }

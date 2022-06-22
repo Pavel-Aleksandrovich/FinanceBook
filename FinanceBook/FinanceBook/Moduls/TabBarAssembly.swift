@@ -41,9 +41,9 @@ private extension TabBarAssembly {
     }
     
     func createChartViewController() -> UIViewController {
-        let favoriteNewsViewController = ChartAssembly.build()
+        let favoriteNewsViewController = HistoryAssembly.build()
         let image = UIImage(systemName: "chart.pie")
-        favoriteNewsViewController.tabBarItem = UITabBarItem(title: "Chart",
+        favoriteNewsViewController.tabBarItem = UITabBarItem(title: "History",
                                                              image: image,
                                                              tag: 0)
         
