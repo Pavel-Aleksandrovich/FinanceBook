@@ -7,11 +7,11 @@
 
 import Foundation
 
-struct NewsDTO: Codable {
-    let articles: [Article]
+struct NewsResponse: Codable {
+    let articles: [ArticleResponse]
 }
 
-struct Article: Codable {
+struct ArticleResponse: Codable {
     let title: String?
     let description: String?
     let urlToImage: String?
