@@ -35,7 +35,7 @@ extension CollectionViewAdapter: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let font = UIFont(name: "Arial Bold", size: 18)
+        let font = UIFont.systemFont(ofSize: 18)
         let attributes = [NSAttributedString.Key.font : font as Any]
         let width = Category.allCases[indexPath.item]
             .rawValue.size(withAttributes: attributes).width + 20

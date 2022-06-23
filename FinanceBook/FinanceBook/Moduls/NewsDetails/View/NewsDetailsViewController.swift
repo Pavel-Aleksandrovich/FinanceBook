@@ -14,6 +14,10 @@ protocol INewsDetailsViewController: AnyObject {
 
 final class NewsDetailsViewController: UIViewController {
     
+    private enum Constants {
+        static let savedSuccess = "News was added to favorite"
+    }
+    
     private let mainView = NewsDetailsView()
     private let interactor: INewsDetailsInteractor
     private let router: INewsDetailsRouter
@@ -38,8 +42,6 @@ final class NewsDetailsViewController: UIViewController {
         self.interactor.onViewAttached(controller: self,
                                        view: self.mainView)
         self.setOnFavoriteButtonTappedHandler()
-        self.createExitBarButton()
-        self.createFavoriteBarButton()
     }
 }
 
@@ -50,7 +52,7 @@ extension NewsDetailsViewController: INewsDetailsViewController {
     }
     
     func showSuccess() {
-        self.router.showAlert("News was added to favorite")
+        self.router.showAlert(Constants.savedSuccess)
     }
 }
 
@@ -61,34 +63,5 @@ private extension NewsDetailsViewController {
             let model = self.mainView.getModel()
             self.interactor.addToFavorite(news: model)
         }
-    }
-    
-    func createExitBarButton() {
-        let image = UIImage(systemName: "xmark.circle")
-        let item = UIBarButtonItem(image: image,
-                                   style: .plain,
-                                   target: self,
-                                   action: #selector
-                                   (self.exitButtonTapped))
-//        self.navigationItem.rightBarButtonItem = item
-    }
-    
-    @objc func exitButtonTapped() {
-        self.router.dismiss()
-    }
-    
-    func createFavoriteBarButton() {
-        let image = UIImage(systemName: "heart")
-        let item = UIBarButtonItem(image: image,
-                                   style: .plain,
-                                   target: self,
-                                   action: #selector
-                                   (self.favoriteButtonTapped))
-        self.navigationItem.rightBarButtonItem = item
-    }
-    
-    @objc func favoriteButtonTapped() {
-            let model = self.mainView.getModel()
-            self.interactor.addToFavorite(news: model)
     }
 }

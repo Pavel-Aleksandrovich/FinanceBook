@@ -9,6 +9,20 @@ import UIKit
 
 final class TabBarAssembly: UITabBarController {
     
+    private enum Constants {
+        static let HistoryImageName = "chart.pie"
+        static let HistoryItemTitle = "History"
+        static let HistoryTag = 0
+        
+        static let ListNewsImageName = "magazine"
+        static let ListNewsItemTitle = "News"
+        static let ListNewsTag = 1
+        
+        static let FavoriteNewsImageName = "bookmark"
+        static let FavoriteNewsItemTitle = "Favorite"
+        static let FavoriteNewsTag = 2
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.viewControllers = [self.createHistoryViewController(),
@@ -20,32 +34,32 @@ final class TabBarAssembly: UITabBarController {
 
 private extension TabBarAssembly {
     
+    func createHistoryViewController() -> UIViewController {
+        let vc = HistoryAssembly.build()
+        let image = UIImage(systemName: Constants.HistoryImageName)
+        vc.tabBarItem = UITabBarItem(title: Constants.HistoryItemTitle,
+                                     image: image,
+                                     tag: Constants.HistoryTag)
+        
+        return UINavigationController(rootViewController: vc)
+    }
+    
     func createListNewsViewController() -> UIViewController {
         let vc = ListNewsAssembly.build()
-        let image = UIImage(systemName: "magazine")
-        vc.tabBarItem = UITabBarItem(title: "News",
+        let image = UIImage(systemName: Constants.ListNewsImageName)
+        vc.tabBarItem = UITabBarItem(title: Constants.ListNewsItemTitle,
                                      image: image,
-                                     tag: 1)
+                                     tag: Constants.ListNewsTag)
         
         return UINavigationController(rootViewController: vc)
     }
     
     func createFavoriteNewsViewController() -> UIViewController {
         let vc = FavoriteNewsAssembly.build()
-        let image = UIImage(systemName: "bookmark")
-        vc.tabBarItem = UITabBarItem(title: "Favorite",
+        let image = UIImage(systemName: Constants.FavoriteNewsImageName)
+        vc.tabBarItem = UITabBarItem(title: Constants.FavoriteNewsItemTitle,
                                      image: image,
-                                     tag: 2)
-        
-        return UINavigationController(rootViewController: vc)
-    }
-    
-    func createHistoryViewController() -> UIViewController {
-        let vc = HistoryAssembly.build()
-        let image = UIImage(systemName: "chart.pie")
-        vc.tabBarItem = UITabBarItem(title: "History",
-                                     image: image,
-                                     tag: 0)
+                                     tag: Constants.FavoriteNewsTag)
         
         return UINavigationController(rootViewController: vc)
     }

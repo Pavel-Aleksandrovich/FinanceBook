@@ -9,7 +9,7 @@ import UIKit
 
 protocol ITransactionDetailsRouter: AnyObject {
     func popToRoot()
-    func showErrorAlert(_ error: String)
+    func showAlert(_ title: String)
     func showSuccessAlert(complition: @escaping() -> ())
 }
 
@@ -24,8 +24,8 @@ extension TransactionDetailsRouter: ITransactionDetailsRouter {
         self.controller?.navigationController?.popToRootViewController(animated: true)
     }
     
-    func showErrorAlert(_ error: String) {
-        let alert = AlertAssembly.createAlert(error)
+    func showAlert(_ title: String) {
+        let alert = AlertAssembly.createAlert(title)
         self.controller?.present(alert, animated: true)
     }
     

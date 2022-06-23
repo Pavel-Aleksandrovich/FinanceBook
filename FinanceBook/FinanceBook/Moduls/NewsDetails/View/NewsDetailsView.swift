@@ -26,6 +26,10 @@ final class NewsDetailsView: UIView {
         
         static let contentLabelTop = -10
         static let contentLabelLeading = 10
+        
+        static let favoriteViewTop = -10
+        static let favoriteViewHeight = 50
+        static let favoriteViewWidth = 110
     }
     
     private let titleLabel = BaseLabel()
@@ -33,16 +37,15 @@ final class NewsDetailsView: UIView {
     private let imageView = UIImageView()
     private let scrollView = UIScrollView()
     private let activityIndicator = UIActivityIndicatorView(style: .large)
-    private let favoriteView = UIImageView()
+    private let favoriteView = NewsDetailsFavoriteView()
     
     var onFavoriteButtonTappedHandler: (() -> ())?
     
     init() {
         super.init(frame: .zero)
-        self.backgroundColor = .white
+        self.configView()
         self.makeConstraints()
-        self.configFavoriteView()
-        self.activityIndicator.startAnimating()
+        self.onFavoriteButtonTapped()
     }
     
     required init?(coder: NSCoder) {
@@ -76,16 +79,15 @@ extension NewsDetailsView: INewsDetailsView {
 
 private extension NewsDetailsView {
     
-    func configFavoriteView() {
-        self.favoriteView.image = UIImage(systemName: "heart")
-        self.favoriteView.isUserInteractionEnabled = true
-        let tap = UITapGestureRecognizer(target: self,
-                                         action: #selector(self.handleTap))
-        self.favoriteView.addGestureRecognizer(tap)
+    func configView() {
+        self.backgroundColor = .white
+        self.activityIndicator.startAnimating()
     }
     
-    @objc func handleTap() {
-        self.onFavoriteButtonTappedHandler?()
+    func onFavoriteButtonTapped() {
+        self.favoriteView.setTappedHandler {
+            self.onFavoriteButtonTappedHandler?()
+        }
     }
     
     func makeConstraints() {
@@ -124,8 +126,9 @@ private extension NewsDetailsView {
     
     func makeFavoriteViewConstraints() {
         self.favoriteView.snp.makeConstraints { make in
-            make.top.equalTo(self.imageView.snp.bottom).inset(-10)
-            make.width.height.equalTo(100)
+            make.top.equalTo(self.imageView.snp.bottom).inset(Constants.favoriteViewTop)
+            make.height.equalTo(Constants.favoriteViewHeight)
+            make.width.equalTo(Constants.favoriteViewWidth)
             make.centerX.equalTo(self)
         }
     }

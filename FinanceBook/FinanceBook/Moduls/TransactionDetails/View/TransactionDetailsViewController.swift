@@ -57,7 +57,7 @@ extension TransactionDetailsViewController: ITransactionDetailsViewController {
     
     func showError(_ error: String) {
         func showError(_ error: String) {
-            self.router.showErrorAlert(error)
+            self.router.showAlert(error)
         }
     }
     

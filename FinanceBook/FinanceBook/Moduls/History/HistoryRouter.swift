@@ -9,7 +9,7 @@ import UIKit
 
 protocol IHistoryRouter: AnyObject {
     func showAddTransactionModul()
-    func showErrorAlert(_ error: String)
+    func showAlert(_ title: String)
 }
 
 final class HistoryRouter {
@@ -25,8 +25,8 @@ extension HistoryRouter: IHistoryRouter {
                                                                   animated: true)
     }
     
-    func showErrorAlert(_ error: String) {
-        let alert = AlertAssembly.createAlert(error)
+    func showAlert(_ title: String) {
+        let alert = AlertAssembly.createAlert(title)
         self.controller?.present(alert, animated: true)
     }
 }

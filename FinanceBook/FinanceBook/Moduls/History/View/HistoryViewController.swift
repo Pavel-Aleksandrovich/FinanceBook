@@ -52,7 +52,7 @@ final class HistoryViewController: UIViewController {
 
 extension HistoryViewController: IHistoryViewController {
     func showError(_ error: String) {
-        self.router.showErrorAlert(error)
+        self.router.showAlert(error)
     }
 }
 

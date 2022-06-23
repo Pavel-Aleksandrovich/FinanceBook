@@ -70,8 +70,9 @@ extension FavoriteNewsTableAdapter: UITableViewDelegate, UITableViewDataSource {
         
         switch self.state {
         case .success(let array):
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: FavoriteNewsCell.id,
-                                                           for: indexPath) as? FavoriteNewsCell
+            guard let cell = tableView.dequeueReusableCell(
+                withIdentifier: FavoriteNewsCell.id,
+                for: indexPath) as? FavoriteNewsCell
             else { return UITableViewCell() }
             
             let news = array[indexPath.row]
@@ -79,8 +80,9 @@ extension FavoriteNewsTableAdapter: UITableViewDelegate, UITableViewDataSource {
             
             return cell
         case .empty:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: FavoriteNewsDefaultCell.id,
-                                                           for: indexPath) as? FavoriteNewsDefaultCell
+            guard let cell = tableView.dequeueReusableCell(
+                withIdentifier: FavoriteNewsDefaultCell.id,
+                for: indexPath) as? FavoriteNewsDefaultCell
             else { return UITableViewCell() }
             
             return cell

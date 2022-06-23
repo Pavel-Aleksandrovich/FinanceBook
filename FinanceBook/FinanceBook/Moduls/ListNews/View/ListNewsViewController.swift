@@ -60,7 +60,7 @@ final class ListNewsViewController: UIViewController {
 extension ListNewsViewController: IListNewsViewController {
     
     func showError(_ error: String) {
-        self.router.showErrorAlert(error)
+        self.router.showAlert(error)
     }
     
     func setCountryBarButtonTitle(title: String) {

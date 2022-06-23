@@ -23,19 +23,26 @@ enum AlertAssembly {
     
     private enum Constants {
         static let errorAlertOkActionTitle = "Ok"
+        
+        static let countryAlertTitle = "Choose Language"
+        static let countryAlertUsTitle = "us"
+        static let countryAlertRuTitle = "ru"
+        
+        static let successAlertTitle = "Success"
+        static let successAlertActionTitle = "Go Back"
     }
     
     static func createCountryAlert(completion: @escaping(Country) -> ()) -> UIAlertController {
         
-        let alert = UIAlertController(title: "Choose Language",
+        let alert = UIAlertController(title: Constants.countryAlertTitle,
                                       message: nil,
                                       preferredStyle: .actionSheet)
         
-        let us = UIAlertAction(title: "us",
+        let us = UIAlertAction(title: Constants.countryAlertUsTitle,
                                style: .default) { _ in
             completion(.us)
         }
-        let ru = UIAlertAction(title: "ru",
+        let ru = UIAlertAction(title: Constants.countryAlertRuTitle,
                                style: .default) { _ in
             completion(.ru)
         }
@@ -60,13 +67,13 @@ enum AlertAssembly {
     
     static func createSuccessAlert(completion: @escaping() -> ()) -> UIAlertController {
         
-        let alert = UIAlertController(title: "Success",
+        let alert = UIAlertController(title: Constants.successAlertTitle,
                                       message: nil,
                                       preferredStyle: .alert)
         let continueAction = UIAlertAction(title: Constants.errorAlertOkActionTitle,
                                            style: .cancel) { _ in }
         
-        let goBackAction = UIAlertAction(title: "Go Back",
+        let goBackAction = UIAlertAction(title: Constants.successAlertActionTitle,
                                          style: .default) { _ in
             completion()
         }

@@ -12,7 +12,18 @@ protocol ITransactionDetailsValidator: AnyObject {
                complition: @escaping(ValidateResult) -> ()) -> Bool
 }
 
-final class TransactionDetailsValidator {}
+final class TransactionDetailsValidator {
+    
+    private enum Constants {
+        static let emptyName = "Enter name"
+        
+        static let emptyAmount = "Enter sum"
+        static let invalidAmount = "Invalid value"
+        
+        static let emptyDate = "Choose type"
+        static let invalidDate = "Invalid value"
+    }
+}
 
 extension TransactionDetailsValidator: ITransactionDetailsValidator {
     
@@ -58,7 +69,7 @@ private extension TransactionDetailsValidator {
     func checkName(_ name: String?) -> String? {
         guard let name = name,
               !name.isEmpty
-        else { return "Enter name" }
+        else { return Constants.emptyName }
         
         return nil
     }
@@ -66,25 +77,25 @@ private extension TransactionDetailsValidator {
     func checkAmount(_ amount: String?) -> String? {
         guard let amount = amount,
               !amount.isEmpty
-        else { return "Enter sum" }
+        else { return Constants.emptyAmount }
         
         if let _ = UInt(amount) {
             return nil
         }
         
-        return "Invalid value"
+        return Constants.invalidAmount
     }
     
     func checkDate(_ date: String?) -> String? {
         guard let date = date,
               !date.isEmpty else {
-            return "Enter category"
+            return Constants.emptyDate
         }
         
         if let _ = DateConverter.getDateFrom(string: date) {
             return nil
         }
         
-        return "Invalid value"
+        return Constants.invalidDate
     }
 }

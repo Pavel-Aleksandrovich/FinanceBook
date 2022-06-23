@@ -8,7 +8,6 @@
 import UIKit
 
 protocol INewsDetailsRouter: AnyObject {
-    func dismiss()
     func showAlert(_ title: String)
 }
 
@@ -18,10 +17,6 @@ final class NewsDetailsRouter {
 }
 
 extension NewsDetailsRouter: INewsDetailsRouter {
-    
-    func dismiss() {
-        self.controller?.dismiss(animated: true)
-    }
     
     func showAlert(_ title: String) {
         let alert = AlertAssembly.createAlert(title)
