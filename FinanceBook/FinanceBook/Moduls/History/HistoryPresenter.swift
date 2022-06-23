@@ -12,7 +12,7 @@ protocol IHistoryPresenter: AnyObject {
                         view: IHistoryView,
                         tableAdapter: IHistoryTableAdapter)
     func showError(_ error: Error)
-    func setCharts(_ chart: [HistoryResponse])
+    func setHistory(_ history: [HistoryResponse])
 }
 
 final class HistoryPresenter {
@@ -42,12 +42,12 @@ extension HistoryPresenter: IHistoryPresenter {
         }
     }
     
-    func setCharts(_ chart: [HistoryResponse]) {
-        let chartViewModel = self.getViewModel(from: chart)
+    func setHistory(_ history: [HistoryResponse]) {
+        let historyViewModel = self.getViewModel(from: history)
         
         self.mainQueue.async {
-            self.tableAdapter?.setCharts(chartViewModel)
-            self.view?.setCharts(chartViewModel)
+            self.tableAdapter?.setHistory(historyViewModel)
+            self.view?.setHistory(historyViewModel)
         }
     }
 }
@@ -56,7 +56,7 @@ private extension HistoryPresenter {
     
     func getViewModel(from array: [HistoryResponse]) -> [HistoryViewModel] {
         
-        array.map { HistoryViewModel(chart: $0,
-                                           segment: $0.transactionType.map { TransactionTypeViewModel(segment: $0) } ) }
+        array.map { HistoryViewModel(history: $0,
+                                     transaction: $0.transaction.map { TransactionTypeViewModel(transaction: $0) } ) }
     }
 }

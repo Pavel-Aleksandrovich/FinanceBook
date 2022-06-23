@@ -8,19 +8,13 @@
 import UIKit
 import SnapKit
 
-enum ButtonState {
-    case on
-    case off
-}
-
 protocol ITransactionDetailsView: AnyObject {
     var saveButtonTappedHandler: (() -> ())? { get set }
     var checkTextFieldsHandler: (() -> ())? { get set }
-    
-    func updateSaveButtonState(_ state: ButtonState)
+    func updateSaveButtonState(_ state: Bool)
     func getViewModel() -> TransactionDetailsValidateRequest
     func showErrorDateTextField()
-    func showErrorCategoryNameTextField()
+    func showErrorTransactionNameTextField()
     func showErrorNumberTextField()
 }
 
@@ -37,10 +31,10 @@ final class TransactionDetailsView: BaseView {
         static let numberTextFieldTop = -20
         static let numberTextFieldLeading = 20
         
-        static let categoryNameTextFieldHeader = "Type"
-        static let categoryNameTextFieldPlaceholder = "Enter Type"
-        static let categoryNameTextFieldTop = -20
-        static let categoryNameTextFieldLeading = 20
+        static let transactionNameTextFieldHeader = "Type"
+        static let transactionNameTextFieldPlaceholder = "Enter Type"
+        static let transactionNameTextFieldTop = -20
+        static let transactionNameTextFieldLeading = 20
         
         static let saveButtonAlphaMax: CGFloat = 1
         static let saveButtonAlphaMin: CGFloat = 0.2
@@ -63,10 +57,10 @@ final class TransactionDetailsView: BaseView {
     private let numberTextField = TransactionDetailsTextFieldView(settings:
             .init(header: Constants.numberTextFieldHeader,
                   placeholder: Constants.numberTextFieldPlaceholder))
-    private let categoryNameTextField = TransactionDetailsTextFieldView(settings:
-            .init(header: Constants.categoryNameTextFieldHeader,
-                  placeholder: Constants.categoryNameTextFieldPlaceholder))
-    private let categoryPicker = TransactionDetailsPicker()
+    private let transactionNameTextField = TransactionDetailsTextFieldView(settings:
+            .init(header: Constants.transactionNameTextFieldHeader,
+                  placeholder: Constants.transactionNameTextFieldPlaceholder))
+    private let transactionPicker = TransactionDetailsPicker()
     private let keyboardObserver = KeyboardObserver()
     
     var saveButtonTappedHandler: (() -> ())?
@@ -77,25 +71,27 @@ final class TransactionDetailsView: BaseView {
         self.configAppearance()
         self.makeConstraints()
         self.setHandlers()
+        self.setKeyboardObserver()
     }
 }
 
+// MARK: - ITransactionDetailsView
 extension TransactionDetailsView: ITransactionDetailsView {
     
-    func updateSaveButtonState(_ state: ButtonState) {
+    func updateSaveButtonState(_ state: Bool) {
         switch state {
-        case .on:
+        case true:
             self.saveButton.alpha = Constants.saveButtonAlphaMax
-        case .off:
+        case false:
             self.saveButton.alpha = Constants.saveButtonAlphaMin
         }
     }
     
     func getViewModel() -> TransactionDetailsValidateRequest {
         let date = self.dateTextField.text
-        let color = TransactionType.allCases[self.categoryPicker.selectedRow(inComponent: Constants.component)].color
+        let color = TransactionType.allCases[self.transactionPicker.selectedRow(inComponent: Constants.component)].color
         let amount = self.numberTextField.text
-        let name = self.categoryNameTextField.text
+        let name = self.transactionNameTextField.text
         
         return TransactionDetailsValidateRequest(name: name,
                                 amount: amount,
@@ -107,8 +103,8 @@ extension TransactionDetailsView: ITransactionDetailsView {
         self.dateTextField.showShakeAnimation()
     }
     
-    func showErrorCategoryNameTextField() {
-        self.categoryNameTextField.showShakeAnimation()
+    func showErrorTransactionNameTextField() {
+        self.transactionNameTextField.showShakeAnimation()
     }
     
     func showErrorNumberTextField() {
@@ -116,13 +112,14 @@ extension TransactionDetailsView: ITransactionDetailsView {
     }
 }
 
+// MARK: - Config Appearance
 private extension TransactionDetailsView {
     
     func configAppearance() {
         self.configView()
         self.configSaveButton()
         self.configDatePicker()
-        self.configCategoryTextField()
+        self.configTransactionNameTextField()
         self.configNumberTextField()
         self.configDateTextField()
     }
@@ -154,30 +151,37 @@ private extension TransactionDetailsView {
         self.datePicker.datePickerMode = .date
     }
     
-    func configCategoryTextField() {
-        self.categoryNameTextField.inputView = self.categoryPicker
-        self.categoryNameTextField.addTarget(self,
-                                             action: #selector(self.textFieldDidChange),
+    func configTransactionNameTextField() {
+        self.transactionNameTextField.inputView = self.transactionPicker
+        self.transactionNameTextField.addTarget(self,
+                                             action: #selector
+                                             (self.textFieldDidChange),
                                              for: .editingDidEnd)
     }
     
     func configNumberTextField() {
         self.numberTextField.keyboardType = .numberPad
         self.numberTextField.addTarget(self,
-                                       action: #selector(self.textFieldDidChange),
+                                       action: #selector
+                                       (self.textFieldDidChange),
                                        for: .editingChanged)
     }
     
     func configDateTextField() {
         self.dateTextField.inputView = self.datePicker
         self.dateTextField.addTarget(self,
-                                     action: #selector(self.textFieldDidChange),
+                                     action: #selector
+                                     (self.textFieldDidChange),
                                      for: .editingDidEnd)
     }
     
     @objc func textFieldDidChange() {
         self.checkTextFieldsHandler?()
     }
+}
+
+// MARK: - Make Constraints
+private extension TransactionDetailsView {
     
     func makeConstraints() {
         self.makeSaveButtonConstraints()
@@ -189,7 +193,8 @@ private extension TransactionDetailsView {
     func makeSaveButtonConstraints() {
         self.addSubview(self.saveButton)
         self.saveButton.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(Constants.saveButtonLeading)
+            make.leading.trailing.equalToSuperview()
+                .inset(Constants.saveButtonLeading)
             make.bottom.equalTo(self.safeAreaLayoutGuide).inset(Constants.saveButtonBottom)
             make.height.equalTo(Constants.saveButtonHeight)
         }
@@ -198,7 +203,8 @@ private extension TransactionDetailsView {
     func makeDateTextFieldConstraints() {
         self.addSubview(self.dateTextField)
         self.dateTextField.snp.makeConstraints { make in
-            make.top.equalTo(self.safeAreaLayoutGuide).inset(Constants.dateTextFieldTop)
+            make.top.equalTo(self.safeAreaLayoutGuide)
+                .inset(Constants.dateTextFieldTop)
             make.leading.trailing.equalToSuperview().inset(Constants.dateTextFieldLeading)
         }
     }
@@ -212,18 +218,21 @@ private extension TransactionDetailsView {
     }
     
     func makeCategoryTextFieldConstraints() {
-        self.addSubview(self.categoryNameTextField)
-        self.categoryNameTextField.snp.makeConstraints { make in
-            make.top.equalTo(self.numberTextField.snp.bottom).inset(Constants.categoryNameTextFieldTop)
-            make.leading.trailing.equalToSuperview().inset(Constants.categoryNameTextFieldLeading)
+        self.addSubview(self.transactionNameTextField)
+        self.transactionNameTextField.snp.makeConstraints { make in
+            make.top.equalTo(self.numberTextField.snp.bottom).inset(Constants.transactionNameTextFieldTop)
+            make.leading.trailing.equalToSuperview().inset(Constants.transactionNameTextFieldLeading)
         }
     }
-    
+}
+
+// MARK: - Set Handlers
+private extension TransactionDetailsView {
+
     func setHandlers() {
         self.setDateTextFieldToolbarHandler()
         self.setNumberTextFieldToolbarHandler()
-        self.setCategoryTextFieldToolbarHandler()
-        self.setKeyboardHandler()
+        self.setTransactionToolbarHandler()
     }
     
     func setDateTextFieldToolbarHandler() {
@@ -246,11 +255,11 @@ private extension TransactionDetailsView {
         }
     }
     
-    func setCategoryTextFieldToolbarHandler() {
-        self.categoryNameTextField.onToolbarTappedHandler { [ weak self ] result in
+    func setTransactionToolbarHandler() {
+        self.transactionNameTextField.onToolbarTappedHandler { [ weak self ] result in
             switch result {
             case .done:
-                self?.categoryToolbarDoneButtonTapped()
+                self?.transactionToolbarDoneButtonTapped()
             case .cancel: break
             }
         }
@@ -260,12 +269,16 @@ private extension TransactionDetailsView {
         dateTextField.text = DateConverter.toStringFrom(date: datePicker.date)
     }
     
-    func categoryToolbarDoneButtonTapped() {
-        let name = TransactionType.allCases[self.categoryPicker.selectedRow(inComponent: Constants.component)].name
-        self.categoryNameTextField.text = name
+    func transactionToolbarDoneButtonTapped() {
+        let name = TransactionType.allCases[self.transactionPicker.selectedRow(inComponent: Constants.component)].name
+        self.transactionNameTextField.text = name
     }
+}
+
+// MARK: - Keyboard Observer
+private extension TransactionDetailsView {
     
-    func setKeyboardHandler() {
+    func setKeyboardObserver() {
         self.keyboardObserver.addKeyboardObservers { result in
             switch result {
             case .show(let height):

@@ -12,7 +12,8 @@ enum NewsDetailsAssembly {
     static func build(article: NewsRequest) -> UIViewController {
         
         let presenter = NewsDetailsPresenter()
-        let dataManager = DataManager()
+        let coreData = CoreDataStorage.shared
+        let dataManager = NewsDataManager(coreDataStorage: coreData)
         let networkManager = NewsNetworkManager()
         let interactor = NewsDetailsInteractor(presenter: presenter,
                                                dataManager: dataManager,

@@ -47,20 +47,20 @@ extension TransactionDetailsPresenter: ITransactionDetailsPresenter {
     func setValidateSuccess(_ result: ValidateSuccess) {
         switch result {
         case .name:
-            self.view?.updateSaveButtonState(.off)
+            self.view?.updateSaveButtonState(false)
         case .amount:
-            self.view?.updateSaveButtonState(.off)
+            self.view?.updateSaveButtonState(false)
         case .date:
-            self.view?.updateSaveButtonState(.off)
+            self.view?.updateSaveButtonState(false)
         case .all:
-            self.view?.updateSaveButtonState(.on)
+            self.view?.updateSaveButtonState(true)
         }
     }
     
     func setValidateError(_ result: ValidateError) {
         switch result {
         case .name:
-            self.view?.showErrorCategoryNameTextField()
+            self.view?.showErrorTransactionNameTextField()
         case .amount:
             self.view?.showErrorNumberTextField()
         case .date:

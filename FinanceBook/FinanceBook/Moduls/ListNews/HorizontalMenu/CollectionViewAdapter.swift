@@ -15,16 +15,12 @@ protocol ICollectionViewAdapter {
 
 final class CollectionViewAdapter: NSObject {
     
-    private enum Constants {
-    }
-    
     var onCellTappedHandler: ((String) -> ())?
+    
     weak var collectionView: UICollectionView? {
         didSet {
             self.collectionView?.delegate = self
             self.collectionView?.dataSource = self
-            self.collectionView?.register(CollectionCell.self,
-                                          forCellWithReuseIdentifier: CollectionCell.id)
             self.collectionView?.selectItem(at: [0, 0],
                                             animated: true,
                                             scrollPosition: [])
@@ -41,7 +37,9 @@ extension CollectionViewAdapter: UICollectionViewDelegateFlowLayout {
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
         let font = UIFont(name: "Arial Bold", size: 18)
         let attributes = [NSAttributedString.Key.font : font as Any]
-        let width = Category.allCases[indexPath.item].rawValue.size(withAttributes: attributes).width + 20
+        let width = Category.allCases[indexPath.item]
+            .rawValue.size(withAttributes: attributes).width + 20
+        
         return CGSize(width: width,
                       height: collectionView.frame.height)
     }

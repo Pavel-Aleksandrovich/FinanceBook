@@ -10,7 +10,7 @@ import SnapKit
 
 protocol IHistoryView: AnyObject {
     func getTableView() -> UITableView
-    func setCharts(_ chart: [HistoryViewModel])
+    func setHistory(_ chart: [HistoryViewModel])
 }
 
 final class HistoryView: UIView {
@@ -18,17 +18,13 @@ final class HistoryView: UIView {
     private enum Constants {
         static let chartMultiplied = 0.8
     }
-        
+    
     private let pieChartView = HistoryChart()
     private let tableView = UITableView()
     
     init() {
         super.init(frame: .zero)
-        self.backgroundColor = .white
-        self.tableView.allowsSelection = false
-        self.tableView.showsVerticalScrollIndicator = false
-        self.tableView.register(HistoryCell.self,
-                                 forCellReuseIdentifier: HistoryCell.id)
+        self.configAppearance()
         self.makeChartConstraints()
         self.makeTableViewConstraints()
     }
@@ -44,13 +40,28 @@ extension HistoryView: IHistoryView {
         self.tableView
     }
     
-    func setCharts(_ chart: [HistoryViewModel]) {
-        self.pieChartView.updateChart(chart)
-        print(chart.count)
+    func setHistory(_ history: [HistoryViewModel]) {
+        self.pieChartView.updateChart(history)
     }
 }
 
 private extension HistoryView {
+    
+    func configAppearance() {
+        self.configView()
+        self.configTableView()
+    }
+    
+    func configView() {
+        self.backgroundColor = .white
+    }
+    
+    func configTableView() {
+        self.tableView.allowsSelection = false
+        self.tableView.showsVerticalScrollIndicator = false
+        self.tableView.register(HistoryCell.self,
+                                forCellReuseIdentifier: HistoryCell.id)
+    }
     
     func makeChartConstraints() {
         self.addSubview(self.pieChartView)

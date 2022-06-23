@@ -58,7 +58,9 @@ extension CoreDataStorage {
         if savedNews.contains(where: { $0.title == news.title}) == false {
             let newsEntity = NewsEntity(entity: entity, insertInto: self.context)
             newsEntity.setValue(from: news)
-        } 
+        } else {
+            throw StorageError.alreadyInFavorite
+        }
         
         self.saveContext()
     }
@@ -67,36 +69,37 @@ extension CoreDataStorage {
 // MARK: - History modul
 extension CoreDataStorage {
     
-    func getCharts() throws -> [HistoryResponse] {
+    func getHistory() throws -> [HistoryResponse] {
         
-        var chartDto: [HistoryResponse] = []
+        var historyResponse: [HistoryResponse] = []
         
-        let chart = try self.getChartEntity()
+        let historyEntity = try self.getHistoryEntity()
         
-        for i in 0..<chart.count {
-            let segment = try self.getSegments(from: chart[i])
-            let segmentDto = segment.compactMap { TransactionTypeResponse(segment: $0) }
-            chartDto.append(HistoryResponse(chart: chart[i], segment: segmentDto))
+        for i in 0..<historyEntity.count {
+            let transactionEntity = try self.getTransactions(from: historyEntity[i])
+            let transactionResponse = transactionEntity.compactMap { TransactionTypeResponse(transaction: $0) }
+            historyResponse.append(HistoryResponse(history: historyEntity[i],
+                                                   transaction: transactionResponse))
         }
         
-        return chartDto
+        return historyResponse
     }
     
-    func create(chart: TransactionDetailsRequest) throws {
+    func create(transaction: TransactionDetailsRequest) throws {
         guard let entity = NSEntityDescription.entity(forEntityName: "ChartEntity",
                                                       in: context) else { return }
         
-        let savedChart = try self.getChartEntity()
+        let savedHistory = try self.getHistoryEntity()
         
-        if savedChart.contains(where: { $0.color == chart.color}) == false {
-            let newChartEntity = ChartEntity(entity: entity, insertInto: context)
-            newChartEntity.setValues(from: chart)
+        if savedHistory.contains(where: { $0.color == transaction.color}) == false {
+            let historyEntity = ChartEntity(entity: entity, insertInto: context)
+            historyEntity.setValues(from: transaction)
             self.saveContext()
-            try self.add(segment: chart, to: newChartEntity)
+            try self.add(transaction: transaction, to: historyEntity)
         } else {
-            for i in 0..<savedChart.count {
-                if savedChart[i].color == chart.color {
-                    try self.add(segment: chart, to: savedChart[i])
+            for i in 0..<savedHistory.count {
+                if savedHistory[i].color == transaction.color {
+                    try self.add(transaction: transaction, to: savedHistory[i])
                 }
             }
         }
@@ -104,25 +107,25 @@ extension CoreDataStorage {
         self.saveContext()
     }
     
-    func deleteSegmentBy(id: UUID) throws {
+    func deleteTransactionBy(id: UUID) throws {
         let fetchRequest = SegmentEntity.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "id = %@",
                                              id.description)
         
-        if let segmentForDelete = try self.context.fetch(fetchRequest).first {
-            context.delete(segmentForDelete)
+        if let transactionForDelete = try self.context.fetch(fetchRequest).first {
+            context.delete(transactionForDelete)
             self.saveContext()
         }
     }
     
-    func deleteChartBy(id: UUID) throws {
+    func deleteHistoryBy(id: UUID) throws {
         let fetchRequest = ChartEntity.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "id = %@",
                                              id.description)
         
-        let charts = try self.context.fetch(fetchRequest)
-        if let chartForDelete = charts.first {
-            self.context.delete(chartForDelete)
+        let history = try self.context.fetch(fetchRequest)
+        if let historyForDelete = history.first {
+            self.context.delete(historyForDelete)
             self.saveContext()
         }
     }
@@ -141,38 +144,37 @@ private extension CoreDataStorage {
         }
     }
     
-    private func getSegments(from chart: ChartEntity) throws -> [SegmentEntity] {
+    private func getTransactions(from history: ChartEntity) throws -> [SegmentEntity] {
         let fetchRequest = SegmentEntity.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "chart.id = %@",
-                                             chart.id.description)
+                                             history.id.description)
         
-        let segment = try context.fetch(fetchRequest)
-        
-        return segment
+        return try context.fetch(fetchRequest)
     }
     
-    private func getChartEntity() throws -> [ChartEntity] {
+    private func getHistoryEntity() throws -> [ChartEntity] {
         let fetchRequest = ChartEntity.fetchRequest()
-        let chart = try self.context.fetch(fetchRequest)
-        
-        return chart
+         
+        return try self.context.fetch(fetchRequest)
     }
     
-    private func add(segment: TransactionDetailsRequest, to chart: ChartEntity) throws {
+    private func add(transaction: TransactionDetailsRequest,
+                     to history: ChartEntity) throws {
         
-        let savedSegments = try self.getSegments(from: chart)
+        let savedTransactions = try self.getTransactions(from: history)
         guard let entity = NSEntityDescription.entity(forEntityName: "SegmentEntity",
                                                       in: context) else { return }
         
         let fetchRequest = ChartEntity.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "id = %@",
-                                             chart.id.description)
+                                             history.id.description)
         
-        if savedSegments.contains(where: { $0.id == segment.idSegment}) == false {
-            if let chartEntity = try context.fetch(fetchRequest).first {
-                let segmentEntity = SegmentEntity(entity: entity, insertInto: context)
-                segmentEntity.chart = chartEntity
-                segmentEntity.setValues(from: segment)
+        if savedTransactions.contains(where: { $0.id == transaction.idTransaction}) == false {
+            if let historyEntity = try context.fetch(fetchRequest).first {
+                let transactionEntity = SegmentEntity(entity: entity,
+                                                      insertInto: context)
+                transactionEntity.chart = historyEntity
+                transactionEntity.setValues(from: transaction)
             }
         }
         

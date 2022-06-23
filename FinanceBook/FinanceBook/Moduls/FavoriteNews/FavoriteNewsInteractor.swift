@@ -21,7 +21,8 @@ final class FavoriteNewsInteractor {
     private let dataManager: INewsDataManager
     private let networkManager = NewsNetworkManager()
     
-    init(presenter: IFavoriteNewsPresenter, dataManager: INewsDataManager) {
+    init(presenter: IFavoriteNewsPresenter,
+         dataManager: INewsDataManager) {
         self.presenter = presenter
         self.dataManager = dataManager
     }
@@ -35,7 +36,7 @@ extension FavoriteNewsInteractor: IFavoriteNewsInteractor {
             case .success(let model):
                 self?.presenter.setFavoriteNewsState(model)
             case .failure(let error):
-                print(error)
+                self?.presenter.showError(error)
             }
         }
     }

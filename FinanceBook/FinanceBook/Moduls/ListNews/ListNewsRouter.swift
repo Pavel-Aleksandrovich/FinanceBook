@@ -22,11 +22,11 @@ extension ListNewsRouter: IListNewsRouter {
     
     func showArticleDetails(_ article: NewsRequest) {
         let vc = NewsDetailsAssembly.build(article: article)
-        self.controller?.present(vc, animated: true)
+        self.controller?.present(vc, animated: false)
     }
     
     func showCountryAlert(complition: @escaping(Country) -> ()) {
-        let alert = AlertAssembly.createLanguageAlert { country in
+        let alert = AlertAssembly.createCountryAlert { country in
             complition(country)
         }
         self.controller?.present(alert, animated: true)

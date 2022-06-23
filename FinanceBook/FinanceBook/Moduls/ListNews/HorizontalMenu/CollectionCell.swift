@@ -9,6 +9,10 @@ import UIKit
 
 final class CollectionCell: UICollectionViewCell {
     
+    private enum Constants {
+        static let cornerRadius: CGFloat = 5
+    }
+    
     static let id = String(describing: CollectionCell.self)
     
     private let categoryLabel = UILabel()
@@ -39,8 +43,6 @@ extension CollectionCell {
 
 private extension CollectionCell {
     
-    // MARK: - Appearance
-    
     func configAppearance() {
         self.configImageNameLabel()
         self.configView()
@@ -48,14 +50,12 @@ private extension CollectionCell {
     
     func configView() {
         self.backgroundColor = .systemGray4
-        self.layer.cornerRadius = 5
+        self.layer.cornerRadius = Constants.cornerRadius
     }
     
     func configImageNameLabel() {
         self.categoryLabel.textAlignment = .center
     }
-    
-    // MARK: - Constraints | Layout
     
     func configLayout() {
         self.makeImageNameLabelConstraints()

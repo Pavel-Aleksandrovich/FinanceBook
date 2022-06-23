@@ -12,7 +12,7 @@ protocol IHistoryInteractor: AnyObject {
                         view: IHistoryView,
                         tableAdapter: IHistoryTableAdapter)
     func loadData()
-    func deleteSegment(_ viewModel: HistoryRequest)
+    func deleteTransaction(_ viewModel: HistoryRequest)
 }
 
 final class HistoryInteractor {
@@ -37,29 +37,29 @@ extension HistoryInteractor: IHistoryInteractor {
     }
     
     func loadData() {
-        self.dataManager.getListSegments { [ weak self ] result in
+        self.dataManager.getHistory { [ weak self ] result in
             switch result {
-            case .success(let model):
-                self?.presenter.setCharts(model)
+            case .success(let historyResponse):
+                self?.presenter.setHistory(historyResponse)
             case .failure(let error):
                 self?.presenter.showError(error)
             }
         }
     }
     
-    func deleteSegment(_ viewModel: HistoryRequest) {
-        if viewModel.transactionTypeCount == 1 {
-            self.deleteChartBy(id: viewModel.id)
+    func deleteTransaction(_ viewModel: HistoryRequest) {
+        if viewModel.transactionCount == 1 {
+            self.deleteHistoryBy(id: viewModel.id)
         } else {
-            self.deleteSegmentBy(id: viewModel.idSegment)
+            self.deleteTransactionBy(id: viewModel.idSegment)
         }
     }
 }
 
 private extension HistoryInteractor {
     
-    func deleteSegmentBy(id: UUID) {
-        self.dataManager.deleteSegmentBy(id: id) { [ weak self ] result in
+    func deleteTransactionBy(id: UUID) {
+        self.dataManager.deleteTransactionBy(id: id) { [ weak self ] result in
             switch result {
             case .success():
                 self?.loadData()
@@ -69,8 +69,8 @@ private extension HistoryInteractor {
         }
     }
     
-    func deleteChartBy(id: UUID) {
-        self.dataManager.deleteChartBy(id: id) { [ weak self ] result in
+    func deleteHistoryBy(id: UUID) {
+        self.dataManager.deleteHistoryBy(id: id) { [ weak self ] result in
             switch result {
             case .success():
                 self?.loadData()

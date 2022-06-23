@@ -18,13 +18,8 @@ final class FavoriteNewsView: UIView {
     
     init() {
         super.init(frame: .zero)
-        self.backgroundColor = .white
         self.makeTableViewConstraints()
-        
-        self.tableView.register(FavoriteNewsCell.self,
-                                 forCellReuseIdentifier: FavoriteNewsCell.id)
-        self.tableView.register(FavoriteNewsDefaultCell.self,
-                                 forCellReuseIdentifier: FavoriteNewsDefaultCell.id)
+        self.configAppearance()
     }
     
     required init?(coder: NSCoder) {
@@ -40,6 +35,22 @@ extension FavoriteNewsView: IFavoriteNewsView {
 }
 
 private extension FavoriteNewsView {
+    
+    func configAppearance() {
+        self.configView()
+        self.configTableView()
+    }
+    
+    func configView() {
+        self.backgroundColor = .white
+    }
+    
+    func configTableView() {
+        self.tableView.register(FavoriteNewsCell.self,
+                                forCellReuseIdentifier: FavoriteNewsCell.id)
+        self.tableView.register(FavoriteNewsDefaultCell.self,
+                                forCellReuseIdentifier: FavoriteNewsDefaultCell.id)
+    }
     
     func makeTableViewConstraints() {
         self.addSubview(self.tableView)

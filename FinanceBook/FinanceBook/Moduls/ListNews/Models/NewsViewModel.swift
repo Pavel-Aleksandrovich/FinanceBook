@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  NewsViewModel.swift
 //  FinanceBook
 //
 //  Created by pavel mishanin on 23.06.2022.
@@ -17,12 +17,9 @@ struct NewsViewModel {
               let description = news.description,
               let urlToImage = news.urlToImage
         else { return nil }
+        
         self.title = title
-        
-//        guard let description = news.description else { return nil }
         self.description = description
-        
-//        guard let urlToImage = news.urlToImage else { return nil }
         self.urlToImage = urlToImage
     }
 }

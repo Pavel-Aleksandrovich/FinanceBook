@@ -8,7 +8,7 @@
 import UIKit
 
 protocol IHistoryRouter: AnyObject {
-    func showAddSegmentModul()
+    func showAddTransactionModul()
     func showErrorAlert(_ error: String)
 }
 
@@ -19,7 +19,7 @@ final class HistoryRouter {
 
 extension HistoryRouter: IHistoryRouter {
     
-    func showAddSegmentModul() {
+    func showAddTransactionModul() {
         let vc = TransactionDetailsAssembly.build()
         self.controller?.navigationController?.pushViewController(vc,
                                                                   animated: true)

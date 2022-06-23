@@ -1,5 +1,5 @@
 //
-//  ChartAssembly.swift
+//  HistoryAssembly.swift
 //  FinanceBook
 //
 //  Created by pavel mishanin on 17.06.2022.
@@ -13,13 +13,14 @@ enum HistoryAssembly {
         
         let tableAdapter = HistoryTableAdapter()
         let presenter = HistoryPresenter()
-        let dataManager = DataManager()
+        let coreData = CoreDataStorage.shared
+        let dataManager = HistoryDataManager(coreDataStorage: coreData)
         let interactor = HistoryInteractor(presenter: presenter,
-                                         dataManager: dataManager)
+                                           dataManager: dataManager)
         let router = HistoryRouter()
         let controller = HistoryViewController(interactor: interactor,
-                                             router: router,
-                                             tableAdapter: tableAdapter)
+                                               router: router,
+                                               tableAdapter: tableAdapter)
         router.controller = controller
         
         return controller

@@ -1,5 +1,5 @@
 //
-//  ChartRequest.swift
+//  TransactionDetailsRequest.swift
 //  FinanceBook
 //
 //  Created by pavel mishanin on 18.06.2022.
@@ -9,7 +9,7 @@ import Foundation
 
 struct TransactionDetailsRequest {
     let id: UUID
-    let idSegment: UUID
+    let idTransaction: UUID
     let name: String
     let color: Data
     let amount: Int
@@ -17,7 +17,7 @@ struct TransactionDetailsRequest {
     
     init?(viewModel: TransactionDetailsValidateRequest?) {
         self.id = UUID()
-        self.idSegment = UUID()
+        self.idTransaction = UUID()
         
         guard let name = viewModel?.name else { return nil }
         self.name = name

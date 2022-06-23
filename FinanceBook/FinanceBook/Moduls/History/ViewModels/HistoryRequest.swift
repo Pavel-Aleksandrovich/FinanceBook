@@ -10,5 +10,5 @@ import Foundation
 struct HistoryRequest {
     let id: UUID
     let idSegment: UUID
-    let transactionTypeCount: Int
+    let transactionCount: Int
 }

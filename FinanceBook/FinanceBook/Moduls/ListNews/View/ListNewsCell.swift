@@ -10,6 +10,13 @@ import SnapKit
 
 final class ListNewsCell: UITableViewCell {
     
+    private enum Constants {
+        static let titleLabelTop = 10
+        static let titleLabelLeading = -10
+        
+        static let newsImageViewTop = 10
+    }
+    
     static let id = String(describing: ListNewsCell.self)
     
     private let activityIndicator = UIActivityIndicatorView(style: .large)
@@ -30,17 +37,13 @@ final class ListNewsCell: UITableViewCell {
 
 extension ListNewsCell {
     
-    func update(article: Article) {
+    func update(article: NewsViewModel) {
         self.titleLabel.text = article.title
     }
     
-    func setImage(_ image: UIImage?) {
+    func setImage(_ image: UIImage) {
         self.newsImageView.image = image
-        if self.newsImageView.image == nil {
-            self.activityIndicator.startAnimating()
-        } else {
-            self.activityIndicator.stopAnimating()
-        }
+        self.activityIndicator.stopAnimating()
     }
 }
 
@@ -55,7 +58,8 @@ private extension ListNewsCell {
     func makeNewsImageViewConstraints() {
         self.addSubview(self.newsImageView)
         self.newsImageView.snp.makeConstraints { make in
-            make.top.bottom.leading.equalToSuperview().inset(10)
+            make.top.bottom.leading.equalToSuperview()
+                .inset(Constants.newsImageViewTop)
             make.width.equalTo(self.newsImageView.snp.height)
         }
     }
@@ -63,8 +67,10 @@ private extension ListNewsCell {
     func makeTitleLabelConstraints() {
         self.addSubview(self.titleLabel)
         self.titleLabel.snp.makeConstraints { make in
-            make.top.bottom.trailing.equalToSuperview().inset(10)
-            make.leading.equalTo(self.newsImageView.snp.trailing).inset(-10)
+            make.top.bottom.trailing.equalToSuperview()
+                .inset(Constants.titleLabelTop)
+            make.leading.equalTo(self.newsImageView.snp.trailing)
+                .inset(Constants.titleLabelLeading)
         }
     }
     

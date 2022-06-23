@@ -11,7 +11,7 @@ final class TabBarAssembly: UITabBarController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.viewControllers = [self.createChartViewController(),
+        self.viewControllers = [self.createHistoryViewController(),
                                 self.createListNewsViewController(),
                                 self.createFavoriteNewsViewController()]
         self.tabBar.tintColor = MainAttributs.color
@@ -21,32 +21,32 @@ final class TabBarAssembly: UITabBarController {
 private extension TabBarAssembly {
     
     func createListNewsViewController() -> UIViewController {
-        let listNewsViewController = ListNewsAssembly.build()
+        let vc = ListNewsAssembly.build()
         let image = UIImage(systemName: "magazine")
-        listNewsViewController.tabBarItem = UITabBarItem(title: "News",
-                                                         image: image,
-                                                         tag: 1)
+        vc.tabBarItem = UITabBarItem(title: "News",
+                                     image: image,
+                                     tag: 1)
         
-        return UINavigationController(rootViewController: listNewsViewController)
+        return UINavigationController(rootViewController: vc)
     }
     
     func createFavoriteNewsViewController() -> UIViewController {
-        let favoriteNewsViewController = FavoriteNewsAssembly.build()
+        let vc = FavoriteNewsAssembly.build()
         let image = UIImage(systemName: "bookmark")
-        favoriteNewsViewController.tabBarItem = UITabBarItem(title: "Favorite",
-                                                             image: image,
-                                                             tag: 2)
+        vc.tabBarItem = UITabBarItem(title: "Favorite",
+                                     image: image,
+                                     tag: 2)
         
-        return UINavigationController(rootViewController: favoriteNewsViewController)
+        return UINavigationController(rootViewController: vc)
     }
     
-    func createChartViewController() -> UIViewController {
-        let favoriteNewsViewController = HistoryAssembly.build()
+    func createHistoryViewController() -> UIViewController {
+        let vc = HistoryAssembly.build()
         let image = UIImage(systemName: "chart.pie")
-        favoriteNewsViewController.tabBarItem = UITabBarItem(title: "History",
-                                                             image: image,
-                                                             tag: 0)
+        vc.tabBarItem = UITabBarItem(title: "History",
+                                     image: image,
+                                     tag: 0)
         
-        return UINavigationController(rootViewController: favoriteNewsViewController)
+        return UINavigationController(rootViewController: vc)
     }
 }

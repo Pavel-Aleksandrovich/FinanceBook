@@ -10,12 +10,20 @@ import SnapKit
 
 final class FavoriteNewsCell: UITableViewCell {
     
+    private enum Constants {
+        static let newsImageViewTop = 10
+        
+        static let newsTitleLabelTop = 10
+        static let newsTitleLabelLeading = -10
+    }
+    
     static let id = String(describing: FavoriteNewsCell.self)
     
     private let titleLabel = BaseLabel()
     private let newsImageView = UIImageView()
     
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+    override init(style: UITableViewCell.CellStyle,
+                  reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.makeConstraints()
     }
@@ -43,7 +51,8 @@ private extension FavoriteNewsCell {
     func makeNewsImageViewConstraints() {
         self.addSubview(self.newsImageView)
         self.newsImageView.snp.makeConstraints { make in
-            make.top.bottom.leading.equalToSuperview().inset(10)
+            make.top.bottom.leading.equalToSuperview()
+                .inset(Constants.newsImageViewTop)
             make.width.equalTo(self.newsImageView.snp.height)
         }
     }
@@ -51,8 +60,10 @@ private extension FavoriteNewsCell {
     func makeTitleLabelConstraints() {
         self.addSubview(self.titleLabel)
         self.titleLabel.snp.makeConstraints { make in
-            make.top.bottom.trailing.equalToSuperview().inset(10)
-            make.leading.equalTo(self.newsImageView.snp.trailing).inset(-10)
+            make.top.bottom.trailing.equalToSuperview()
+                .inset(Constants.newsTitleLabelTop)
+            make.leading.equalTo(self.newsImageView.snp.trailing)
+                .inset(Constants.newsTitleLabelLeading)
         }
     }
 }

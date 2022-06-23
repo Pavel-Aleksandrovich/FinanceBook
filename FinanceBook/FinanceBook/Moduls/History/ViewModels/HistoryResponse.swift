@@ -11,13 +11,13 @@ struct HistoryResponse {
     let id: UUID
     let name: String
     let color: Data
-    let transactionType: [TransactionTypeResponse]
+    let transaction: [TransactionTypeResponse]
     
-    init(chart: ChartEntity, segment: [TransactionTypeResponse]) {
-        self.id = chart.id
-        self.name = chart.name
-        self.color = chart.color
-        self.transactionType = segment
+    init(history: ChartEntity, transaction: [TransactionTypeResponse]) {
+        self.id = history.id
+        self.name = history.name
+        self.color = history.color
+        self.transaction = transaction
     }
 }
 
@@ -26,9 +26,9 @@ struct TransactionTypeResponse {
     let value: Int
     let date: Date
 
-    init(segment: SegmentEntity) {
-        self.id = segment.id
-        self.value = Int(segment.value)
-        self.date = segment.date
+    init(transaction: SegmentEntity) {
+        self.id = transaction.id
+        self.value = Int(transaction.value)
+        self.date = transaction.date
     }
 }

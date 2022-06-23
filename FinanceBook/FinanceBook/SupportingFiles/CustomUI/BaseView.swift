@@ -8,7 +8,7 @@
 import UIKit
 
 class BaseView: UIView {
-
+    
     init() {
         super.init(frame: .zero)
         self.hideKeyboardWhenTappedAround()

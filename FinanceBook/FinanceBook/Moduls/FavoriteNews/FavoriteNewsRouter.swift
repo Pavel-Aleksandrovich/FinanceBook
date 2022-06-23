@@ -8,9 +8,7 @@
 import UIKit
 
 protocol IFavoriteNewsRouter: AnyObject {
-    func showArticleDetails(_ article: FavoriteNewsResponse)
-    func showAlert(complition: @escaping() -> ())
-    func showErrorAlert(_ error: String)
+    func showAlert(_ title: String)
 }
 
 final class FavoriteNewsRouter {
@@ -20,15 +18,8 @@ final class FavoriteNewsRouter {
 
 extension FavoriteNewsRouter: IFavoriteNewsRouter {
     
-    func showArticleDetails(_ article: FavoriteNewsResponse) {
-        print(#function)
-    }
-    
-    func showAlert(complition: @escaping() -> ()) {
-    }
-    
-    func showErrorAlert(_ error: String) {
-        let alert = AlertAssembly.createAlert(error)
+    func showAlert(_ title: String) {
+        let alert = AlertAssembly.createAlert(title)
         self.controller?.present(alert, animated: true)
     }
 }

@@ -12,13 +12,12 @@ protocol IListNewsInteractor: AnyObject {
                         view: IListNewsView,
                         tableAdapter: IListNewsTableAdapter)
     func loadNews(country: Country?, category: String?)
-    func loadImageDataFrom(url: String?, complition: @escaping(UIImage?) -> ())
+    func loadImageFrom(url: String, complition: @escaping(UIImage) -> ())
 }
 
 final class ListNewsInteractor {
     
     private var category: String = Category.general.rawValue
-    
     private var country: Country = .us
     
     private let presenter: IListNewsPresenter
@@ -32,16 +31,14 @@ final class ListNewsInteractor {
 
 extension ListNewsInteractor: IListNewsInteractor {
     
-    func loadImageDataFrom(url: String?,
-                           complition: @escaping(UIImage?) -> ()) {
-        guard let url = url else { return }
-        
-        self.networkManager.loadImageDataFrom(url: url) { [ weak self ] result in
+    func loadImageFrom(url: String,
+                           complition: @escaping(UIImage) -> ()) {
+        self.networkManager.loadImageFrom(url: url) { [ weak self ] result in
             switch result {
-            case .success(let data):
-                DispatchQueue.main.async {
-                    complition(data)
-                }
+            case .success(let image):
+                    DispatchQueue.main.async {
+                        complition(image)
+                    }
             case .failure(let error):
                 self?.presenter.showError(error)
             }

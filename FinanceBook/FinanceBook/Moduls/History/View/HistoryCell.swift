@@ -10,9 +10,16 @@ import SnapKit
 
 final class HistoryCell: UITableViewCell {
     
+    private enum Constants {
+        static let dateLabelFontSize: CGFloat = 14
+        static let dateLabelWidth = 120
+        
+        static let amountLabelLeading = 30
+    }
+    
     static let id = String(describing: HistoryCell.self)
     
-    private let titleLabel = BaseLabel()
+    private let amountLabel = BaseLabel()
     private let dateLabel = BaseLabel()
     
     override init(style: UITableViewCell.CellStyle,
@@ -29,31 +36,31 @@ final class HistoryCell: UITableViewCell {
 
 extension HistoryCell {
     
-    func update(article: TransactionTypeViewModel) {
-        self.titleLabel.text = NumberConverter.toStringFrom(int: article.value)
-        self.dateLabel.text = DateConverter.toStringFrom(date: article.date)
+    func update(transaction: TransactionTypeViewModel) {
+        self.amountLabel.text = NumberConverter.toStringFrom(int: transaction.value)
+        self.dateLabel.text = DateConverter.toStringFrom(date: transaction.date)
     }
 }
 
 private extension HistoryCell {
     
     func configAppearance() {
-        self.configTitleLabel()
+        self.configAmountLabel()
         self.configDateLabel()
     }
     
-    func configTitleLabel() {
-        self.titleLabel.textColor = MainAttributs.color
+    func configAmountLabel() {
+        self.amountLabel.textColor = MainAttributs.color
     }
     
     func configDateLabel() {
-        self.dateLabel.font = .systemFont(ofSize: 14)
+        self.dateLabel.font = .systemFont(ofSize: Constants.dateLabelFontSize)
         self.dateLabel.textColor = .lightGray
     }
     
     func makeConstraints() {
         self.makeDateLabelConstraints()
-        self.makeTitleLabelConstraints()
+        self.makeAmountLabelConstraints()
     }
     
     func makeDateLabelConstraints() {
@@ -61,15 +68,15 @@ private extension HistoryCell {
         self.dateLabel.snp.makeConstraints { make in
             make.top.bottom.equalToSuperview()
             make.trailing.equalToSuperview()
-            make.width.equalTo(120)
+            make.width.equalTo(Constants.dateLabelWidth)
         }
     }
     
-    func makeTitleLabelConstraints() {
-        self.addSubview(self.titleLabel)
-        self.titleLabel.snp.makeConstraints { make in
+    func makeAmountLabelConstraints() {
+        self.addSubview(self.amountLabel)
+        self.amountLabel.snp.makeConstraints { make in
             make.top.bottom.equalToSuperview()
-            make.leading.equalToSuperview().inset(30)
+            make.leading.equalToSuperview().inset(Constants.amountLabelLeading)
             make.trailing.equalTo(self.dateLabel.snp.leading)
         }
     }

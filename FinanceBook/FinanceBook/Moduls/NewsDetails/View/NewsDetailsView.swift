@@ -11,11 +11,22 @@ import SnapKit
 protocol INewsDetailsView: AnyObject {
     var onFavoriteButtonTappedHandler: (() -> ())? { get set }
     func update(article: NewsRequest)
-    func setImage(data: UIImage?)
+    func setImage(_ image: UIImage)
     func getModel() -> NewsDetailsRequest?
 }
 
 final class NewsDetailsView: UIView {
+    
+    private enum Constants {
+        static let imageViewTop = 50
+        static let imageViewLeading = 40
+        
+        static let titleLabelTop = -10
+        static let titleLabelLeading = 10
+        
+        static let contentLabelTop = -10
+        static let contentLabelLeading = 10
+    }
     
     private let titleLabel = BaseLabel()
     private let contentLabel = BaseLabel()
@@ -46,8 +57,8 @@ extension NewsDetailsView: INewsDetailsView {
         self.contentLabel.text = article.desctiption
     }
     
-    func setImage(data: UIImage?) {
-        self.imageView.image = data
+    func setImage(_ image: UIImage) {
+        self.imageView.image = image
         self.activityIndicator.stopAnimating()
     }
     
@@ -104,9 +115,9 @@ private extension NewsDetailsView {
     
     func makeImageViewConstraints() {
         self.imageView.snp.makeConstraints { make in
-            make.top.equalTo(self.scrollView).inset(10)
-            make.leading.equalTo(self.snp.leading).inset(40)
-            make.trailing.equalTo(self.snp.trailing).inset(40)
+            make.top.equalTo(self.scrollView).inset(Constants.imageViewTop)
+            make.leading.trailing.equalTo(self.safeAreaLayoutGuide)
+                .inset(Constants.imageViewLeading)
             make.height.equalTo(self.imageView.snp.width)
         }
     }
@@ -115,30 +126,32 @@ private extension NewsDetailsView {
         self.favoriteView.snp.makeConstraints { make in
             make.top.equalTo(self.imageView.snp.bottom).inset(-10)
             make.width.height.equalTo(100)
-            make.centerX.equalTo(self.snp.centerX)
+            make.centerX.equalTo(self)
         }
     }
     
     func makeTitleLabelConstraints() {
         self.titleLabel.snp.makeConstraints { make in
-            make.top.equalTo(self.favoriteView.snp.bottom).inset(-10)
-            make.leading.equalTo(self.snp.leading).inset(10)
-            make.trailing.equalTo(self.snp.trailing).inset(10)
+            make.top.equalTo(self.favoriteView.snp.bottom)
+                .inset(Constants.titleLabelTop)
+            make.leading.trailing.equalTo(self.safeAreaLayoutGuide)
+                .inset(Constants.titleLabelLeading)
         }
     }
     
     func makeContentLabelConstraints() {
         self.contentLabel.snp.makeConstraints { make in
-            make.top.equalTo(self.titleLabel.snp.bottom).inset(-10)
-            make.leading.equalTo(self.snp.leading).inset(10)
-            make.trailing.equalTo(self.snp.trailing).inset(10)
+            make.top.equalTo(self.titleLabel.snp.bottom)
+                .inset(Constants.contentLabelTop)
+            make.leading.trailing.equalTo(self.safeAreaLayoutGuide)
+                .inset(Constants.contentLabelLeading)
             make.bottom.equalTo(self.scrollView)
         }
     }
     
     func makeActivityIndicatorConstraints() {
         self.activityIndicator.snp.makeConstraints { make in
-            make.center.equalTo(self.imageView.snp.center)
+            make.center.equalTo(self.imageView)
         }
     }
 }

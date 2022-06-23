@@ -8,10 +8,6 @@
 import Foundation
 import UIKit
 
-protocol FavoriteNewsPresenterOutput: AnyObject {
-    func setViewController(controller: UIViewController,
-                           view: UIView)
-}
 protocol IFavoriteNewsPresenter: AnyObject {
     func onViewAttached(controller: IFavoriteNewsViewController,
                         view: IFavoriteNewsView,
@@ -41,11 +37,12 @@ extension FavoriteNewsPresenter: IFavoriteNewsPresenter {
     }
     
     func setFavoriteNewsState(_ news: [FavoriteNewsResponse]) {
-        if news.isEmpty {
+        switch news.isEmpty {
+        case true:
             self.mainQueue.async {
-            self.tableAdapter?.setFavoriteNewsState(.empty)
+                self.tableAdapter?.setFavoriteNewsState(.empty)
             }
-        } else {
+        case false:
             let viewModel = news.map { FavoriteNewsViewModel(viewModel: $0) }
             
             self.mainQueue.async {
@@ -58,12 +55,5 @@ extension FavoriteNewsPresenter: IFavoriteNewsPresenter {
         self.mainQueue.async {
             self.controller?.showError(error.localizedDescription)
         }
-    }
-}
-
-extension FavoriteNewsPresenter: FavoriteNewsPresenterOutput {
-    func setViewController(controller: UIViewController, view: UIView) {
-        self.controller = controller as? IFavoriteNewsViewController
-        self.view = view as? IFavoriteNewsView
     }
 }

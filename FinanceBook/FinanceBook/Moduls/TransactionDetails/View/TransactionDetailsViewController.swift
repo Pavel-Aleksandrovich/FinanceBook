@@ -80,7 +80,7 @@ private extension TransactionDetailsViewController {
     func setSaveButtonTappedHandler() {
         self.mainView.saveButtonTappedHandler = { [ weak self ] in
             let viewModel = self?.mainView.getViewModel()
-            self?.interactor.createChart(viewModel)
+            self?.interactor.createTransaction(viewModel)
         }
     }
 }

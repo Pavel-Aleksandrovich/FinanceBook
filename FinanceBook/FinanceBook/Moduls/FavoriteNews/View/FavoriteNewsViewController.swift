@@ -40,7 +40,6 @@ final class FavoriteNewsViewController: UIViewController {
         self.interactor.onViewAttached(controller: self,
                                        view: self.mainView,
                                        tableAdapter: self.tableAdapter)
-        self.setOnCellTappedHandler()
         self.setOnCellDeleteHandler()
     }
     
@@ -53,17 +52,11 @@ final class FavoriteNewsViewController: UIViewController {
 extension FavoriteNewsViewController: IFavoriteNewsViewController {
     
     func showError(_ error: String) {
-        self.router.showErrorAlert(error)
+        self.router.showAlert(error)
     }
 }
 
 private extension FavoriteNewsViewController {
-    
-    func setOnCellTappedHandler() {
-        self.tableAdapter.onCellTappedHandler = { [ weak self ] article in
-//            self?.router.showArticleDetails(article)
-        }
-    }
     
     func setOnCellDeleteHandler() {
         self.tableAdapter.onCellDeleteHandler = { news in

@@ -40,7 +40,7 @@ final class HistoryViewController: UIViewController {
         self.interactor.onViewAttached(controller: self,
                                        view: self.mainView,
                                        tableAdapter: self.tableAdapter)
-        self.createAddSegmentBarButton()
+        self.createAddTransactionBarButton()
         self.setOnCellDeleteHandler()
     }
     
@@ -60,19 +60,20 @@ private extension HistoryViewController {
     
     func setOnCellDeleteHandler() {
         self.tableAdapter.onCellDeleteHandler = { [ weak self ] viewModel in
-            self?.interactor.deleteSegment(viewModel)
+            self?.interactor.deleteTransaction(viewModel)
         }
     }
     
-    func createAddSegmentBarButton() {
+    func createAddTransactionBarButton() {
         let item = UIBarButtonItem(barButtonSystemItem: .add,
                                    target: self,
-                                   action: #selector(self.addSegmentButtonTapped))
+                                   action: #selector
+                                   (self.addTransactionButtonTapped))
         item.tintColor = MainAttributs.color
         self.navigationItem.rightBarButtonItem = item
     }
     
-    @objc func addSegmentButtonTapped() {
-        self.router.showAddSegmentModul()
+    @objc func addTransactionButtonTapped() {
+        self.router.showAddTransactionModul()
     }
 }

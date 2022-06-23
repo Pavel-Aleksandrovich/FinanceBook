@@ -11,17 +11,17 @@ struct HistoryViewModel {
     let id: UUID
     let name: String
     let color: Data
-    let segment: [TransactionTypeViewModel]
+    let transaction: [TransactionTypeViewModel]
     let amount: CGFloat
     var expanded: Bool
     
-    init(chart: HistoryResponse, segment: [TransactionTypeViewModel]) {
-        self.id = chart.id
-        self.name = chart.name
-        self.color = chart.color
-        self.segment = segment
+    init(history: HistoryResponse, transaction: [TransactionTypeViewModel]) {
+        self.id = history.id
+        self.name = history.name
+        self.color = history.color
+        self.transaction = transaction
         self.expanded = false
-        self.amount = CGFloat(segment.map { $0.value }.reduce(0, +))
+        self.amount = CGFloat(transaction.map { $0.value }.reduce(0, +))
     }
 }
 
@@ -30,9 +30,9 @@ struct TransactionTypeViewModel {
     let value: Int
     let date: Date
 
-    init(segment: TransactionTypeResponse) {
-        self.id = segment.id
-        self.value = segment.value
-        self.date = segment.date
+    init(transaction: TransactionTypeResponse) {
+        self.id = transaction.id
+        self.value = transaction.value
+        self.date = transaction.date
     }
 }

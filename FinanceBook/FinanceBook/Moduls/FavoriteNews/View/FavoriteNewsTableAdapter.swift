@@ -7,23 +7,30 @@
 
 import UIKit
 
-protocol IFavoriteNewsTableAdapter: AnyObject {
-    var tableView: UITableView? { get set }
-    var onCellTappedHandler: ((FavoriteNewsViewModel) -> ())? { get set }
-    var onCellDeleteHandler: ((FavoriteNewsRequest) -> ())? { get set }
-    func setFavoriteNewsState(_ state: FavoriteNewsState)
-}
 enum FavoriteNewsState {
     case success([FavoriteNewsViewModel])
     case empty
 }
+
+protocol IFavoriteNewsTableAdapter: AnyObject {
+    var tableView: UITableView? { get set }
+    var onCellDeleteHandler: ((FavoriteNewsRequest) -> ())? { get set }
+    func setFavoriteNewsState(_ state: FavoriteNewsState)
+}
+
 final class FavoriteNewsTableAdapter: NSObject {
+    
+    private enum Constants {
+        static let numberOfRows = 1
+        static let heightRowForEmpty = UIScreen.main.bounds.size.height * 0.8
+        
+        static let heightRow: CGFloat = 150
+    }
     
     private var state: FavoriteNewsState = .empty
     
-    var onCellTappedHandler: ((FavoriteNewsViewModel) -> ())?
     var onCellDeleteHandler: ((FavoriteNewsRequest) -> ())?
-    // здесь может сделать проставлять значения через функцию setTableView(_ tableView: UITableView)
+    
     weak var tableView: UITableView? {
         didSet {
             self.tableView?.delegate = self
@@ -46,15 +53,15 @@ extension FavoriteNewsTableAdapter: UITableViewDelegate, UITableViewDataSource {
                    numberOfRowsInSection section: Int) -> Int {
         switch self.state {
         case .success(let array): return array.count
-        case .empty: return 1
+        case .empty: return Constants.numberOfRows
         }
     }
     
     func tableView(_ tableView: UITableView,
                    heightForRowAt indexPath: IndexPath) -> CGFloat {
         switch self.state {
-        case .success(_): return 150
-        case .empty: return UIScreen.main.bounds.size.height * 0.8
+        case .success(_): return Constants.heightRow
+        case .empty: return Constants.heightRowForEmpty
         }
     }
     
@@ -82,17 +89,6 @@ extension FavoriteNewsTableAdapter: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView,
-                   didSelectRowAt indexPath: IndexPath) {
-        switch self.state {
-        case .success(_): break
-        case .empty: break
-        }
-//        tableView.deselectRow(at: indexPath, animated: true)
-//        let article = articleArray[indexPath.row]
-//        self.onCellTappedHandler?(article)
-    }
-    
-    func tableView(_ tableView: UITableView,
                    canEditRowAt indexPath: IndexPath) -> Bool {
         switch self.state {
         case .success(_): return true
@@ -106,8 +102,8 @@ extension FavoriteNewsTableAdapter: UITableViewDelegate, UITableViewDataSource {
         switch self.state {
         case .success(let array):
             if editingStyle == .delete {
-                let article = array[indexPath.row]
-                let request = FavoriteNewsRequest(viewModel: article)
+                let news = array[indexPath.row]
+                let request = FavoriteNewsRequest(viewModel: news)
                 self.onCellDeleteHandler?(request)
             }
         case .empty: break

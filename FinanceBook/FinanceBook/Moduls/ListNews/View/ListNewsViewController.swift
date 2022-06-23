@@ -15,7 +15,7 @@ protocol IListNewsViewController: AnyObject {
 final class ListNewsViewController: UIViewController {
     
     private enum Constants {
-        static let barButtonTitle = "Add Company"
+        static let barButtonTitle = "US"
     }
     
     private let cell = ListNewsCell()
@@ -26,7 +26,7 @@ final class ListNewsViewController: UIViewController {
     
     private var collectionAdapter: ICollectionViewAdapter
     private var countryBarButton = UIBarButtonItem()
-
+    
     init(interactor: IListNewsInteractor,
          router: IListNewsRouter,
          tableAdapter: IListNewsTableAdapter,
@@ -51,12 +51,9 @@ final class ListNewsViewController: UIViewController {
         self.interactor.onViewAttached(controller: self,
                                        view: self.mainView,
                                        tableAdapter: self.tableAdapter)
-        self.collectionAdapter.collectionView = self.mainView.getCollectionView()
-        self.setOnCellTappedHandler()
         self.interactor.loadNews(country: nil, category: nil)
-        self.setOnCellCollectionTappedHandler()
-        self.createCountryBarButton()
-        self.tableAdapter.delegate = self
+        self.configView()
+        self.setHandlers()
     }
 }
 
@@ -73,19 +70,25 @@ extension ListNewsViewController: IListNewsViewController {
 
 extension ListNewsViewController: ListNewsTableAdapterDelegate {
     
-    func loadImageData(url: String?, completion: @escaping (UIImage?) -> ()) {
-        self.interactor.loadImageDataFrom(url: url, complition: completion)
+    func loadImageData(url: String, completion: @escaping (UIImage) -> ()) {
+        self.interactor.loadImageFrom(url: url, complition: completion)
     }
 }
 
 private extension ListNewsViewController {
     
+    func configView() {
+        self.collectionAdapter.collectionView = self.mainView.getCollectionView()
+        self.tableAdapter.delegate = self
+        self.createCountryBarButton()
+    }
+    
     func createCountryBarButton() {
-        self.countryBarButton = UIBarButtonItem(title: "US",
-                                                 style: .done,
-                                                 target: self,
-                                                 action:#selector
-                                                 (self.countryButtonTapped))
+        self.countryBarButton = UIBarButtonItem(title: Constants.barButtonTitle,
+                                                style: .done,
+                                                target: self,
+                                                action:#selector
+                                                (self.countryButtonTapped))
         
         self.navigationItem.rightBarButtonItem = self.countryBarButton
     }
@@ -94,6 +97,11 @@ private extension ListNewsViewController {
         self.router.showCountryAlert { [ weak self ] country in
             self?.interactor.loadNews(country: country, category: nil)
         }
+    }
+    
+    func setHandlers() {
+        self.setOnCellCollectionTappedHandler()
+        self.setOnCellTappedHandler()
     }
     
     func setOnCellTappedHandler() {

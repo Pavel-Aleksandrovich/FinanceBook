@@ -15,6 +15,15 @@ protocol IListNewsView: AnyObject {
 
 final class ListNewsView: UIView {
     
+    private enum Constants {
+        static let layoutSpacing: CGFloat = 5
+        
+        static let tableViewTop = -5
+        
+        static let collectionViewLeading = 5
+        static let collectionViewHeight = 50
+    }
+    
     private let layout = UICollectionViewFlowLayout()
     private let tableView = UITableView()
     
@@ -22,13 +31,8 @@ final class ListNewsView: UIView {
     
     init() {
         super.init(frame: .zero)
-        self.backgroundColor = .white
         self.configAppearance()
         self.makeConstraints()
-        self.tableView.register(ListNewsCell.self,
-                                 forCellReuseIdentifier: ListNewsCell.id)
-        self.tableView.register(ListNewsErrorCell.self,
-                                 forCellReuseIdentifier: ListNewsErrorCell.id)
     }
     
     required init?(coder: NSCoder) {
@@ -47,15 +51,22 @@ extension ListNewsView: IListNewsView {
     }
 }
 
+// MARK: - Config Appearance
 private extension ListNewsView {
     
     func configAppearance() {
+        self.configView()
         self.configLayout()
         self.configCollectionView()
+        self.configTableView()
+    }
+    
+    func configView() {
+        self.backgroundColor = .white
     }
     
     func configLayout() {
-        self.layout.minimumInteritemSpacing = 5
+        self.layout.minimumInteritemSpacing = Constants.layoutSpacing
         self.layout.scrollDirection = .horizontal
     }
     
@@ -64,7 +75,20 @@ private extension ListNewsView {
                                                collectionViewLayout: layout)
         self.collectionView.backgroundColor = .clear
         self.collectionView.showsHorizontalScrollIndicator = false
+        self.collectionView.register(CollectionCell.self,
+                                      forCellWithReuseIdentifier: CollectionCell.id)
     }
+    
+    func configTableView() {
+        self.tableView.register(ListNewsCell.self,
+                                 forCellReuseIdentifier: ListNewsCell.id)
+        self.tableView.register(ListNewsLoadingCell.self,
+                                 forCellReuseIdentifier: ListNewsLoadingCell.id)
+    }
+}
+
+// MARK: - Make Constraints
+private extension ListNewsView {
     
     func makeConstraints() {
         self.makeCollectionViewConstraints()
@@ -74,7 +98,8 @@ private extension ListNewsView {
     func makeTableViewConstraints() {
         self.addSubview(self.tableView)
         self.tableView.snp.makeConstraints { make in
-            make.top.equalTo(self.collectionView.snp.bottom).inset(-5)
+            make.top.equalTo(self.collectionView.snp.bottom)
+                .inset(Constants.tableViewTop)
             make.bottom.equalTo(self.safeAreaLayoutGuide)
             make.leading.trailing.equalToSuperview()
         }
@@ -84,9 +109,10 @@ private extension ListNewsView {
         self.addSubview(self.collectionView)
         self.collectionView.snp.makeConstraints { make in
             make.top.equalTo(self.safeAreaLayoutGuide)
-            make.leading.equalToSuperview().inset(5)
+            make.leading.equalToSuperview()
+                .inset(Constants.collectionViewLeading)
             make.trailing.equalToSuperview()
-            make.height.equalTo(50)
+            make.height.equalTo(Constants.collectionViewHeight)
         }
     }
 }

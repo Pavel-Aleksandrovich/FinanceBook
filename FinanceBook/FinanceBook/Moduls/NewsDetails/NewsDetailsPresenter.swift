@@ -13,7 +13,7 @@ protocol INewsDetailsPresenter: AnyObject {
     func showError(_ error: Error)
     func showSuccess()
     func setNews(_ article: NewsRequest)
-    func setImageDate(_ data: UIImage?)
+    func setImage(_ image: UIImage)
 }
 
 final class NewsDetailsPresenter {
@@ -34,7 +34,11 @@ extension NewsDetailsPresenter: INewsDetailsPresenter {
     
     func showError(_ error: Error) {
         self.mainQueue.async {
-            self.controller?.showError(error.localizedDescription)
+            if let error = error as? StorageError {
+                self.controller?.showError(error.rawValue)
+            } else {
+                self.controller?.showError(error.localizedDescription)
+            }
         }
     }
     
@@ -50,9 +54,9 @@ extension NewsDetailsPresenter: INewsDetailsPresenter {
         }
     }
     
-    func setImageDate(_ data: UIImage?) {
+    func setImage(_ image: UIImage) {
         self.mainQueue.async {
-            self.view?.setImage(data: data)
+            self.view?.setImage(image)
         }
     }
 }

@@ -10,12 +10,22 @@ import UIKit
 protocol IHistoryTableAdapter: AnyObject {
     var tableView: UITableView? { get set }
     var onCellDeleteHandler: ((HistoryRequest) -> ())? { get set }
-    func setCharts(_ chart: [HistoryViewModel])
+    func setHistory(_ history: [HistoryViewModel])
 }
 
 final class HistoryTableAdapter: NSObject {
     
-    private var articleArray: [HistoryViewModel] = []
+    private enum Constants {
+        static let heightForHeaderInSection: CGFloat = 50
+        static let heightForFooterInSection: CGFloat = 0
+        
+        static let heightForRowMax: CGFloat = 40
+        static let heightForRowMin: CGFloat = 0
+        
+        static let fromNumber = 0
+    }
+    
+    private var historyArray: [HistoryViewModel] = []
     
     var onCellDeleteHandler: ((HistoryRequest) -> ())?
     
@@ -28,9 +38,9 @@ final class HistoryTableAdapter: NSObject {
 }
 
 extension HistoryTableAdapter: IHistoryTableAdapter {
-
-    func setCharts(_ chart: [HistoryViewModel]) {
-        self.articleArray = chart
+    
+    func setHistory(_ history: [HistoryViewModel]) {
+        self.historyArray = history
         self.tableView?.reloadData()
     }
 }
@@ -38,37 +48,43 @@ extension HistoryTableAdapter: IHistoryTableAdapter {
 extension HistoryTableAdapter: UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        self.articleArray.count
+        self.historyArray.count
     }
     
     func tableView(_ tableView: UITableView,
                    numberOfRowsInSection section: Int) -> Int {
-        articleArray[section].segment.count
+        self.historyArray[section].transaction.count
     }
     
     func tableView(_ tableView: UITableView,
                    heightForHeaderInSection section: Int) -> CGFloat {
-        50
+        Constants.heightForHeaderInSection
     }
     
     func tableView(_ tableView: UITableView,
                    heightForRowAt indexPath: IndexPath) -> CGFloat {
-        articleArray[indexPath.section].expanded ? 40 : 0
+        switch self.historyArray[indexPath.section].expanded {
+        case true:
+            return Constants.heightForRowMax
+        case false:
+            return Constants.heightForRowMin
+        }
     }
     
     func tableView(_ tableView: UITableView,
-                            heightForFooterInSection section: Int) -> CGFloat {
-        return 0
+                   heightForFooterInSection section: Int) -> CGFloat {
+        Constants.heightForFooterInSection
     }
     
     func tableView(_ tableView: UITableView,
                    cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         guard let cell = tableView.dequeueReusableCell(withIdentifier: HistoryCell.id,
-                                                       for: indexPath) as? HistoryCell else { return UITableViewCell() }
+                                                       for: indexPath) as? HistoryCell
+        else { return UITableViewCell() }
         
-        let news = articleArray[indexPath.section].segment[indexPath.row]
-        cell.update(article: news)
+        let news = self.historyArray[indexPath.section].transaction[indexPath.row]
+        cell.update(transaction: news)
         
         return cell
     }
@@ -82,11 +98,11 @@ extension HistoryTableAdapter: UITableViewDelegate, UITableViewDataSource {
                    commit editingStyle: UITableViewCell.EditingStyle,
                    forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            let chart = articleArray[indexPath.section]
-            let segment = chart.segment[indexPath.row]
+            let chart = self.historyArray[indexPath.section]
+            let segment = chart.transaction[indexPath.row]
             let viewModel = HistoryRequest(id: chart.id,
-                                                   idSegment: segment.id,
-                                                   transactionTypeCount: chart.segment.count)
+                                           idSegment: segment.id,
+                                           transactionCount: chart.transaction.count)
             self.onCellDeleteHandler?(viewModel)
         }
     }
@@ -94,13 +110,14 @@ extension HistoryTableAdapter: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView,
                    viewForHeaderInSection section: Int) -> UIView? {
         let header = HistoryHeaderView()
-        let chart = articleArray[section]
+        let history = self.historyArray[section]
         
-        header.setCollapsed(articleArray[section].expanded)
+        header.setCollapsed(history.expanded)
         
         header.setup(section: section,
-                     chart: chart,
+                     history: history,
                      delegate: self)
+        
         return header
     }
 }
@@ -109,11 +126,12 @@ extension HistoryTableAdapter: HistoryHeaderViewDelegate {
     
     func toggleSection(header: HistoryHeaderView, section: Int) {
         
-        let expanded = !articleArray[section].expanded
-        articleArray[section].expanded = expanded
+        let expanded = !self.historyArray[section].expanded
+        self.historyArray[section].expanded = expanded
         header.setCollapsed(expanded)
         
-        for row in 0..<articleArray[section].segment.count {
+        for row in Constants.fromNumber..<self.historyArray[section].transaction.count {
+            
             tableView?.reloadRows(at: [IndexPath(row: row, section: section)],
                                   with: .automatic)
         }

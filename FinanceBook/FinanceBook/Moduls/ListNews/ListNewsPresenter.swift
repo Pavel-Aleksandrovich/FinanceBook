@@ -12,7 +12,7 @@ protocol IListNewsPresenter: AnyObject {
                         view: IListNewsView,
                         tableAdapter: IListNewsTableAdapter)
     func showError(_ error: Error)
-    func setNewsSuccessState(_ news: NewsDTO)
+    func setNewsSuccessState(_ news: NewsResponse)
     func setCountryBarButtonTitle(title: String)
 }
 
@@ -37,14 +37,21 @@ extension ListNewsPresenter: IListNewsPresenter {
     }
     
     func showError(_ error: Error) {
-        self.mainQueue.async {
-            self.controller?.showError(error.localizedDescription)
+        if let error = error as? NewsNetworkError {
+            self.mainQueue.async {
+                self.controller?.showError(error.rawValue)
+            }
+        } else {
+            self.mainQueue.async {
+                self.controller?.showError(error.localizedDescription)
+            }
         }
     }
     
-    func setNewsSuccessState(_ news: NewsDTO) {
+    func setNewsSuccessState(_ news: NewsResponse) {
+        let viewModel = news.articles.compactMap { NewsViewModel(from: $0) }
         self.mainQueue.async {
-            self.tableAdapter?.setNewsState(.success(news.articles))
+            self.tableAdapter?.setNewsState(.success(viewModel))
         }
     }
     

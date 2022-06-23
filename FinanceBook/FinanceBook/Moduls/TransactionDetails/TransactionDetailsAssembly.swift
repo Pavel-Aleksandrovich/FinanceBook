@@ -12,14 +12,15 @@ enum TransactionDetailsAssembly {
     static func build() -> UIViewController {
         
         let presenter = TransactionDetailsPresenter()
-        let dataManager = DataManager()
+        let coreData = CoreDataStorage.shared
+        let dataManager = HistoryDataManager(coreDataStorage: coreData)
         let validator = TransactionDetailsValidator()
         let interactor = TransactionDetailsInteractor(presenter: presenter,
-                                              dataManager: dataManager,
-                                              validator: validator)
+                                                      dataManager: dataManager,
+                                                      validator: validator)
         let router = TransactionDetailsRouter()
         let controller = TransactionDetailsViewController(interactor: interactor,
-                                                  router: router)
+                                                          router: router)
         router.controller = controller
         
         return controller

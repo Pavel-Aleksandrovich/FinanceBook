@@ -25,7 +25,7 @@ enum AlertAssembly {
         static let errorAlertOkActionTitle = "Ok"
     }
     
-    static func createLanguageAlert(completion: @escaping(Country) -> ()) -> UIAlertController {
+    static func createCountryAlert(completion: @escaping(Country) -> ()) -> UIAlertController {
         
         let alert = UIAlertController(title: "Choose Language",
                                       message: nil,

@@ -10,7 +10,7 @@ import Foundation
 protocol ITransactionDetailsInteractor: AnyObject {
     func onViewAttached(controller: ITransactionDetailsViewController,
                         view: ITransactionDetailsView)
-    func createChart(_ viewModel: TransactionDetailsValidateRequest?)
+    func createTransaction(_ viewModel: TransactionDetailsValidateRequest?)
     func checkTextFields(viewModel: TransactionDetailsValidateRequest?)
 }
 
@@ -31,7 +31,7 @@ final class TransactionDetailsInteractor {
 
 extension TransactionDetailsInteractor: ITransactionDetailsInteractor {
     
-    func createChart(_ viewModel: TransactionDetailsValidateRequest?) {
+    func createTransaction(_ viewModel: TransactionDetailsValidateRequest?) {
         let result = self.validator.check(viewModel: viewModel) { [ weak self ] result in
             switch result {
             case .success(_): break
@@ -43,7 +43,7 @@ extension TransactionDetailsInteractor: ITransactionDetailsInteractor {
         if result == true {
             let chartRequest = TransactionDetailsRequest(viewModel: viewModel)
             guard let chartRequest = chartRequest else { return }
-            self.save(chart: chartRequest)
+            self.save(transaction: chartRequest)
         }
     }
     
@@ -66,8 +66,8 @@ extension TransactionDetailsInteractor: ITransactionDetailsInteractor {
 
 private extension TransactionDetailsInteractor {
     
-    func save(chart: TransactionDetailsRequest) {
-        self.dataManager.create(segment: chart) { [ weak self ] result in
+    func save(transaction: TransactionDetailsRequest) {
+        self.dataManager.create(transaction: transaction) { [ weak self ] result in
             switch result {
             case .success():
                 self?.presenter.showSuccess()
