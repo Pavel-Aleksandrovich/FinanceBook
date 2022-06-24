@@ -1,5 +1,5 @@
 //
-//  PieChartView.swift
+//  HistoryChart.swift
 //  FinanceBook
 //
 //  Created by pavel mishanin on 16.06.2022.

@@ -73,7 +73,7 @@ private extension TransactionDetailsViewController {
     func setCheckTextFieldsHandler() {
         self.mainView.checkTextFieldsHandler = { [ weak self ] in
             let viewModel = self?.mainView.getViewModel()
-                self?.interactor.checkTextFields(viewModel: viewModel)
+            self?.interactor.checkTextFields(viewModel: viewModel)
         }
     }
     

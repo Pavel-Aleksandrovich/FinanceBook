@@ -14,7 +14,7 @@ final class KeyboardObserver {
         case hide
     }
     
-    private var onKeyboardStateChangeHandler: ((KeyboardState) -> ())?
+    private var onKeyboardStateChangedHandler: ((KeyboardState) -> ())?
     private let observer = NotificationCenter.default
     
     deinit {
@@ -24,8 +24,8 @@ final class KeyboardObserver {
 
 extension KeyboardObserver {
     
-    func addKeyboardObservers(complition: @escaping(KeyboardState) -> ()) {
-        self.onKeyboardStateChangeHandler = complition
+    func addKeyboardObserver(complition: @escaping(KeyboardState) -> ()) {
+        self.onKeyboardStateChangedHandler = complition
         
         self.observer.addObserver(self,
                                   selector: #selector(self.keyboardWillShow),
@@ -47,10 +47,10 @@ private extension KeyboardObserver {
                                    NSValue)?.cgRectValue else { return }
         
         let keyboardTop = keyboardFrame.height
-        self.onKeyboardStateChangeHandler?(.show(keyboardTop))
+        self.onKeyboardStateChangedHandler?(.show(keyboardTop))
     }
     
     @objc func keyboardWillHide() {
-        self.onKeyboardStateChangeHandler?(.hide)
+        self.onKeyboardStateChangedHandler?(.hide)
     }
 }

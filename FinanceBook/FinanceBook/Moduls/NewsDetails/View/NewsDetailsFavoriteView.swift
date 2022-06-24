@@ -1,5 +1,5 @@
 //
-//  NewsDetailsButtonView.swift
+//  NewsDetailsFavoriteView.swift
 //  FinanceBook
 //
 //  Created by pavel mishanin on 23.06.2022.
@@ -56,7 +56,7 @@ private extension NewsDetailsFavoriteView {
     func configView() {
         self.layer.cornerRadius = Constants.cornerRadius
         self.layer.borderWidth = Constants.borderWidth
-        self.layer.borderColor = UIColor.gray.cgColor
+        self.layer.borderColor = MainAttributs.color.cgColor
         self.isUserInteractionEnabled = true
         let tap = UITapGestureRecognizer(target: self,
                                          action: #selector(self.onViewTapped))
@@ -69,9 +69,11 @@ private extension NewsDetailsFavoriteView {
     
     func configPlusImageView() {
         self.plusImageView.image = UIImage(systemName: Constants.plusImageViewImageName)
+        self.plusImageView.tintColor = MainAttributs.color
     }
     
     func configTextLabel() {
+        self.textLabel.textColor = MainAttributs.color
         self.textLabel.text = Constants.textLabelText
         self.textLabel.font = .systemFont(ofSize: Constants.textLabelFontSize)
     }

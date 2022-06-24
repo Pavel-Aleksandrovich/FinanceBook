@@ -59,9 +59,9 @@ extension NewsDetailsViewController: INewsDetailsViewController {
 private extension NewsDetailsViewController {
     
     func setOnFavoriteButtonTappedHandler() {
-        self.mainView.onFavoriteButtonTappedHandler = {
-            let model = self.mainView.getModel()
-            self.interactor.addToFavorite(news: model)
+        self.mainView.onFavoriteButtonTappedHandler = { [ weak self ] in
+            let model = self?.mainView.getModel()
+            self?.interactor.addToFavorite(news: model)
         }
     }
 }

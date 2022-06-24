@@ -29,6 +29,7 @@ final class HistoryDataManager {
 }
 
 extension HistoryDataManager: IHistoryDataManager {
+    
     func getHistory(completion: @escaping (Result<([HistoryResponse]),
                                            Error>) -> ()) {
         self.globalQueue.async {

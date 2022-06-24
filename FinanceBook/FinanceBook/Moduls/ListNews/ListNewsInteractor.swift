@@ -23,7 +23,8 @@ final class ListNewsInteractor {
     private let presenter: IListNewsPresenter
     private let networkManager: INewsNetworkManager
     
-    init(presenter: IListNewsPresenter, networkManager: INewsNetworkManager) {
+    init(presenter: IListNewsPresenter,
+         networkManager: INewsNetworkManager) {
         self.presenter = presenter
         self.networkManager = networkManager
     }
@@ -32,13 +33,13 @@ final class ListNewsInteractor {
 extension ListNewsInteractor: IListNewsInteractor {
     
     func loadImageFrom(url: String,
-                           complition: @escaping(UIImage) -> ()) {
+                       complition: @escaping(UIImage) -> ()) {
         self.networkManager.loadImageFrom(url: url) { [ weak self ] result in
             switch result {
             case .success(let image):
-                    DispatchQueue.main.async {
-                        complition(image)
-                    }
+                DispatchQueue.main.async {
+                    complition(image)
+                }
             case .failure(let error):
                 self?.presenter.showError(error)
             }
@@ -50,7 +51,7 @@ extension ListNewsInteractor: IListNewsInteractor {
         if let category = category {
             self.category = category
         }
-    
+        
         if let country = country {
             self.country = country
             self.presenter.setCountryBarButtonTitle(title: country.name)

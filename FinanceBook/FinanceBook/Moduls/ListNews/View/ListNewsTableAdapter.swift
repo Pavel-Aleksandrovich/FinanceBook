@@ -27,8 +27,6 @@ final class ListNewsTableAdapter: NSObject {
     
     private enum Constants {
         static let numberOfRowsForLoading = 1
-        static let heightRowForLoading = UIScreen.main.bounds.size.height * 0.8
-        
         static let heightRowForSuccess: CGFloat = 150
     }
     
@@ -63,15 +61,17 @@ extension ListNewsTableAdapter: UITableViewDelegate, UITableViewDataSource {
         }
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView,
+                   heightForRowAt indexPath: IndexPath) -> CGFloat {
         switch self.state {
         case .success(_): return Constants.heightRowForSuccess
-        case .loading: return Constants.heightRowForLoading
+        case .loading: return UIScreen.main.bounds.size.height * 0.8
         }
     }
     
     func tableView(_ tableView: UITableView,
                    cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
         switch self.state {
         case .success(let array):
             guard let cell = tableView.dequeueReusableCell(
@@ -101,15 +101,15 @@ extension ListNewsTableAdapter: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView,
                    didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-
+        
         switch self.state {
         case .success(let array):
             let article = array[indexPath.row]
-
+            
             let viewModel = NewsRequest(title: article.title,
                                         desctiption: article.description,
                                         imageUrl: article.urlToImage)
-
+            
             self.onCellTappedHandler?(viewModel)
         case .loading: break
         }

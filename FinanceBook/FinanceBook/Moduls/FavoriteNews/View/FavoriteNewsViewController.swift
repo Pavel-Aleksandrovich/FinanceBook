@@ -17,7 +17,7 @@ final class FavoriteNewsViewController: UIViewController {
     private let tableAdapter: IFavoriteNewsTableAdapter
     private let interactor: IFavoriteNewsInteractor
     private let router: IFavoriteNewsRouter
-
+    
     init(interactor: IFavoriteNewsInteractor,
          router: IFavoriteNewsRouter,
          tableAdapter: IFavoriteNewsTableAdapter) {
@@ -59,8 +59,8 @@ extension FavoriteNewsViewController: IFavoriteNewsViewController {
 private extension FavoriteNewsViewController {
     
     func setOnCellDeleteHandler() {
-        self.tableAdapter.onCellDeleteHandler = { news in
-            self.interactor.deleteNews(news)
+        self.tableAdapter.onCellDeleteHandler = { [ weak self ] news in
+            self?.interactor.deleteNews(news)
         }
     }
 }

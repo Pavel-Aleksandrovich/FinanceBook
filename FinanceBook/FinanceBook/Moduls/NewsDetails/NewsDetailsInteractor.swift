@@ -34,7 +34,7 @@ extension NewsDetailsInteractor: INewsDetailsInteractor {
     
     func addToFavorite(news: NewsDetailsRequest?) {
         guard let news = news else { return }
-
+        
         self.dataManager.create(news: news) { [ weak self ] result in
             switch result {
             case .success():

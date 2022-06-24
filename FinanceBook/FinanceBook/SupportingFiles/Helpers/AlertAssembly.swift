@@ -25,8 +25,8 @@ enum AlertAssembly {
         static let errorAlertOkActionTitle = "Ok"
         
         static let countryAlertTitle = "Choose Language"
-        static let countryAlertUsTitle = "us"
-        static let countryAlertRuTitle = "ru"
+        static let countryAlertUsTitle = "US"
+        static let countryAlertRuTitle = "RU"
         
         static let successAlertTitle = "Success"
         static let successAlertActionTitle = "Go Back"

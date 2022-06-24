@@ -24,7 +24,7 @@ private extension BaseView {
     
     func hideKeyboardWhenTappedAround() {
         let tap = UITapGestureRecognizer(target: self,
-                                         action: #selector(dismissKeyboard))
+                                         action: #selector(self.dismissKeyboard))
         tap.cancelsTouchesInView = false
         self.addGestureRecognizer(tap)
     }

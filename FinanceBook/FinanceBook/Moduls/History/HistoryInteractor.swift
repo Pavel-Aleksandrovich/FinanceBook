@@ -20,7 +20,8 @@ final class HistoryInteractor {
     private let presenter: IHistoryPresenter
     private let dataManager: IHistoryDataManager
     
-    init(presenter: IHistoryPresenter, dataManager: IHistoryDataManager) {
+    init(presenter: IHistoryPresenter,
+         dataManager: IHistoryDataManager) {
         self.presenter = presenter
         self.dataManager = dataManager
     }

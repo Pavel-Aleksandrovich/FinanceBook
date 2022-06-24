@@ -1,5 +1,5 @@
 //
-//  ChartViewModelResponse.swift
+//  HistoryViewModel.swift
 //  FinanceBook
 //
 //  Created by pavel mishanin on 20.06.2022.
@@ -29,7 +29,7 @@ struct TransactionTypeViewModel {
     let id: UUID
     let value: Int
     let date: Date
-
+    
     init(transaction: TransactionTypeResponse) {
         self.id = transaction.id
         self.value = transaction.value

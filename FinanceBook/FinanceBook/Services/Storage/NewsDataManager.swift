@@ -28,6 +28,7 @@ final class NewsDataManager {
 }
 
 extension NewsDataManager: INewsDataManager {
+    
     func getListNews(completion: @escaping(Result<([FavoriteNewsResponse]),
                                            Error>) -> ()) {
         self.globalQueue.async {

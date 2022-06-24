@@ -1,5 +1,5 @@
 //
-//  FavoriteDetailsViewModel.swift
+//  FavoriteNewsViewModel.swift
 //  FinanceBook
 //
 //  Created by pavel mishanin on 21.06.2022.
