@@ -76,6 +76,7 @@
 		84272CCB286424E3005B1955 /* HistoryDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84272CCA286424E3005B1955 /* HistoryDataManager.swift */; };
 		84272CCD28642720005B1955 /* NewsDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84272CCC28642720005B1955 /* NewsDataManager.swift */; };
 		84272CCF28646E1E005B1955 /* NewsDetailsFavoriteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84272CCE28646E1E005B1955 /* NewsDetailsFavoriteView.swift */; };
+		84272CD12865BAA6005B1955 /* DefaultHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84272CD02865BAA6005B1955 /* DefaultHistoryView.swift */; };
 		845AE7012859E5050021F7B7 /* ListNewsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845AE7002859E5050021F7B7 /* ListNewsInteractor.swift */; };
 		845AE7032859E5CB0021F7B7 /* ListNewsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845AE7022859E5CB0021F7B7 /* ListNewsPresenter.swift */; };
 		845AE7052859E66E0021F7B7 /* ListNewsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845AE7042859E66E0021F7B7 /* ListNewsViewController.swift */; };
@@ -168,6 +169,7 @@
 		84272CCA286424E3005B1955 /* HistoryDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryDataManager.swift; sourceTree = "<group>"; };
 		84272CCC28642720005B1955 /* NewsDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsDataManager.swift; sourceTree = "<group>"; };
 		84272CCE28646E1E005B1955 /* NewsDetailsFavoriteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsDetailsFavoriteView.swift; sourceTree = "<group>"; };
+		84272CD02865BAA6005B1955 /* DefaultHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultHistoryView.swift; sourceTree = "<group>"; };
 		845AE7002859E5050021F7B7 /* ListNewsInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListNewsInteractor.swift; sourceTree = "<group>"; };
 		845AE7022859E5CB0021F7B7 /* ListNewsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListNewsPresenter.swift; sourceTree = "<group>"; };
 		845AE7042859E66E0021F7B7 /* ListNewsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListNewsViewController.swift; sourceTree = "<group>"; };
@@ -275,6 +277,7 @@
 			children = (
 				84272C55285B7FB8005B1955 /* HistoryViewController.swift */,
 				84272C5A285C2560005B1955 /* HistoryView.swift */,
+				84272CD02865BAA6005B1955 /* DefaultHistoryView.swift */,
 				84272C62285C27C7005B1955 /* HistoryTableAdapter.swift */,
 				84272C64285C2883005B1955 /* HistoryCell.swift */,
 				84272C86285D8FC3005B1955 /* HistoryHeaderView.swift */,
@@ -649,6 +652,7 @@
 				845AE7072859E6E90021F7B7 /* ListNewsRouter.swift in Sources */,
 				845AE7032859E5CB0021F7B7 /* ListNewsPresenter.swift in Sources */,
 				84272C6D285C3CC3005B1955 /* TransactionDetailsRouter.swift in Sources */,
+				84272CD12865BAA6005B1955 /* DefaultHistoryView.swift in Sources */,
 				84272C33285ADCCD005B1955 /* FavoriteNewsRouter.swift in Sources */,
 				84272C61285C26FA005B1955 /* HistoryPresenter.swift in Sources */,
 				84272CCD28642720005B1955 /* NewsDataManager.swift in Sources */,

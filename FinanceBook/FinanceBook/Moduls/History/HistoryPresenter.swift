@@ -46,6 +46,7 @@ extension HistoryPresenter: IHistoryPresenter {
         let historyViewModel = self.getViewModel(from: history)
         
         self.mainQueue.async {
+            self.view?.setImageViewState(!historyViewModel.isEmpty)
             self.tableAdapter?.setHistory(historyViewModel)
             self.view?.setHistory(historyViewModel)
         }
