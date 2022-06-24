@@ -1,5 +1,5 @@
 //
-//  ChartDTO.swift
+//  HistoryResponse.swift
 //  FinanceBook
 //
 //  Created by pavel mishanin on 18.06.2022.
@@ -25,7 +25,7 @@ struct TransactionTypeResponse {
     let id: UUID
     let value: Int
     let date: Date
-
+    
     init(transaction: SegmentEntity) {
         self.id = transaction.id
         self.value = Int(transaction.value)

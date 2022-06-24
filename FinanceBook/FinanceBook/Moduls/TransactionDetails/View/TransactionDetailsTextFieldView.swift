@@ -11,9 +11,9 @@ final class TransactionDetailsTextFieldView: UIView {
     
     struct Settings {
         let header: String
-        let placeholder: String?
+        let placeholder: String
         
-        init(header: String, placeholder: String? = nil) {
+        init(header: String, placeholder: String) {
             self.header = header
             self.placeholder = placeholder
         }
@@ -23,10 +23,9 @@ final class TransactionDetailsTextFieldView: UIView {
         static let textFieldCornerRadius: CGFloat = 16
         static let emptyViewWidth = 16
         static let textFieldHeight = 40
-        static let textFieldTopOffset = 8
+        static let textFieldTopOffset = 10
         static let textFieldBorderWidth: CGFloat = 2
         
-        static let headerLabelDefaultPlaceholder = "Start typing here"
         static let headerLabelFontSize: CGFloat = 18
     }
     
@@ -91,6 +90,7 @@ extension TransactionDetailsTextFieldView {
     }
 }
 
+// MARK: - Config Appearance
 private extension TransactionDetailsTextFieldView {
     
     func configView(with settings: Settings) {
@@ -106,23 +106,26 @@ private extension TransactionDetailsTextFieldView {
     func configHeaderLabel() {
         self.headerLabel.font = UIFont.systemFont(ofSize: Constants.headerLabelFontSize,
                                                   weight: .bold)
-        self.headerLabel.text = Constants.headerLabelDefaultPlaceholder
         self.headerLabel.textColor = MainAttributs.color
     }
     
     func configTextField() {
-        textField.layer.borderWidth = Constants.textFieldBorderWidth
-        textField.layer.borderColor = MainAttributs.color.cgColor
-        textField.layer.cornerRadius = Constants.textFieldCornerRadius
+        self.textField.layer.borderWidth = Constants.textFieldBorderWidth
+        self.textField.layer.borderColor = MainAttributs.color.cgColor
+        self.textField.layer.cornerRadius = Constants.textFieldCornerRadius
         let emptyView = UIView(frame: .init(x: .zero,
                                             y: .zero,
                                             width: Constants.emptyViewWidth,
                                             height: .zero))
-        textField.leftViewMode = .always
-        textField.leftView = emptyView
-        textField.rightViewMode = .always
-        textField.rightView = emptyView
+        self.textField.leftViewMode = .always
+        self.textField.leftView = emptyView
+        self.textField.rightViewMode = .always
+        self.textField.rightView = emptyView
     }
+}
+
+// MARK: - Make Constraints
+private extension TransactionDetailsTextFieldView {
     
     func makeConstraints() {
         self.makeHeaderLabelConstraints()
@@ -139,7 +142,8 @@ private extension TransactionDetailsTextFieldView {
     func makeTextFieldConstraints() {
         self.addSubview(self.textField)
         self.textField.snp.makeConstraints { make in
-            make.top.equalTo(self.headerLabel.snp.bottom).offset(Constants.textFieldTopOffset)
+            make.top.equalTo(self.headerLabel.snp.bottom)
+                .offset(Constants.textFieldTopOffset)
             make.leading.trailing.bottom.equalToSuperview()
             make.height.equalTo(Constants.textFieldHeight)
         }

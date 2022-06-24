@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  NewsDetailsView.swift
 //  FinanceBook
 //
 //  Created by pavel mishanin on 15.06.2022.
@@ -72,8 +72,8 @@ extension NewsDetailsView: INewsDetailsView {
         else { return nil }
         
         return NewsDetailsRequest(title: title,
-                           desctiption: description,
-                           imageData: image)
+                                  desctiption: description,
+                                  imageData: image)
     }
 }
 

@@ -1,5 +1,5 @@
 //
-//  News.swift
+//  NewsResponse.swift
 //  FinanceBook
 //
 //  Created by pavel mishanin on 15.06.2022.

@@ -1,5 +1,5 @@
 //
-//  DeleteViewModelRequest.swift
+//  HistoryRequest.swift
 //  FinanceBook
 //
 //  Created by pavel mishanin on 20.06.2022.

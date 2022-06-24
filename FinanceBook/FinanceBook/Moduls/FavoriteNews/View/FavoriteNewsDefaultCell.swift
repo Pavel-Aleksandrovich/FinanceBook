@@ -12,7 +12,7 @@ final class FavoriteNewsDefaultCell: UITableViewCell {
     
     private enum Constants {
         static let defaultLabelText = "You haven't added news to favorite yet"
-        static let defaultLabelTop = 20
+        static let defaultLabelTop = 25
         static let defaultLabelLeading = 50
         
         static let defaultImageName = "bookmark"
@@ -37,6 +37,7 @@ final class FavoriteNewsDefaultCell: UITableViewCell {
     }
 }
 
+// MARK: - Config Appearance
 private extension FavoriteNewsDefaultCell {
     
     func configAppearance() {
@@ -54,6 +55,10 @@ private extension FavoriteNewsDefaultCell {
         self.defaultImageView.image = UIImage(systemName: Constants.defaultImageName)
         self.defaultImageView.tintColor = MainAttributs.color
     }
+}
+
+// MARK: - Make Constraints
+private extension FavoriteNewsDefaultCell {
     
     func makeConstraints() {
         self.makeDefaultLabelConstraints()

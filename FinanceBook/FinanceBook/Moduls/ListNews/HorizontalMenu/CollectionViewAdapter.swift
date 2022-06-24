@@ -15,13 +15,19 @@ protocol ICollectionViewAdapter {
 
 final class CollectionViewAdapter: NSObject {
     
+    private enum Constants {
+        static let fontSize: CGFloat = 18
+        static let defaultWidth: CGFloat = 20
+        static let selectedItemAtIndexPath: IndexPath = [0, 0]
+    }
+    
     var onCellTappedHandler: ((String) -> ())?
     
     weak var collectionView: UICollectionView? {
         didSet {
             self.collectionView?.delegate = self
             self.collectionView?.dataSource = self
-            self.collectionView?.selectItem(at: [0, 0],
+            self.collectionView?.selectItem(at: Constants.selectedItemAtIndexPath,
                                             animated: true,
                                             scrollPosition: [])
         }
@@ -35,10 +41,10 @@ extension CollectionViewAdapter: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let font = UIFont.systemFont(ofSize: 18)
+        let font = UIFont.systemFont(ofSize: Constants.fontSize)
         let attributes = [NSAttributedString.Key.font : font as Any]
         let width = Category.allCases[indexPath.item]
-            .rawValue.size(withAttributes: attributes).width + 20
+            .rawValue.size(withAttributes: attributes).width + Constants.defaultWidth
         
         return CGSize(width: width,
                       height: collectionView.frame.height)

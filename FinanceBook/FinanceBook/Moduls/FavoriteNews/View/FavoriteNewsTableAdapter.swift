@@ -22,8 +22,6 @@ final class FavoriteNewsTableAdapter: NSObject {
     
     private enum Constants {
         static let numberOfRows = 1
-        static let heightRowForEmpty = UIScreen.main.bounds.size.height * 0.8
-        
         static let heightRow: CGFloat = 150
     }
     
@@ -61,7 +59,7 @@ extension FavoriteNewsTableAdapter: UITableViewDelegate, UITableViewDataSource {
                    heightForRowAt indexPath: IndexPath) -> CGFloat {
         switch self.state {
         case .success(_): return Constants.heightRow
-        case .empty: return Constants.heightRowForEmpty
+        case .empty: return UIScreen.main.bounds.size.height * 0.8
         }
     }
     
@@ -70,6 +68,7 @@ extension FavoriteNewsTableAdapter: UITableViewDelegate, UITableViewDataSource {
         
         switch self.state {
         case .success(let array):
+            
             guard let cell = tableView.dequeueReusableCell(
                 withIdentifier: FavoriteNewsCell.id,
                 for: indexPath) as? FavoriteNewsCell
@@ -80,6 +79,7 @@ extension FavoriteNewsTableAdapter: UITableViewDelegate, UITableViewDataSource {
             
             return cell
         case .empty:
+            
             guard let cell = tableView.dequeueReusableCell(
                 withIdentifier: FavoriteNewsDefaultCell.id,
                 for: indexPath) as? FavoriteNewsDefaultCell

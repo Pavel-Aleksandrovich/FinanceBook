@@ -18,7 +18,6 @@ final class ListNewsViewController: UIViewController {
         static let barButtonTitle = "US"
     }
     
-    private let cell = ListNewsCell()
     private let mainView = ListNewsView()
     private let tableAdapter: IListNewsTableAdapter
     private let interactor: IListNewsInteractor

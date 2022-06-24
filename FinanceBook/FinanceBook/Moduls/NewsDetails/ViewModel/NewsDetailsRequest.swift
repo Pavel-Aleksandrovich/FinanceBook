@@ -1,5 +1,5 @@
 //
-//  NewsRequest.swift
+//  NewsDetailsRequest.swift
 //  FinanceBook
 //
 //  Created by pavel mishanin on 16.06.2022.
@@ -12,7 +12,7 @@ struct NewsDetailsRequest {
     let title: String
     let desctiption: String
     let imageData: Data
-
+    
     init(title: String,
          desctiption: String,
          imageData: Data) {

@@ -19,7 +19,6 @@ final class FavoriteNewsInteractor {
     
     private let presenter: IFavoriteNewsPresenter
     private let dataManager: INewsDataManager
-    private let networkManager = NewsNetworkManager()
     
     init(presenter: IFavoriteNewsPresenter,
          dataManager: INewsDataManager) {

@@ -12,8 +12,7 @@ protocol INewsNetworkManager: AnyObject {
                   category: String,
                   completion: @escaping (Result<NewsResponse, Error>) -> ())
     func loadImageFrom(url: String,
-                           completion: @escaping(Result<UIImage,
-                                                 Error>) -> ())
+                       completion: @escaping(Result<UIImage, Error>) -> ())
 }
 
 final class NewsNetworkManager {
@@ -56,8 +55,8 @@ extension NewsNetworkManager: INewsNetworkManager {
     }
     
     func loadImageFrom(url: String,
-                           completion: @escaping(Result<UIImage,
-                                                 Error>) -> ()) {
+                       completion: @escaping(Result<UIImage,
+                                             Error>) -> ()) {
         let cacheKey = NSString(string: url)
         
         if let imageFromCache = cache.object(forKey: cacheKey) {

@@ -1,5 +1,5 @@
 //
-//  ChartHeaderView.swift
+//  HistoryHeaderView.swift
 //  FinanceBook
 //
 //  Created by pavel mishanin on 18.06.2022.

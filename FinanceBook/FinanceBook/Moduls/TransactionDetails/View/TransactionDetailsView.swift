@@ -94,9 +94,9 @@ extension TransactionDetailsView: ITransactionDetailsView {
         let name = self.transactionNameTextField.text
         
         return TransactionDetailsValidateRequest(name: name,
-                                amount: amount,
-                                date: date,
-                                color: color)
+                                                 amount: amount,
+                                                 date: date,
+                                                 color: color)
     }
     
     func showErrorDateTextField() {
@@ -154,9 +154,9 @@ private extension TransactionDetailsView {
     func configTransactionNameTextField() {
         self.transactionNameTextField.inputView = self.transactionPicker
         self.transactionNameTextField.addTarget(self,
-                                             action: #selector
-                                             (self.textFieldDidChange),
-                                             for: .editingDidEnd)
+                                                action: #selector
+                                                (self.textFieldDidChange),
+                                                for: .editingDidEnd)
     }
     
     func configNumberTextField() {
@@ -195,7 +195,8 @@ private extension TransactionDetailsView {
         self.saveButton.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
                 .inset(Constants.saveButtonLeading)
-            make.bottom.equalTo(self.safeAreaLayoutGuide).inset(Constants.saveButtonBottom)
+            make.bottom.equalTo(self.safeAreaLayoutGuide)
+                .inset(Constants.saveButtonBottom)
             make.height.equalTo(Constants.saveButtonHeight)
         }
     }
@@ -205,15 +206,18 @@ private extension TransactionDetailsView {
         self.dateTextField.snp.makeConstraints { make in
             make.top.equalTo(self.safeAreaLayoutGuide)
                 .inset(Constants.dateTextFieldTop)
-            make.leading.trailing.equalToSuperview().inset(Constants.dateTextFieldLeading)
+            make.leading.trailing.equalToSuperview()
+                .inset(Constants.dateTextFieldLeading)
         }
     }
     
     func makeNumberTextFieldConstraints() {
         self.addSubview(self.numberTextField)
         self.numberTextField.snp.makeConstraints { make in
-            make.top.equalTo(self.dateTextField.snp.bottom).inset(Constants.numberTextFieldTop)
-            make.leading.trailing.equalToSuperview().inset(Constants.numberTextFieldLeading)
+            make.top.equalTo(self.dateTextField.snp.bottom)
+                .inset(Constants.numberTextFieldTop)
+            make.leading.trailing.equalToSuperview()
+                .inset(Constants.numberTextFieldLeading)
         }
     }
     
@@ -228,7 +232,7 @@ private extension TransactionDetailsView {
 
 // MARK: - Set Handlers
 private extension TransactionDetailsView {
-
+    
     func setHandlers() {
         self.setDateTextFieldToolbarHandler()
         self.setNumberTextFieldToolbarHandler()
@@ -279,7 +283,7 @@ private extension TransactionDetailsView {
 private extension TransactionDetailsView {
     
     func setKeyboardObserver() {
-        self.keyboardObserver.addKeyboardObservers { result in
+        self.keyboardObserver.addKeyboardObserver { result in
             switch result {
             case .show(let height):
                 self.keyboardWillShow(height: height)

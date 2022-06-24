@@ -1,5 +1,5 @@
 //
-//  ChartViewController.swift
+//  HistoryViewController.swift
 //  FinanceBook
 //
 //  Created by pavel mishanin on 16.06.2022.
@@ -17,7 +17,7 @@ final class HistoryViewController: UIViewController {
     private let tableAdapter: IHistoryTableAdapter
     private let interactor: IHistoryInteractor
     private let router: IHistoryRouter
-
+    
     init(interactor: IHistoryInteractor,
          router: IHistoryRouter,
          tableAdapter: IHistoryTableAdapter) {
