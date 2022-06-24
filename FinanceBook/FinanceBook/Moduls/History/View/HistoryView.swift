@@ -11,6 +11,7 @@ import SnapKit
 protocol IHistoryView: AnyObject {
     func getTableView() -> UITableView
     func setHistory(_ chart: [HistoryViewModel])
+    func setImageViewState(_ state: Bool)
 }
 
 final class HistoryView: UIView {
@@ -21,12 +22,12 @@ final class HistoryView: UIView {
     
     private let pieChartView = HistoryChart()
     private let tableView = UITableView()
+    private let defaultView = DefaultHistoryView()
     
     init() {
         super.init(frame: .zero)
         self.configAppearance()
-        self.makeChartConstraints()
-        self.makeTableViewConstraints()
+        self.makeConstraints()
     }
     
     required init?(coder: NSCoder) {
@@ -42,6 +43,10 @@ extension HistoryView: IHistoryView {
     
     func setHistory(_ history: [HistoryViewModel]) {
         self.pieChartView.updateChart(history)
+    }
+    
+    func setImageViewState(_ state: Bool) {
+        self.defaultView.isHidden = state
     }
 }
 
@@ -63,6 +68,12 @@ private extension HistoryView {
                                 forCellReuseIdentifier: HistoryCell.id)
     }
     
+    func makeConstraints() {
+        self.makeChartConstraints()
+        self.makeTableViewConstraints()
+        self.makeDefaultViewConstraints()
+    }
+    
     func makeChartConstraints() {
         self.addSubview(self.pieChartView)
         self.pieChartView.snp.makeConstraints { make in
@@ -79,6 +90,13 @@ private extension HistoryView {
             make.top.equalTo(self.pieChartView.snp.bottom)
             make.bottom.equalTo(self.safeAreaLayoutGuide)
             make.leading.trailing.equalToSuperview()
+        }
+    }
+    
+    func makeDefaultViewConstraints() {
+        self.addSubview(self.defaultView)
+        self.defaultView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
         }
     }
 }
