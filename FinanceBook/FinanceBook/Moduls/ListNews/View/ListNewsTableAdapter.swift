@@ -10,6 +10,7 @@ import UIKit
 enum ListNewsState {
     case success([NewsViewModel])
     case loading
+    case noInternet
 }
 
 protocol ListNewsTableAdapterDelegate: AnyObject {
@@ -58,6 +59,8 @@ extension ListNewsTableAdapter: UITableViewDelegate, UITableViewDataSource {
         switch self.state {
         case .success(let array): return array.count
         case .loading: return Constants.numberOfRowsForLoading
+        case .noInternet:
+            <#code#>
         }
     }
     
@@ -66,6 +69,7 @@ extension ListNewsTableAdapter: UITableViewDelegate, UITableViewDataSource {
         switch self.state {
         case .success(_): return Constants.heightRowForSuccess
         case .loading: return UIScreen.main.bounds.size.height * 0.8
+        case .noInternet: return Constants.heightRowForSuccess
         }
     }
     
@@ -95,6 +99,8 @@ extension ListNewsTableAdapter: UITableViewDelegate, UITableViewDataSource {
             else { return UITableViewCell() }
             
             return cell
+        case .noInternet:
+            <#code#>
         }
     }
     
@@ -112,6 +118,7 @@ extension ListNewsTableAdapter: UITableViewDelegate, UITableViewDataSource {
             
             self.onCellTappedHandler?(viewModel)
         case .loading: break
+        case .noInternet: break
         }
     }
 }
