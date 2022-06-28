@@ -33,16 +33,18 @@ final class ListNewsLoadingCell: UITableViewCell {
     }
 }
 
+extension ListNewsLoadingCell {
+    
+    func startLoading() {
+        self.activityIndicator.startAnimating()
+    }
+}
+
 // MARK: - Config Appearance
 private extension ListNewsLoadingCell {
     
     func configAppearance() {
-        self.configActivityIndicator()
         self.configLoadingLabel()
-    }
-    
-    func configActivityIndicator() {
-        self.activityIndicator.startAnimating()
     }
     
     func configLoadingLabel() {

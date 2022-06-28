@@ -12,8 +12,9 @@ protocol IListNewsPresenter: AnyObject {
                         view: IListNewsView,
                         tableAdapter: IListNewsTableAdapter)
     func showError(_ error: Error)
-    func setNewsSuccessState(_ news: NewsResponse)
+    func setData(_ news: NewsResponse)
     func setCountryBarButtonTitle(title: String)
+    func setState(_ state: ListNewsState)
 }
 
 final class ListNewsPresenter {
@@ -48,10 +49,16 @@ extension ListNewsPresenter: IListNewsPresenter {
         }
     }
     
-    func setNewsSuccessState(_ news: NewsResponse) {
+    func setState(_ state: ListNewsState) {
+        self.mainQueue.async {
+            self.tableAdapter?.setState(state)
+        }
+    }
+    
+    func setData(_ news: NewsResponse) {
         let viewModel = news.articles.compactMap { NewsViewModel(from: $0) }
         self.mainQueue.async {
-            self.tableAdapter?.setNewsState(.success(viewModel))
+            self.tableAdapter?.setData(viewModel)
         }
     }
     

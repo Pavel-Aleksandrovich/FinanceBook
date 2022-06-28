@@ -50,6 +50,7 @@ extension ListNewsInteractor: IListNewsInteractor {
     }
     
     func loadNews(country: Country? = nil, category: String? = nil) {
+        self.presenter.setState(.loading)
         
         if let category = category {
             self.category = category
@@ -60,12 +61,12 @@ extension ListNewsInteractor: IListNewsInteractor {
             self.presenter.setCountryBarButtonTitle(title: country.name)
         }
         
-        self.internetChecker.setInternetStatusListener(completion: { result in
+        self.internetChecker.setInternetStatusListener(completion: { [ weak self ] result in
             switch result {
             case true:
-                self.loadNews()
+                self?.loadNews()
             case false:
-                print("Try again later. No internet connection")
+                self?.presenter.setState(.noInternet)
             }
         })
     }
@@ -86,7 +87,7 @@ private extension ListNewsInteractor {
                                      category: self.category) { [ weak self ] result in
             switch result {
             case .success(let news):
-                self?.presenter.setNewsSuccessState(news)
+                self?.presenter.setData(news)
             case .failure(let error):
                 print(error)
             }
