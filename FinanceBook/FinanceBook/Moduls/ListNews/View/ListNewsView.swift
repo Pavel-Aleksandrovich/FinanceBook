@@ -84,6 +84,8 @@ private extension ListNewsView {
                                  forCellReuseIdentifier: ListNewsCell.id)
         self.tableView.register(ListNewsLoadingCell.self,
                                  forCellReuseIdentifier: ListNewsLoadingCell.id)
+        self.tableView.register(ListNewsInternetCell.self,
+                                 forCellReuseIdentifier: ListNewsInternetCell.id)
     }
 }
 
