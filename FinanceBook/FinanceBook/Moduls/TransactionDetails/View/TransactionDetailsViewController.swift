@@ -37,6 +37,7 @@ final class TransactionDetailsViewController: UIViewController {
         super.viewDidLoad()
         self.interactor.onViewAttached(controller: self,
                                        view: self.mainView)
+        self.router.setupViewController(self)
         self.setSaveButtonTappedHandler()
         self.setCheckTextFieldsHandler()
         self.navigationController?.navigationBar.tintColor = MainAttributs.color

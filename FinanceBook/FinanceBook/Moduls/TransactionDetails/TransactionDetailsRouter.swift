@@ -8,6 +8,7 @@
 import UIKit
 
 protocol ITransactionDetailsRouter: AnyObject {
+    func setupViewController(_ controller: UIViewController)
     func popToRoot()
     func showAlert(_ title: String)
     func showSuccessAlert(complition: @escaping() -> ())
@@ -15,10 +16,14 @@ protocol ITransactionDetailsRouter: AnyObject {
 
 final class TransactionDetailsRouter {
     
-    weak var controller: UIViewController?
+    private weak var controller: UIViewController?
 }
 
 extension TransactionDetailsRouter: ITransactionDetailsRouter {
+    
+    func setupViewController(_ controller: UIViewController) {
+        self.controller = controller
+    }
     
     func popToRoot() {
         self.controller?.navigationController?.popToRootViewController(animated: true)

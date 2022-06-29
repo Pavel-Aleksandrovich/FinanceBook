@@ -24,7 +24,6 @@ enum ListNewsAssembly {
                                                 router: router,
                                                 tableAdapter: tableAdapter,
                                                 collectionAdapter: collectionAdapter)
-        router.controller = controller
         
         return controller
     }

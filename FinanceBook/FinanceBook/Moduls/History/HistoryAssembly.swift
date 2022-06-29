@@ -21,7 +21,6 @@ enum HistoryAssembly {
         let controller = HistoryViewController(interactor: interactor,
                                                router: router,
                                                tableAdapter: tableAdapter)
-        router.controller = controller
         
         return controller
     }

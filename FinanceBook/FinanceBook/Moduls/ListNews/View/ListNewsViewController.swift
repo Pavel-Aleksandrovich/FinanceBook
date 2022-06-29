@@ -50,6 +50,7 @@ final class ListNewsViewController: UIViewController {
         self.interactor.onViewAttached(controller: self,
                                        view: self.mainView,
                                        tableAdapter: self.tableAdapter)
+        self.router.setupViewController(self)
         self.interactor.loadNews(country: nil, category: nil)
         self.configView()
         self.setHandlers()

@@ -22,7 +22,6 @@ enum NewsDetailsAssembly {
         let router = NewsDetailsRouter()
         let controller = NewsDetailsViewController(interactor: interactor,
                                                    router: router)
-        router.controller = controller
         
         return controller
     }

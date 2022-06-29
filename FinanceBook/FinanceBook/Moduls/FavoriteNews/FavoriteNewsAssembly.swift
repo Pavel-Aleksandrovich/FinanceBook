@@ -21,7 +21,6 @@ enum FavoriteNewsAssembly {
         let controller = FavoriteNewsViewController(interactor: interactor,
                                                     router: router,
                                                     tableAdapter: tableAdapter)
-        router.controller = controller
         
         return controller
     }

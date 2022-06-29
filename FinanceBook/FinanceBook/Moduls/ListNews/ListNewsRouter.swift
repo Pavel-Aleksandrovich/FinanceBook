@@ -8,6 +8,7 @@
 import UIKit
 
 protocol IListNewsRouter: AnyObject {
+    func setupViewController(_ controller: UIViewController)
     func showArticleDetails(_ article: NewsRequest)
     func showAlert(_ title: String)
     func showCountryAlert(complition: @escaping(Country) -> ())
@@ -15,10 +16,14 @@ protocol IListNewsRouter: AnyObject {
 
 final class ListNewsRouter {
     
-    weak var controller: UIViewController?
+    private weak var controller: UIViewController?
 }
 
 extension ListNewsRouter: IListNewsRouter {
+    
+    func setupViewController(_ controller: UIViewController) {
+        self.controller = controller
+    }
     
     func showArticleDetails(_ article: NewsRequest) {
         let vc = NewsDetailsAssembly.build(article: article)
