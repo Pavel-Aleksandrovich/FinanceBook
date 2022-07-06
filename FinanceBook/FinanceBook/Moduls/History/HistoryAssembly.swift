@@ -11,7 +11,6 @@ enum HistoryAssembly {
     
     static func build() -> UIViewController {
         
-        let tableAdapter = HistoryTableAdapter()
         let presenter = HistoryPresenter()
         let coreData = CoreDataStorage.shared
         let dataManager = HistoryDataManager(coreDataStorage: coreData)
@@ -19,8 +18,7 @@ enum HistoryAssembly {
                                            dataManager: dataManager)
         let router = HistoryRouter()
         let controller = HistoryViewController(interactor: interactor,
-                                               router: router,
-                                               tableAdapter: tableAdapter)
+                                               router: router)
         
         return controller
     }

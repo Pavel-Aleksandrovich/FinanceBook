@@ -9,7 +9,7 @@ import UIKit
 import SnapKit
 
 protocol HistoryHeaderViewDelegate: AnyObject {
-    func toggleSection(header: HistoryHeaderView, section: Int)
+    func toggleSection(header: HistoryHeaderView, section: Int, tableView: UITableView)
 }
 
 final class HistoryHeaderView: UITableViewHeaderFooterView {
@@ -33,14 +33,15 @@ final class HistoryHeaderView: UITableViewHeaderFooterView {
         static let amountLabelLeading = 10
     }
     
-    weak var delegate: HistoryHeaderViewDelegate?
-    
-    private var section = Int()
-    
     private let arrowLabel = UILabel()
     private let imageView = UIImageView()
     private let nameLabel = UILabel()
     private let amountLabel = UILabel()
+    
+    private var tableView = UITableView()
+    private var section = Int()
+    
+    private weak var delegate: HistoryHeaderViewDelegate?
     
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
@@ -58,8 +59,10 @@ extension HistoryHeaderView {
     
     func setup(section: Int,
                history: HistoryViewModel,
-               delegate: HistoryHeaderViewDelegate) {
+               delegate: HistoryHeaderViewDelegate,
+               tableView: UITableView) {
         
+        self.tableView = tableView
         self.delegate = delegate
         self.section = section
         self.amountLabel.text = NumberConverter.toStringFrom(int: Int(history.amount))
@@ -98,7 +101,9 @@ private extension HistoryHeaderView {
     @objc func selectHeaderAction(gesterRecognizer: UITapGestureRecognizer) {
         guard let cell = gesterRecognizer.view as? HistoryHeaderView
         else { return }
-        self.delegate?.toggleSection(header: self, section: cell.section)
+        self.delegate?.toggleSection(header: self,
+                                     section: cell.section,
+                                     tableView: self.tableView)
     }
 }
 

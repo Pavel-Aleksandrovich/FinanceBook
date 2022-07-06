@@ -7,12 +7,6 @@
 
 import UIKit
 
-protocol IHistoryTableAdapter: AnyObject {
-    var tableView: UITableView? { get set }
-    var onCellDeleteHandler: ((HistoryRequest) -> ())? { get set }
-    func setHistory(_ history: [HistoryViewModel])
-}
-
 final class HistoryTableAdapter: NSObject {
     
     private enum Constants {
@@ -28,20 +22,12 @@ final class HistoryTableAdapter: NSObject {
     private var historyArray: [HistoryViewModel] = []
     
     var onCellDeleteHandler: ((HistoryRequest) -> ())?
-    
-    weak var tableView: UITableView? {
-        didSet {
-            self.tableView?.delegate = self
-            self.tableView?.dataSource = self
-        }
-    }
 }
 
-extension HistoryTableAdapter: IHistoryTableAdapter {
+extension HistoryTableAdapter {
     
     func setHistory(_ history: [HistoryViewModel]) {
         self.historyArray = history
-        self.tableView?.reloadData()
     }
 }
 
@@ -116,7 +102,8 @@ extension HistoryTableAdapter: UITableViewDelegate, UITableViewDataSource {
         
         header.setup(section: section,
                      history: history,
-                     delegate: self)
+                     delegate: self,
+                     tableView: tableView)
         
         return header
     }
@@ -124,7 +111,9 @@ extension HistoryTableAdapter: UITableViewDelegate, UITableViewDataSource {
 
 extension HistoryTableAdapter: HistoryHeaderViewDelegate {
     
-    func toggleSection(header: HistoryHeaderView, section: Int) {
+    func toggleSection(header: HistoryHeaderView,
+                       section: Int,
+                       tableView: UITableView) {
         
         let expanded = !self.historyArray[section].expanded
         self.historyArray[section].expanded = expanded
@@ -132,7 +121,7 @@ extension HistoryTableAdapter: HistoryHeaderViewDelegate {
         
         for row in Constants.fromNumber..<self.historyArray[section].transaction.count {
             
-            tableView?.reloadRows(at: [IndexPath(row: row, section: section)],
+            tableView.reloadRows(at: [IndexPath(row: row, section: section)],
                                   with: .automatic)
         }
     }

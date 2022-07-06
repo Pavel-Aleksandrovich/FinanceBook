@@ -9,8 +9,7 @@ import Foundation
 
 protocol IHistoryPresenter: AnyObject {
     func onViewAttached(controller: IHistoryViewController,
-                        view: IHistoryView,
-                        tableAdapter: IHistoryTableAdapter)
+                        view: IHistoryView)
     func showError(_ error: Error)
     func setHistory(_ history: [HistoryResponse])
 }
@@ -19,7 +18,6 @@ final class HistoryPresenter {
     
     private weak var view: IHistoryView?
     private weak var controller: IHistoryViewController?
-    private weak var tableAdapter: IHistoryTableAdapter?
     
     private let mainQueue = DispatchQueue.main
 }
@@ -27,13 +25,9 @@ final class HistoryPresenter {
 extension HistoryPresenter: IHistoryPresenter {
     
     func onViewAttached(controller: IHistoryViewController,
-                        view: IHistoryView,
-                        tableAdapter: IHistoryTableAdapter) {
+                        view: IHistoryView) {
         self.controller = controller
         self.view = view
-        self.tableAdapter = tableAdapter
-        
-        self.tableAdapter?.tableView = self.view?.getTableView()
     }
     
     func showError(_ error: Error) {
@@ -47,7 +41,6 @@ extension HistoryPresenter: IHistoryPresenter {
         
         self.mainQueue.async {
             self.view?.setImageViewState(!historyViewModel.isEmpty)
-            self.tableAdapter?.setHistory(historyViewModel)
             self.view?.setHistory(historyViewModel)
         }
     }

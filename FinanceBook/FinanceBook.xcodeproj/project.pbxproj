@@ -271,6 +271,7 @@
 			isa = PBXGroup;
 			children = (
 				84272CAF2860A51A005B1955 /* ViewModels */,
+				84272CE128755BC7005B1955 /* TableAdapter */,
 				84272C68285C2A0E005B1955 /* View */,
 				84272C5C285C261C005B1955 /* HistoryRouter.swift */,
 				84272C5E285C2668005B1955 /* HistoryInteractor.swift */,
@@ -286,9 +287,6 @@
 				84272C55285B7FB8005B1955 /* HistoryViewController.swift */,
 				84272C5A285C2560005B1955 /* HistoryView.swift */,
 				84272CD02865BAA6005B1955 /* DefaultHistoryView.swift */,
-				84272C62285C27C7005B1955 /* HistoryTableAdapter.swift */,
-				84272C64285C2883005B1955 /* HistoryCell.swift */,
-				84272C86285D8FC3005B1955 /* HistoryHeaderView.swift */,
 				84272C58285B806F005B1955 /* HistoryChart.swift */,
 			);
 			path = View;
@@ -299,6 +297,7 @@
 			children = (
 				84272CAA28604202005B1955 /* Validator */,
 				84272CA528602AFD005B1955 /* ViewModels */,
+				84272CDB2870A934005B1955 /* CollectionAdapter */,
 				84272C74285C3F47005B1955 /* View */,
 				84272C6C285C3CC3005B1955 /* TransactionDetailsRouter.swift */,
 				84272C70285C3D8D005B1955 /* TransactionDetailsInteractor.swift */,
@@ -313,7 +312,6 @@
 			children = (
 				84272C6A285C391B005B1955 /* TransactionDetailsViewController.swift */,
 				84272C6E285C3CFF005B1955 /* TransactionDetailsView.swift */,
-				84272CDB2870A934005B1955 /* CollectionView */,
 				84272CAD2860670F005B1955 /* TransactionDetailsTextFieldView.swift */,
 				84272C8E285DCC40005B1955 /* TransactionDetailsPicker.swift */,
 			);
@@ -433,14 +431,24 @@
 			path = Remote;
 			sourceTree = "<group>";
 		};
-		84272CDB2870A934005B1955 /* CollectionView */ = {
+		84272CDB2870A934005B1955 /* CollectionAdapter */ = {
 			isa = PBXGroup;
 			children = (
 				84272CD92870A8DA005B1955 /* TransactionDetailsCollectionView.swift */,
 				84272CDD2870A951005B1955 /* TransactionDetailsCell.swift */,
 				84272C77285C5C49005B1955 /* TransactionType.swift */,
 			);
-			path = CollectionView;
+			path = CollectionAdapter;
+			sourceTree = "<group>";
+		};
+		84272CE128755BC7005B1955 /* TableAdapter */ = {
+			isa = PBXGroup;
+			children = (
+				84272C62285C27C7005B1955 /* HistoryTableAdapter.swift */,
+				84272C64285C2883005B1955 /* HistoryCell.swift */,
+				84272C86285D8FC3005B1955 /* HistoryHeaderView.swift */,
+			);
+			path = TableAdapter;
 			sourceTree = "<group>";
 		};
 		845AE6FF2859E4DB0021F7B7 /* Moduls */ = {

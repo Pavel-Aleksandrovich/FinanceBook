@@ -14,16 +14,13 @@ protocol IHistoryViewController: AnyObject {
 final class HistoryViewController: UIViewController {
     
     private let mainView = HistoryView()
-    private let tableAdapter: IHistoryTableAdapter
     private let interactor: IHistoryInteractor
     private let router: IHistoryRouter
     
     init(interactor: IHistoryInteractor,
-         router: IHistoryRouter,
-         tableAdapter: IHistoryTableAdapter) {
+         router: IHistoryRouter) {
         self.interactor = interactor
         self.router = router
-        self.tableAdapter = tableAdapter
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -38,8 +35,7 @@ final class HistoryViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.interactor.onViewAttached(controller: self,
-                                       view: self.mainView,
-                                       tableAdapter: self.tableAdapter)
+                                       view: self.mainView)
         self.router.setupViewController(self)
         self.createAddTransactionBarButton()
         self.setOnCellDeleteHandler()
@@ -60,7 +56,7 @@ extension HistoryViewController: IHistoryViewController {
 private extension HistoryViewController {
     
     func setOnCellDeleteHandler() {
-        self.tableAdapter.onCellDeleteHandler = { [ weak self ] viewModel in
+        self.mainView.onCellDeleteHandler = { [ weak self ] viewModel in
             self?.interactor.deleteTransaction(viewModel)
         }
     }

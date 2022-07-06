@@ -9,8 +9,7 @@ import Foundation
 
 protocol IHistoryInteractor: AnyObject {
     func onViewAttached(controller: IHistoryViewController,
-                        view: IHistoryView,
-                        tableAdapter: IHistoryTableAdapter)
+                        view: IHistoryView)
     func loadData()
     func deleteTransaction(_ viewModel: HistoryRequest)
 }
@@ -30,11 +29,9 @@ final class HistoryInteractor {
 extension HistoryInteractor: IHistoryInteractor {
     
     func onViewAttached(controller: IHistoryViewController,
-                        view: IHistoryView,
-                        tableAdapter: IHistoryTableAdapter) {
+                        view: IHistoryView) {
         self.presenter.onViewAttached(controller: controller,
-                                      view: view,
-                                      tableAdapter: tableAdapter)
+                                      view: view)
     }
     
     func loadData() {

@@ -9,7 +9,6 @@ import UIKit
 import SnapKit
 
 protocol IHistoryView: AnyObject {
-    func getTableView() -> UITableView
     func setHistory(_ chart: [HistoryViewModel])
     func setImageViewState(_ state: Bool)
 }
@@ -25,8 +24,13 @@ final class HistoryView: UIView {
     private let defaultView = DefaultHistoryView()
     private let scrollView = UIScrollView()
     
+    private var tableAdapter = HistoryTableAdapter()
+    
+    var onCellDeleteHandler: ((HistoryRequest) -> ())?
+    
     init() {
         super.init(frame: .zero)
+        self.setOnCellDeleteHandler()
         self.configAppearance()
         self.makeConstraints()
     }
@@ -38,12 +42,10 @@ final class HistoryView: UIView {
 
 extension HistoryView: IHistoryView {
     
-    func getTableView() -> UITableView {
-        self.tableView
-    }
-    
     func setHistory(_ history: [HistoryViewModel]) {
         self.pieChartView.updateChart(history)
+        self.tableAdapter.setHistory(history)
+        self.tableView.reloadData()
     }
     
     func setImageViewState(_ state: Bool) {
@@ -51,6 +53,17 @@ extension HistoryView: IHistoryView {
     }
 }
 
+// MARK: - Set Handlers
+private extension HistoryView {
+    
+    func setOnCellDeleteHandler() {
+        self.tableAdapter.onCellDeleteHandler = { [ weak self ] viewModel in
+            self?.onCellDeleteHandler?(viewModel)
+        }
+    }
+}
+
+// MARK: - Config Appearance
 private extension HistoryView {
     
     func configAppearance() {
@@ -66,6 +79,8 @@ private extension HistoryView {
     func configTableView() {
         self.tableView.allowsSelection = false
         self.tableView.showsVerticalScrollIndicator = false
+        self.tableView.delegate = self.tableAdapter
+        self.tableView.dataSource = self.tableAdapter
         self.tableView.register(HistoryCell.self,
                                 forCellReuseIdentifier: HistoryCell.id)
     }
@@ -75,6 +90,7 @@ private extension HistoryView {
     }
 }
 
+// MARK: - Make Constraints
 private extension HistoryView {
     
     func makeConstraints() {

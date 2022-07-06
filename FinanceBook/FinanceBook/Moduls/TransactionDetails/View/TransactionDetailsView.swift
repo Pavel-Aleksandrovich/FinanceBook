@@ -55,10 +55,10 @@ final class TransactionDetailsView: BaseView {
     private let transactionPicker = TransactionDetailsPicker()
     private let keyboardObserver = KeyboardObserver()
     private let layout = UICollectionViewFlowLayout()
+    private let collectionAdapter = TransactionDetailsCollectionView()
     
-    private var collectionAdapter = TransactionDetailsCollectionView()
-    
-    private var collectionView: UICollectionView!
+    private lazy var collectionView = UICollectionView(frame: .zero,
+                                                       collectionViewLayout: self.layout)
     
     var saveButtonTappedHandler: (() -> ())?
     var checkTextFieldsHandler: (() -> ())?
@@ -176,8 +176,6 @@ private extension TransactionDetailsView {
     }
     
     func configCollectionView() {
-        self.collectionView = UICollectionView(frame: .zero,
-                                               collectionViewLayout: layout)
         self.collectionView.backgroundColor = .clear
         self.collectionView.showsVerticalScrollIndicator = false
         self.collectionView.register(TransactionDetailsCell.self,
