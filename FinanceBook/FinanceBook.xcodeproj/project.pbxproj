@@ -81,6 +81,8 @@
 		84272CD5286B523C005B1955 /* ListNewsInternetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84272CD4286B523C005B1955 /* ListNewsInternetCell.swift */; };
 		84272CDA2870A8DA005B1955 /* TransactionDetailsCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84272CD92870A8DA005B1955 /* TransactionDetailsCollectionView.swift */; };
 		84272CDE2870A951005B1955 /* TransactionDetailsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84272CDD2870A951005B1955 /* TransactionDetailsCell.swift */; };
+		84272CE42875684D005B1955 /* ProfitCollectionAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84272CE32875684D005B1955 /* ProfitCollectionAdapter.swift */; };
+		84272CE6287571AC005B1955 /* ProfitCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84272CE5287571AC005B1955 /* ProfitCollectionCell.swift */; };
 		845AE7012859E5050021F7B7 /* ListNewsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845AE7002859E5050021F7B7 /* ListNewsInteractor.swift */; };
 		845AE7032859E5CB0021F7B7 /* ListNewsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845AE7022859E5CB0021F7B7 /* ListNewsPresenter.swift */; };
 		845AE7052859E66E0021F7B7 /* ListNewsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845AE7042859E66E0021F7B7 /* ListNewsViewController.swift */; };
@@ -178,6 +180,8 @@
 		84272CD4286B523C005B1955 /* ListNewsInternetCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListNewsInternetCell.swift; sourceTree = "<group>"; };
 		84272CD92870A8DA005B1955 /* TransactionDetailsCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailsCollectionView.swift; sourceTree = "<group>"; };
 		84272CDD2870A951005B1955 /* TransactionDetailsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailsCell.swift; sourceTree = "<group>"; };
+		84272CE32875684D005B1955 /* ProfitCollectionAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfitCollectionAdapter.swift; sourceTree = "<group>"; };
+		84272CE5287571AC005B1955 /* ProfitCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfitCollectionCell.swift; sourceTree = "<group>"; };
 		845AE7002859E5050021F7B7 /* ListNewsInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListNewsInteractor.swift; sourceTree = "<group>"; };
 		845AE7022859E5CB0021F7B7 /* ListNewsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListNewsPresenter.swift; sourceTree = "<group>"; };
 		845AE7042859E66E0021F7B7 /* ListNewsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListNewsViewController.swift; sourceTree = "<group>"; };
@@ -451,6 +455,23 @@
 			path = TableAdapter;
 			sourceTree = "<group>";
 		};
+		84272CE228756832005B1955 /* ProfitCollectionAdapter */ = {
+			isa = PBXGroup;
+			children = (
+				84272CE32875684D005B1955 /* ProfitCollectionAdapter.swift */,
+				84272CE5287571AC005B1955 /* ProfitCollectionCell.swift */,
+			);
+			path = ProfitCollectionAdapter;
+			sourceTree = "<group>";
+		};
+		84272CE72875845E005B1955 /* Reusable */ = {
+			isa = PBXGroup;
+			children = (
+				84272CE228756832005B1955 /* ProfitCollectionAdapter */,
+			);
+			path = Reusable;
+			sourceTree = "<group>";
+		};
 		845AE6FF2859E4DB0021F7B7 /* Moduls */ = {
 			isa = PBXGroup;
 			children = (
@@ -523,6 +544,7 @@
 		84A406FE285984830013387C /* FinanceBook */ = {
 			isa = PBXGroup;
 			children = (
+				84272CE72875845E005B1955 /* Reusable */,
 				845AE6FF2859E4DB0021F7B7 /* Moduls */,
 				84A4074128599C410013387C /* Services */,
 				84272CC12862F7B7005B1955 /* SupportingFiles */,
@@ -675,6 +697,7 @@
 				84272CDA2870A8DA005B1955 /* TransactionDetailsCollectionView.swift in Sources */,
 				84272C25285A29F2005B1955 /* NewsDetailsRouter.swift in Sources */,
 				84272C78285C5C49005B1955 /* TransactionType.swift in Sources */,
+				84272CE42875684D005B1955 /* ProfitCollectionAdapter.swift in Sources */,
 				84272CAC28604213005B1955 /* ValidateResult.swift in Sources */,
 				84272C2E285AD367005B1955 /* TabBarAssembly.swift in Sources */,
 				84272C51285B22B5005B1955 /* Category.swift in Sources */,
@@ -715,6 +738,7 @@
 				84272C4D285B2279005B1955 /* CollectionViewAdapter.swift in Sources */,
 				845AE7052859E66E0021F7B7 /* ListNewsViewController.swift in Sources */,
 				84272C82285CAF6D005B1955 /* SegmentEntity+CoreDataClass.swift in Sources */,
+				84272CE6287571AC005B1955 /* ProfitCollectionCell.swift in Sources */,
 				84272C2B285A2DA8005B1955 /* NewsDetailsAssembly.swift in Sources */,
 				84272C6B285C391B005B1955 /* TransactionDetailsViewController.swift in Sources */,
 				84272C98285EE912005B1955 /* DateConverter.swift in Sources */,

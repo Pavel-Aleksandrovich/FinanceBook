@@ -1,43 +1,50 @@
 //
-//  TransactionDetailsCollectionViewAdapter.swift
+//  ProfitCollectionView.swift
 //  FinanceBook
 //
-//  Created by pavel mishanin on 02.07.2022.
+//  Created by pavel mishanin on 06.07.2022.
 //
 
 import UIKit
 
-final class TransactionDetailsCollectionView: NSObject {
+enum Profit: String, CaseIterable {
+    case income = "Income"
+    case expenses = "Expenses"
+}
+
+final class ProfitCollectionAdapter: NSObject {
     
     private enum Constants {
     }
     
-    private(set) var selectedRow: TransactionType = .home
-    private let transactionTypeArray = TransactionType.allCases
+    private(set) var selectedRow: Profit = .income
+    private let transactionTypeArray = Profit.allCases
+    
+    var onCellTappedHandler: ((Profit) -> ())?
 }
 
-extension TransactionDetailsCollectionView: UICollectionViewDelegateFlowLayout {
+extension ProfitCollectionAdapter: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width = collectionView.frame.width/4
-        let height = width * 1.3
+        let width = collectionView.frame.width/2
         
         return CGSize(width: width,
-                      height: height)
+                      height: 50)
     }
 }
 
-extension TransactionDetailsCollectionView: UICollectionViewDelegate {
+extension ProfitCollectionAdapter: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView,
                         didSelectItemAt indexPath: IndexPath) {
         self.selectedRow = self.transactionTypeArray[indexPath.item]
+        self.onCellTappedHandler?(selectedRow)
     }
 }
 
-extension TransactionDetailsCollectionView: UICollectionViewDataSource {
+extension ProfitCollectionAdapter: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView,
                         numberOfItemsInSection section: Int) -> Int {
@@ -48,11 +55,11 @@ extension TransactionDetailsCollectionView: UICollectionViewDataSource {
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: TransactionDetailsCell.id,
-            for: indexPath) as? TransactionDetailsCell else { return UICollectionViewCell() }
+            withReuseIdentifier: ProfitCollectionCell.id,
+            for: indexPath) as? ProfitCollectionCell else { return UICollectionViewCell() }
         
         let transaction = self.transactionTypeArray[indexPath.item]
-        cell.config(transaction)
+        cell.config(transaction.rawValue)
         
         return cell
     }

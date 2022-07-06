@@ -23,14 +23,19 @@ final class HistoryView: UIView {
     private let tableView = UITableView()
     private let defaultView = DefaultHistoryView()
     private let scrollView = UIScrollView()
+    private let layout = UICollectionViewFlowLayout()
+    private let collectionAdapter = ProfitCollectionAdapter()
     
     private var tableAdapter = HistoryTableAdapter()
+    private lazy var collectionView = UICollectionView(frame: .zero,
+                                                       collectionViewLayout: self.layout)
     
     var onCellDeleteHandler: ((HistoryRequest) -> ())?
+    var onCellTappedHandler: ((Profit) -> ())?
     
     init() {
         super.init(frame: .zero)
-        self.setOnCellDeleteHandler()
+        self.setHandlers()
         self.configAppearance()
         self.makeConstraints()
     }
@@ -56,9 +61,20 @@ extension HistoryView: IHistoryView {
 // MARK: - Set Handlers
 private extension HistoryView {
     
+    func setHandlers() {
+        self.setOnCellDeleteHandler()
+        self.setOnCellTappedHandler()
+    }
+    
     func setOnCellDeleteHandler() {
         self.tableAdapter.onCellDeleteHandler = { [ weak self ] viewModel in
             self?.onCellDeleteHandler?(viewModel)
+        }
+    }
+    
+    func setOnCellTappedHandler() {
+        self.collectionAdapter.onCellTappedHandler = { [ weak self ] type in
+            self?.onCellTappedHandler?(type)
         }
     }
 }
@@ -70,6 +86,8 @@ private extension HistoryView {
         self.configView()
         self.configTableView()
         self.configScrollView()
+        self.configLayout()
+        self.configCollectionView()
     }
     
     func configView() {
@@ -88,6 +106,24 @@ private extension HistoryView {
     func configScrollView() {
         self.scrollView.showsVerticalScrollIndicator = false
     }
+    
+    func configLayout() {
+        self.layout.minimumInteritemSpacing = 0
+        self.layout.minimumLineSpacing = 0
+        self.layout.scrollDirection = .horizontal
+    }
+    
+    func configCollectionView() {
+        self.collectionView.backgroundColor = .clear
+        self.collectionView.showsHorizontalScrollIndicator = false
+        self.collectionView.register(ProfitCollectionCell.self,
+                                      forCellWithReuseIdentifier: ProfitCollectionCell.id)
+        self.collectionView.dataSource = self.collectionAdapter
+        self.collectionView.delegate = self.collectionAdapter
+        self.collectionView.selectItem(at: [0, 0],
+                                        animated: true,
+                                        scrollPosition: [])
+    }
 }
 
 // MARK: - Make Constraints
@@ -95,6 +131,7 @@ private extension HistoryView {
     
     func makeConstraints() {
         self.makeScrollViewConstraints()
+        self.makeCollectionViewConstraints()
         self.makeChartConstraints()
         self.makeTableViewConstraints()
         self.makeDefaultViewConstraints()
@@ -107,10 +144,20 @@ private extension HistoryView {
         }
     }
     
+    func makeCollectionViewConstraints() {
+        self.scrollView.addSubview(self.collectionView)
+        self.collectionView.snp.makeConstraints { make in
+            make.top.equalTo(self.scrollView)
+            make.leading.trailing.equalTo(self.safeAreaLayoutGuide)
+            make.height.equalTo(50)
+        }
+    }
+    
     func makeChartConstraints() {
         self.scrollView.addSubview(self.pieChartView)
         self.pieChartView.snp.makeConstraints { make in
-            make.centerX.top.equalToSuperview()
+            make.centerX.equalToSuperview()
+            make.top.equalTo(self.collectionView.snp.bottom).inset(-20)
             make.width.equalTo(self.snp.width).multipliedBy(Constants.chartMultiplied)
             make.height.equalTo(self.pieChartView.snp.width)
         }

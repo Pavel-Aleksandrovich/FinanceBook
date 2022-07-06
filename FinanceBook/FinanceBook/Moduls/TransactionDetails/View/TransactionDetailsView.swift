@@ -56,9 +56,14 @@ final class TransactionDetailsView: BaseView {
     private let keyboardObserver = KeyboardObserver()
     private let layout = UICollectionViewFlowLayout()
     private let collectionAdapter = TransactionDetailsCollectionView()
+    private let profitLayout = UICollectionViewFlowLayout()
+    private let profitCollectionAdapter = ProfitCollectionAdapter()
     
     private lazy var collectionView = UICollectionView(frame: .zero,
                                                        collectionViewLayout: self.layout)
+    
+    private lazy var profitCollectionView = UICollectionView(frame: .zero,
+                                                       collectionViewLayout: self.profitLayout)
     
     var saveButtonTappedHandler: (() -> ())?
     var checkTextFieldsHandler: (() -> ())?
@@ -120,6 +125,8 @@ private extension TransactionDetailsView {
         self.configDateTextField()
         self.configLayout()
         self.configCollectionView()
+        self.configProfitLayout()
+        self.configProfitCollectionView()
     }
     
     func configView() {
@@ -186,34 +193,49 @@ private extension TransactionDetailsView {
                                         animated: true,
                                         scrollPosition: [])
     }
+    
+    func configProfitLayout() {
+        self.profitLayout.minimumInteritemSpacing = 0
+        self.profitLayout.minimumLineSpacing = 0
+        self.profitLayout.scrollDirection = .horizontal
+    }
+    
+    func configProfitCollectionView() {
+        self.profitCollectionView.backgroundColor = .clear
+        self.profitCollectionView.showsHorizontalScrollIndicator = false
+        self.profitCollectionView.register(ProfitCollectionCell.self,
+                                      forCellWithReuseIdentifier: ProfitCollectionCell.id)
+        self.profitCollectionView.dataSource = self.profitCollectionAdapter
+        self.profitCollectionView.delegate = self.profitCollectionAdapter
+        self.profitCollectionView.selectItem(at: [0, 0],
+                                        animated: true,
+                                        scrollPosition: [])
+    }
 }
 
 // MARK: - Make Constraints
 private extension TransactionDetailsView {
     
     func makeConstraints() {
+        self.makeProfitCollectionViewConstraints()
         self.makeSaveButtonConstraints()
         self.makeDateTextFieldConstraints()
         self.makeNumberTextFieldConstraints()
         self.makeCollectionViewConstraints()
     }
     
-    func makeSaveButtonConstraints() {
-        self.addSubview(self.saveButton)
-        self.saveButton.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-                .inset(Constants.saveButtonLeading)
-            make.bottom.equalTo(self.safeAreaLayoutGuide)
-                .inset(Constants.saveButtonBottom)
-            make.height.equalTo(Constants.saveButtonHeight)
+    func makeProfitCollectionViewConstraints() {
+        self.addSubview(self.profitCollectionView)
+        self.profitCollectionView.snp.makeConstraints { make in
+            make.leading.trailing.top.equalTo(self.safeAreaLayoutGuide)
+            make.height.equalTo(50)
         }
     }
     
     func makeDateTextFieldConstraints() {
         self.addSubview(self.dateTextField)
         self.dateTextField.snp.makeConstraints { make in
-            make.top.equalTo(self.safeAreaLayoutGuide)
-                .inset(Constants.dateTextFieldTop)
+            make.top.equalTo(self.profitCollectionView.snp.bottom).inset(-20)
             make.leading.trailing.equalToSuperview()
                 .inset(Constants.dateTextFieldLeading)
         }
@@ -234,7 +256,18 @@ private extension TransactionDetailsView {
         self.collectionView.snp.makeConstraints { make in
             make.top.equalTo(self.numberTextField.snp.bottom).inset(-10)
             make.leading.trailing.equalToSuperview().inset(5)
-            make.height.equalTo(450)
+            make.height.equalTo(300)
+        }
+    }
+    
+    func makeSaveButtonConstraints() {
+        self.addSubview(self.saveButton)
+        self.saveButton.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+                .inset(Constants.saveButtonLeading)
+            make.bottom.equalTo(self.safeAreaLayoutGuide)
+                .inset(Constants.saveButtonBottom)
+            make.height.equalTo(Constants.saveButtonHeight)
         }
     }
 }
