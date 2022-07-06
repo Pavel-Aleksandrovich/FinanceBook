@@ -59,8 +59,7 @@ extension TransactionDetailsPresenter: ITransactionDetailsPresenter {
     
     func setValidateError(_ result: ValidateError) {
         switch result {
-        case .name:
-            self.view?.showErrorTransactionNameTextField()
+        case .name: break
         case .amount:
             self.view?.showErrorNumberTextField()
         case .date:

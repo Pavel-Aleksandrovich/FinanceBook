@@ -23,6 +23,7 @@ final class HistoryView: UIView {
     private let pieChartView = HistoryChart()
     private let tableView = UITableView()
     private let defaultView = DefaultHistoryView()
+    private let scrollView = UIScrollView()
     
     init() {
         super.init(frame: .zero)
@@ -55,6 +56,7 @@ private extension HistoryView {
     func configAppearance() {
         self.configView()
         self.configTableView()
+        self.configScrollView()
     }
     
     func configView() {
@@ -68,28 +70,43 @@ private extension HistoryView {
                                 forCellReuseIdentifier: HistoryCell.id)
     }
     
+    func configScrollView() {
+        self.scrollView.showsVerticalScrollIndicator = false
+    }
+}
+
+private extension HistoryView {
+    
     func makeConstraints() {
+        self.makeScrollViewConstraints()
         self.makeChartConstraints()
         self.makeTableViewConstraints()
         self.makeDefaultViewConstraints()
     }
     
+    func makeScrollViewConstraints() {
+        self.addSubview(self.scrollView)
+        self.scrollView.snp.makeConstraints { make in
+            make.edges.equalTo(self.safeAreaLayoutGuide)
+        }
+    }
+    
     func makeChartConstraints() {
-        self.addSubview(self.pieChartView)
+        self.scrollView.addSubview(self.pieChartView)
         self.pieChartView.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.top.equalTo(self.safeAreaLayoutGuide)
+            make.centerX.top.equalToSuperview()
             make.width.equalTo(self.snp.width).multipliedBy(Constants.chartMultiplied)
             make.height.equalTo(self.pieChartView.snp.width)
         }
     }
     
     func makeTableViewConstraints() {
-        self.addSubview(self.tableView)
+        self.scrollView.addSubview(self.tableView)
         self.tableView.snp.makeConstraints { make in
             make.top.equalTo(self.pieChartView.snp.bottom)
-            make.bottom.equalTo(self.safeAreaLayoutGuide)
-            make.leading.trailing.equalToSuperview()
+            make.bottom.equalToSuperview()
+            make.leading.trailing.equalTo(self.safeAreaLayoutGuide)
+            make.height.equalTo(UIScreen.main.bounds.height - 200)
         }
     }
     

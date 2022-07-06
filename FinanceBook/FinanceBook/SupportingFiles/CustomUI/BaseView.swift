@@ -11,7 +11,7 @@ class BaseView: UIView {
     
     init() {
         super.init(frame: .zero)
-        self.hideKeyboardWhenTappedAround()
+//        self.hideKeyboardWhenTappedAround()
     }
     
     @available(*, unavailable)

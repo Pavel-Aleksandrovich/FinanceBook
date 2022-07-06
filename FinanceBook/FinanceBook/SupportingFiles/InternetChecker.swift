@@ -20,16 +20,16 @@ final class InternetChecker {
     
     init() {
         self.getPathStatus()
-        pathMonitor.start(queue: DispatchQueue.global(qos: .background))
+        self.pathMonitor.start(queue: DispatchQueue.global(qos: .background))
     }
 }
 
 extension InternetChecker: IInternetChecker {
     
     func setInternetStatusListener(completion: ((Bool) -> ())? = nil) {
-        networkAvailableHandler = completion
+        self.networkAvailableHandler = completion
         
-        let status = getInternetStatus()
+        let status = self.getInternetStatus()
         completion?(status)
     }
 }
@@ -37,7 +37,7 @@ extension InternetChecker: IInternetChecker {
 private extension InternetChecker {
     
     func getPathStatus() {
-        pathMonitor.pathUpdateHandler = { path in
+        self.pathMonitor.pathUpdateHandler = { path in
             
             let status = path.status == .satisfied
             self.networkAvailableHandler?(!status)
@@ -45,10 +45,10 @@ private extension InternetChecker {
     }
     
     func cancelInternetStatusListener() {
-        pathMonitor.cancel()
+        self.pathMonitor.cancel()
     }
     
     func getInternetStatus() -> Bool {
-        return pathMonitor.currentPath.status == .satisfied
+        return self.pathMonitor.currentPath.status == .satisfied
     }
 }
