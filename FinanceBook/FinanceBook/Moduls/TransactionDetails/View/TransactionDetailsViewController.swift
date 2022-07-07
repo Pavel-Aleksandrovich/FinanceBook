@@ -40,7 +40,7 @@ final class TransactionDetailsViewController: UIViewController {
         self.router.setupViewController(self)
         self.setSaveButtonTappedHandler()
         self.setCheckTextFieldsHandler()
-        self.navigationController?.navigationBar.tintColor = MainAttributs.color
+        self.createAddTransactionBarButton()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -83,5 +83,28 @@ private extension TransactionDetailsViewController {
             let viewModel = self?.mainView.getViewModel()
             self?.interactor.createTransaction(viewModel)
         }
+    }
+}
+
+private extension TransactionDetailsViewController {
+    
+    func createAddTransactionBarButton() {
+        let item = UIBarButtonItem(barButtonSystemItem: .add,
+                                   target: self,
+                                   action: #selector
+                                   (self.addTransactionButtonTapped))
+        item.tintColor = MainAttributs.color
+        self.navigationItem.rightBarButtonItem = item
+    }
+    
+    @objc func addTransactionButtonTapped() {
+        self.router.showCategoryModul(delegate: self)
+    }
+}
+
+extension TransactionDetailsViewController: CategoryViewControllerDelegate {
+    func setData(_ model: CategoryType) {
+        print(model.name)
+        title = model.name
     }
 }

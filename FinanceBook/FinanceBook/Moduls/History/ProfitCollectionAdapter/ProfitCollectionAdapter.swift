@@ -23,6 +23,15 @@ final class ProfitCollectionAdapter: NSObject {
     var onCellTappedHandler: ((Profit) -> ())?
 }
 
+extension ProfitCollectionAdapter {
+    
+    func didSelectState(complition: @escaping(Profit) -> ()) {
+        self.onCellTappedHandler = complition
+        
+        complition(.income)
+    }
+}
+
 extension ProfitCollectionAdapter: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView,

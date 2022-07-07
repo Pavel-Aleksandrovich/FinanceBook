@@ -7,6 +7,35 @@
 
 import UIKit
 
+enum ProfitType: CaseIterable {
+    static var allCases: [ProfitType] = ProfitType.allCases
+    
+    case income(TransactionType)
+    case expenses(ExpensesType)
+}
+
+enum ExpensesType: String, CaseIterable {
+    case salary
+    case present
+    case underworking
+    
+    var color: UIColor {
+        switch self {
+        case .salary: return .green
+        case .present: return .red
+        case .underworking: return .magenta
+        }
+    }
+    
+    var name: String {
+        switch self {
+        case .salary: return "Salary"
+        case .present: return "Present"
+        case .underworking: return "Underworking"
+        }
+    }
+}
+
 enum TransactionType: String, CaseIterable {
     case home
     case sport
@@ -18,7 +47,7 @@ enum TransactionType: String, CaseIterable {
     case entertainment
     case health
     
-    var color: UIColor? {
+    var color: UIColor {
         switch self {
         case .home: return .magenta
         case .sport: return .brown
@@ -32,7 +61,7 @@ enum TransactionType: String, CaseIterable {
         }
     }
     
-    var name: String? {
+    var name: String {
         switch self {
         case .home: return "Home"
         case .sport: return "Sport"
