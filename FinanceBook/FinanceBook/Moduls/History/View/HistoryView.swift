@@ -26,9 +26,13 @@ final class HistoryView: UIView {
     private let layout = UICollectionViewFlowLayout()
     private let collectionAdapter = ProfitCollectionAdapter()
     private let tableAdapter = HistoryTableAdapter()
+    private let dateLayout = UICollectionViewFlowLayout()
+    private let dateCollectionAdapter = DateCollectionAdapter()
     
     private lazy var collectionView = UICollectionView(frame: .zero,
                                                        collectionViewLayout: self.layout)
+    private lazy var dateCollectionView = UICollectionView(frame: .zero,
+                                                       collectionViewLayout: self.dateLayout)
     
     var onCellDeleteHandler: ((HistoryRequest) -> ())?
     var onCellTappedHandler: ((Profit) -> ())?
@@ -64,6 +68,7 @@ private extension HistoryView {
     func setHandlers() {
         self.setOnCellDeleteHandler()
         self.setCollectionAdapterHandler()
+        self.setDateCollectionAdapterHandler()
     }
     
     func setOnCellDeleteHandler() {
@@ -77,6 +82,13 @@ private extension HistoryView {
             self?.onCellTappedHandler?(type)
         }
     }
+    
+    func setDateCollectionAdapterHandler() {
+        self.dateCollectionAdapter.didSelectState { [ weak self ] type in
+            print(type)
+//            self?.onCellTappedHandler?(type)
+        }
+    }
 }
 
 // MARK: - Config Appearance
@@ -88,6 +100,8 @@ private extension HistoryView {
         self.configScrollView()
         self.configLayout()
         self.configCollectionView()
+        self.configDateLayout()
+        self.configDateCollectionView()
     }
     
     func configView() {
@@ -124,6 +138,24 @@ private extension HistoryView {
                                         animated: true,
                                         scrollPosition: [])
     }
+    
+    func configDateLayout() {
+        self.dateLayout.minimumInteritemSpacing = 0
+        self.dateLayout.minimumLineSpacing = 0
+        self.dateLayout.scrollDirection = .horizontal
+    }
+    
+    func configDateCollectionView() {
+        self.dateCollectionView.backgroundColor = .clear
+        self.dateCollectionView.showsHorizontalScrollIndicator = false
+        self.dateCollectionView.register(DateCollectionCell.self,
+                                         forCellWithReuseIdentifier: DateCollectionCell.id)
+        self.dateCollectionView.dataSource = self.dateCollectionAdapter
+        self.dateCollectionView.delegate = self.dateCollectionAdapter
+        self.dateCollectionView.selectItem(at: [0, 0],
+                                           animated: true,
+                                           scrollPosition: [])
+    }
 }
 
 // MARK: - Make Constraints
@@ -132,6 +164,7 @@ private extension HistoryView {
     func makeConstraints() {
         self.makeScrollViewConstraints()
         self.makeCollectionViewConstraints()
+        self.makeDateCollectionViewConstraints()
         self.makeChartConstraints()
         self.makeTableViewConstraints()
         self.makeDefaultViewConstraints()
@@ -153,11 +186,21 @@ private extension HistoryView {
         }
     }
     
+    func makeDateCollectionViewConstraints() {
+        self.scrollView.addSubview(self.dateCollectionView)
+        self.dateCollectionView.snp.makeConstraints { make in
+            make.top.equalTo(self.collectionView.snp.bottom).inset(-10)
+            make.leading.trailing.equalToSuperview().inset(20)
+            make.height.equalTo(40)
+            make.centerX.equalTo(self.scrollView.snp.centerX)
+        }
+    }
+    
     func makeChartConstraints() {
         self.scrollView.addSubview(self.pieChartView)
         self.pieChartView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.top.equalTo(self.collectionView.snp.bottom).inset(-20)
+            make.top.equalTo(self.dateCollectionView.snp.bottom).inset(-20)
             make.width.equalTo(self.snp.width).multipliedBy(Constants.chartMultiplied)
             make.height.equalTo(self.pieChartView.snp.width)
         }
@@ -177,7 +220,7 @@ private extension HistoryView {
         self.addSubview(self.defaultView)
         self.defaultView.snp.makeConstraints { make in
             make.leading.trailing.bottom.equalToSuperview()
-            make.top.equalTo(self.collectionView.snp.bottom)
+            make.top.equalTo(self.dateCollectionView.snp.bottom)
         }
     }
 }

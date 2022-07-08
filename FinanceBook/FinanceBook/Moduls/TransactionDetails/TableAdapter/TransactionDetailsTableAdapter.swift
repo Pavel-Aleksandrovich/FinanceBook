@@ -9,7 +9,7 @@ import UIKit
 
 final class TransactionDetailsTableAdapter: NSObject {
     
-    private enum Constants { }
+    private enum Constants {}
     
     enum CellType: Int, CaseIterable {
         case category
@@ -19,18 +19,22 @@ final class TransactionDetailsTableAdapter: NSObject {
     
     private(set) var selectedDate: String? = nil
     private(set) var selectedAmount: String? = nil
-    private(set) var selectedCategory: CategoryType? = nil
     
-    var categoryType: CategoryType?
-    var onCellTappedHandler: ((CellType) -> ())?
-    
-    var amountTextFieldChangedHandler: ((String?) -> ())?
+    var selectedCategory: CategoryType? = nil {
+        didSet {
+            self.textFieldChangeHandler?()
+        }
+    }
     
     private var array = CellType.allCases
+    
     private var typeDidSetHandler: ((CategoryType) -> ())?
+    
+    var onCellTappedHandler: ((CellType) -> ())?
+    var textFieldChangeHandler: (() -> ())?
 }
 
-extension TransactionDetailsTableAdapter { }
+extension TransactionDetailsTableAdapter {}
 
 extension TransactionDetailsTableAdapter: UITableViewDelegate, UITableViewDataSource {
     
@@ -56,7 +60,7 @@ extension TransactionDetailsTableAdapter: UITableViewDelegate, UITableViewDataSo
                 for: indexPath) as? CategoryCell
             else { return UITableViewCell() }
             
-            let name = self.categoryType?.name
+            let name = self.selectedCategory?.name
             cell.update(name: name)
             cell.accessoryType = .disclosureIndicator
             
@@ -69,6 +73,7 @@ extension TransactionDetailsTableAdapter: UITableViewDelegate, UITableViewDataSo
             
             cell.textFieldHandler = { date in
                 self.selectedDate = date
+                self.textFieldChangeHandler?()
             }
             
             cell.contentView.isUserInteractionEnabled = false
@@ -84,6 +89,7 @@ extension TransactionDetailsTableAdapter: UITableViewDelegate, UITableViewDataSo
             
             cell.textFieldHandler = { amount in
                 self.selectedAmount = amount
+                self.textFieldChangeHandler?()
             }
             
             cell.contentView.isUserInteractionEnabled = false

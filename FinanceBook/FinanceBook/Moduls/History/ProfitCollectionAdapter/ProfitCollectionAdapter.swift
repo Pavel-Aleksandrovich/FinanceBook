@@ -40,7 +40,7 @@ extension ProfitCollectionAdapter: UICollectionViewDelegateFlowLayout {
         let width = collectionView.frame.width/2
         
         return CGSize(width: width,
-                      height: 50)
+                      height: collectionView.frame.height)
     }
 }
 

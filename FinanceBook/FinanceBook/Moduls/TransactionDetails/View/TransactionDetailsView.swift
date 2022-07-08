@@ -10,7 +10,7 @@ import SnapKit
 
 protocol ITransactionDetailsView: AnyObject {
     var saveButtonTappedHandler: (() -> ())? { get set }
-    var checkTextFieldsHandler: (() -> ())? { get set }
+    var textFieldChangeHandler: (() -> ())? { get set }
     func updateSaveButtonState(_ state: Bool)
     func getViewModel() -> TransactionDetailsValidateRequest
     func setCategory(_ model: CategoryType)
@@ -50,7 +50,7 @@ final class TransactionDetailsView: BaseView {
     private let tableAdapter = TransactionDetailsTableAdapter()
     
     var saveButtonTappedHandler: (() -> ())?
-    var checkTextFieldsHandler: (() -> ())?
+    var textFieldChangeHandler: (() -> ())?
     var onCellTappedHandler: ((TransactionDetailsTableAdapter.CellType) -> ())?
     
     override init() {
@@ -87,7 +87,7 @@ extension TransactionDetailsView: ITransactionDetailsView {
     }
     
     func setCategory(_ model: CategoryType) {
-        self.tableAdapter.categoryType = model
+        self.tableAdapter.selectedCategory = model
         self.tableView.reloadData()
     }
     
@@ -178,11 +178,18 @@ private extension TransactionDetailsView {
     
     func setHandlers() {
         self.setOnCellTappedHandler()
+        self.setTextFieldChangeHandler()
     }
     
     func setOnCellTappedHandler() {
         self.tableAdapter.onCellTappedHandler = { type in
             self.onCellTappedHandler?(type)
+        }
+    }
+    
+    func setTextFieldChangeHandler() {
+        self.tableAdapter.textFieldChangeHandler = {
+            self.textFieldChangeHandler?()
         }
     }
 }

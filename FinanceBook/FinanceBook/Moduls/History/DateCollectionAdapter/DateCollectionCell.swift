@@ -1,19 +1,19 @@
 //
-//  ProfitCollectionCell.swift
+//  DateCollectionCell.swift
 //  FinanceBook
 //
-//  Created by pavel mishanin on 06.07.2022.
+//  Created by pavel mishanin on 08.07.2022.
 //
 
 import UIKit
 
-final class ProfitCollectionCell: UICollectionViewCell {
+final class DateCollectionCell: UICollectionViewCell {
     
     private enum Constants {
         static let cornerRadius: CGFloat = 5
     }
     
-    static let id = String(describing: ProfitCollectionCell.self)
+    static let id = String(describing: DateCollectionCell.self)
     
     private let categoryLabel = UILabel()
     private let selectView = UIView()
@@ -35,14 +35,14 @@ final class ProfitCollectionCell: UICollectionViewCell {
     }
 }
 
-extension ProfitCollectionCell {
+extension DateCollectionCell {
     
     func config(_ text: String) {
         self.categoryLabel.text = text
     }
 }
 
-private extension ProfitCollectionCell {
+private extension DateCollectionCell {
     
     func configAppearance() {
         self.configImageNameLabel()
@@ -64,7 +64,7 @@ private extension ProfitCollectionCell {
     }
 }
 
-private extension ProfitCollectionCell {
+private extension DateCollectionCell {
     
     func makeConstraints() {
         self.makeImageNameLabelConstraints()
@@ -82,7 +82,7 @@ private extension ProfitCollectionCell {
         self.addSubview(self.selectView)
         self.selectView.snp.makeConstraints { make in
             make.leading.trailing.bottom.equalToSuperview()
-            make.height.equalTo(4)
+            make.height.equalTo(2)
         }
     }
 }
