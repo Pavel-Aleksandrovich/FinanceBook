@@ -7,17 +7,17 @@
 
 import UIKit
 
-protocol ICategoryRouter: AnyObject {
+protocol IListCategoryRouter: AnyObject {
     func setupViewController(_ controller: UIViewController)
     func popToRoot()
 }
 
-final class CategoryRouter {
+final class ListCategoryRouter {
     
     private weak var controller: UIViewController?
 }
 
-extension CategoryRouter: ICategoryRouter {
+extension ListCategoryRouter: IListCategoryRouter {
     
     func setupViewController(_ controller: UIViewController) {
         self.controller = controller

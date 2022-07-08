@@ -21,7 +21,7 @@ final class TransactionDetailsTextFieldView: UIView {
     
     private enum Constants {
         static let textFieldCornerRadius: CGFloat = 16
-        static let emptyViewWidth = 16
+        static let emptyViewWidth = 40
         static let textFieldHeight = 40
         static let textFieldTopOffset = 10
         static let textFieldBorderWidth: CGFloat = 2

@@ -10,8 +10,8 @@ import Foundation
 protocol IHistoryInteractor: AnyObject {
     func onViewAttached(controller: IHistoryViewController,
                         view: IHistoryView)
-    func loadData()
     func deleteTransaction(_ viewModel: HistoryRequest)
+    func loadDataBy(type: Profit)
 }
 
 final class HistoryInteractor {
@@ -34,6 +34,28 @@ extension HistoryInteractor: IHistoryInteractor {
                                       view: view)
     }
     
+    
+    
+    func deleteTransaction(_ viewModel: HistoryRequest) {
+        if viewModel.transactionCount == 1 {
+            self.deleteHistoryBy(id: viewModel.id)
+        } else {
+            self.deleteTransactionBy(id: viewModel.idSegment)
+        }
+    }
+    
+    func loadDataBy(type: Profit) {
+        switch type {
+        case .income:
+            self.loadData()
+        case .expenses:
+            self.presenter.setHistory([])
+        }
+    }
+}
+
+private extension HistoryInteractor {
+    
     func loadData() {
         self.dataManager.getHistory { [ weak self ] result in
             switch result {
@@ -44,17 +66,6 @@ extension HistoryInteractor: IHistoryInteractor {
             }
         }
     }
-    
-    func deleteTransaction(_ viewModel: HistoryRequest) {
-        if viewModel.transactionCount == 1 {
-            self.deleteHistoryBy(id: viewModel.id)
-        } else {
-            self.deleteTransactionBy(id: viewModel.idSegment)
-        }
-    }
-}
-
-private extension HistoryInteractor {
     
     func deleteTransactionBy(id: UUID) {
         self.dataManager.deleteTransactionBy(id: id) { [ weak self ] result in

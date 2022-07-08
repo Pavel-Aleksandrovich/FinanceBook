@@ -44,6 +44,8 @@ extension TransactionDetailsInteractor: ITransactionDetailsInteractor {
             let chartRequest = TransactionDetailsRequest(viewModel: viewModel)
             guard let chartRequest = chartRequest else { return }
             self.save(transaction: chartRequest)
+        } else {
+            self.presenter.buttonIsEmpty()
         }
     }
     

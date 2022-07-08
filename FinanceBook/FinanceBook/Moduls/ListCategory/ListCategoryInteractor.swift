@@ -7,23 +7,23 @@
 
 import Foundation
 
-protocol ICategoryInteractor: AnyObject {
+protocol IListCategoryInteractor: AnyObject {
     func check(_ model: CategoryType?)
     func saveButtonTapped(_ model: CategoryType?)
-    func onViewAttached(controller: ICategoryViewController,
-                        view: ICategoryView)
+    func onViewAttached(controller: IListCategoryViewController,
+                        view: IListCategoryView)
 }
 
-final class CategoryInteractor {
+final class ListCategoryInteractor {
     
-    private let presenter: ICategoryPresenter
+    private let presenter: IListCategoryPresenter
     
-    init(presenter: ICategoryPresenter) {
+    init(presenter: IListCategoryPresenter) {
         self.presenter = presenter
     }
 }
 
-extension CategoryInteractor: ICategoryInteractor {
+extension ListCategoryInteractor: IListCategoryInteractor {
     
     func check(_ model: CategoryType?) {
         switch model == nil {
@@ -44,8 +44,8 @@ extension CategoryInteractor: ICategoryInteractor {
         }
     }
     
-    func onViewAttached(controller: ICategoryViewController,
-                        view: ICategoryView) {
+    func onViewAttached(controller: IListCategoryViewController,
+                        view: IListCategoryView) {
         self.presenter.onViewAttached(controller: controller,
                                       view: view)
     }

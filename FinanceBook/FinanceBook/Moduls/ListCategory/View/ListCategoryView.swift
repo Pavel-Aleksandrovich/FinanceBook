@@ -7,20 +7,20 @@
 
 import UIKit
 
-protocol ICategoryView: AnyObject {
+protocol IListCategoryView: AnyObject {
     func getViewModel() -> CategoryType?
     func updateSaveButtonState(_ state: Bool)
     func showShakeAnimation()
 }
 
-final class CategoryView: UIView {
+final class ListCategoryView: UIView {
     
     private enum Constants {
     }
     
     private let saveButton = UIButton()
     private let tableView = UITableView()
-    private let categoryTableAdapter = CategoryTableAdapter()
+    private let categoryTableAdapter = ListCategoryTableAdapter()
     private let profitLayout = UICollectionViewFlowLayout()
     private let profitCollectionAdapter = ProfitCollectionAdapter()
     
@@ -42,7 +42,7 @@ final class CategoryView: UIView {
     }
 }
 
-extension CategoryView: ICategoryView {
+extension ListCategoryView: IListCategoryView {
     
     func getViewModel() -> CategoryType? {
         return self.categoryTableAdapter.model
@@ -63,7 +63,7 @@ extension CategoryView: ICategoryView {
 }
 
 // MARK: - Config Appearance
-private extension CategoryView {
+private extension ListCategoryView {
     
     func configAppearance() {
         self.configProfitLayout()
@@ -115,13 +115,13 @@ private extension CategoryView {
     func configTableView() {
         self.tableView.delegate = self.categoryTableAdapter
         self.tableView.dataSource = self.categoryTableAdapter
-        self.tableView.register(CategoryCell.self,
-                                forCellReuseIdentifier: CategoryCell.id)
+        self.tableView.register(ListCategoryCell.self,
+                                forCellReuseIdentifier: ListCategoryCell.id)
     }
 }
 
 // MARK: - Make Constraints
-private extension CategoryView {
+private extension ListCategoryView {
     
     func makeConstraints() {
         self.makeProfitCollectionViewConstraints()
@@ -157,7 +157,7 @@ private extension CategoryView {
 }
 
 // MARK: - Set Handlers
-private extension CategoryView {
+private extension ListCategoryView {
     
     func setHandlers() {
         self.onProfitCollectionAdapterCellTapped()
@@ -178,7 +178,7 @@ private extension CategoryView {
     }
 }
 
-private extension CategoryView {
+private extension ListCategoryView {
     
     func createShakeAnimation() {
         let shakeAnimation = CAKeyframeAnimation(keyPath: "position.x")

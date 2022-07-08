@@ -38,9 +38,7 @@ final class TransactionDetailsViewController: UIViewController {
         self.interactor.onViewAttached(controller: self,
                                        view: self.mainView)
         self.router.setupViewController(self)
-        self.setSaveButtonTappedHandler()
-        self.setCheckTextFieldsHandler()
-        self.createAddTransactionBarButton()
+        self.setHandlers()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -71,6 +69,12 @@ extension TransactionDetailsViewController: ITransactionDetailsViewController {
 
 private extension TransactionDetailsViewController {
     
+    func setHandlers() {
+        self.setCheckTextFieldsHandler()
+        self.setSaveButtonTappedHandler()
+        self.setOnCellTappedHandler()
+    }
+    
     func setCheckTextFieldsHandler() {
         self.mainView.checkTextFieldsHandler = { [ weak self ] in
             let viewModel = self?.mainView.getViewModel()
@@ -84,27 +88,16 @@ private extension TransactionDetailsViewController {
             self?.interactor.createTransaction(viewModel)
         }
     }
-}
-
-private extension TransactionDetailsViewController {
     
-    func createAddTransactionBarButton() {
-        let item = UIBarButtonItem(barButtonSystemItem: .add,
-                                   target: self,
-                                   action: #selector
-                                   (self.addTransactionButtonTapped))
-        item.tintColor = MainAttributs.color
-        self.navigationItem.rightBarButtonItem = item
-    }
-    
-    @objc func addTransactionButtonTapped() {
-        self.router.showCategoryModul(delegate: self)
+    func setOnCellTappedHandler() {
+        self.mainView.onCellTappedHandler = { type in
+            self.router.showCategoryModul(delegate: self)
+        }
     }
 }
 
-extension TransactionDetailsViewController: CategoryViewControllerDelegate {
+extension TransactionDetailsViewController: ListCategoryViewControllerDelegate {
     func setData(_ model: CategoryType) {
-        print(model.name)
-        title = model.name
+        self.mainView.setCategory(model)
     }
 }

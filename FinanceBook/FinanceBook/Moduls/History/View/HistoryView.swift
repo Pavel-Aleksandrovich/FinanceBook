@@ -25,8 +25,8 @@ final class HistoryView: UIView {
     private let scrollView = UIScrollView()
     private let layout = UICollectionViewFlowLayout()
     private let collectionAdapter = ProfitCollectionAdapter()
+    private let tableAdapter = HistoryTableAdapter()
     
-    private var tableAdapter = HistoryTableAdapter()
     private lazy var collectionView = UICollectionView(frame: .zero,
                                                        collectionViewLayout: self.layout)
     
@@ -63,7 +63,7 @@ private extension HistoryView {
     
     func setHandlers() {
         self.setOnCellDeleteHandler()
-        self.setOnCellTappedHandler()
+        self.setCollectionAdapterHandler()
     }
     
     func setOnCellDeleteHandler() {
@@ -72,8 +72,8 @@ private extension HistoryView {
         }
     }
     
-    func setOnCellTappedHandler() {
-        self.collectionAdapter.onCellTappedHandler = { [ weak self ] type in
+    func setCollectionAdapterHandler() {
+        self.collectionAdapter.didSelectState { [ weak self ] type in
             self?.onCellTappedHandler?(type)
         }
     }
@@ -176,7 +176,8 @@ private extension HistoryView {
     func makeDefaultViewConstraints() {
         self.addSubview(self.defaultView)
         self.defaultView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.leading.trailing.bottom.equalToSuperview()
+            make.top.equalTo(self.collectionView.snp.bottom)
         }
     }
 }

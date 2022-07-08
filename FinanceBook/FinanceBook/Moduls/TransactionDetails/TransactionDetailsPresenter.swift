@@ -14,6 +14,7 @@ protocol ITransactionDetailsPresenter: AnyObject {
     func showSuccess()
     func setValidateSuccess(_ result: ValidateSuccess)
     func setValidateError(_ result: ValidateError)
+    func buttonIsEmpty()
 }
 
 final class TransactionDetailsPresenter {
@@ -59,11 +60,16 @@ extension TransactionDetailsPresenter: ITransactionDetailsPresenter {
     
     func setValidateError(_ result: ValidateError) {
         switch result {
-        case .name: break
+        case .name:
+            print("name")
         case .amount:
-            self.view?.showErrorNumberTextField()
+            print("amount")
         case .date:
-            self.view?.showErrorDateTextField()
+            print("date")
         }
+    }
+    
+    func buttonIsEmpty() {
+        self.view?.showShakeAnimation()
     }
 }

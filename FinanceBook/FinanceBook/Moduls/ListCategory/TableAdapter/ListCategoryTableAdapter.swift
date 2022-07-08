@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class CategoryTableAdapter: NSObject {
+final class ListCategoryTableAdapter: NSObject {
     
     private enum Constants {
     }
@@ -23,7 +23,7 @@ final class CategoryTableAdapter: NSObject {
     private var onCellTappedHandler: ((CategoryType?) -> ())?
 }
 
-extension CategoryTableAdapter {
+extension ListCategoryTableAdapter {
     
     func didSelectType(_ result: Profit) {
         self.model = nil
@@ -43,7 +43,7 @@ extension CategoryTableAdapter {
     }
 }
 
-extension CategoryTableAdapter: UITableViewDelegate, UITableViewDataSource {
+extension ListCategoryTableAdapter: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView,
                    numberOfRowsInSection section: Int) -> Int {
@@ -63,8 +63,9 @@ extension CategoryTableAdapter: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView,
                    cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: CategoryCell.id,
-                                                       for: indexPath) as? CategoryCell
+        guard let cell = tableView.dequeueReusableCell(
+            withIdentifier: ListCategoryCell.id,
+            for: indexPath) as? ListCategoryCell
         else { return UITableViewCell() }
         
         switch self.selectedRow {

@@ -12,7 +12,7 @@ protocol ITransactionDetailsRouter: AnyObject {
     func popToRoot()
     func showAlert(_ title: String)
     func showSuccessAlert(complition: @escaping() -> ())
-    func showCategoryModul(delegate: CategoryViewControllerDelegate)
+    func showCategoryModul(delegate: ListCategoryViewControllerDelegate)
 }
 
 final class TransactionDetailsRouter {
@@ -42,8 +42,8 @@ extension TransactionDetailsRouter: ITransactionDetailsRouter {
         self.controller?.present(alert, animated: true)
     }
     
-    func showCategoryModul(delegate: CategoryViewControllerDelegate) {
-        let vc = CategoryAssembly.build(delegate: delegate)
+    func showCategoryModul(delegate: ListCategoryViewControllerDelegate) {
+        let vc = ListCategoryAssembly.build(delegate: delegate)
         self.controller?.navigationController?.pushViewController(vc, animated: true)
     }
 }

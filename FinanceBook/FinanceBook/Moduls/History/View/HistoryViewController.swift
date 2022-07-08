@@ -38,12 +38,12 @@ final class HistoryViewController: UIViewController {
                                        view: self.mainView)
         self.router.setupViewController(self)
         self.createAddTransactionBarButton()
-        self.setOnCellDeleteHandler()
+        self.setHandlers()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.interactor.loadData()
+        self.interactor.loadDataBy(type: .income)
     }
 }
 
@@ -55,11 +55,25 @@ extension HistoryViewController: IHistoryViewController {
 
 private extension HistoryViewController {
     
+    func setHandlers() {
+        self.setOnCellDeleteHandler()
+        self.setCollectionAdapterHandler()
+    }
+    
     func setOnCellDeleteHandler() {
         self.mainView.onCellDeleteHandler = { [ weak self ] viewModel in
             self?.interactor.deleteTransaction(viewModel)
         }
     }
+    
+    func setCollectionAdapterHandler() {
+        self.mainView.onCellTappedHandler = { [ weak self ] type in
+            self?.interactor.loadDataBy(type: type)
+        }
+    }
+}
+
+private extension HistoryViewController {
     
     func createAddTransactionBarButton() {
         let item = UIBarButtonItem(barButtonSystemItem: .add,

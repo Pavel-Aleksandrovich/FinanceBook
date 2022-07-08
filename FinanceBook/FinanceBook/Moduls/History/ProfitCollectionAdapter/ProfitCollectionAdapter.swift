@@ -20,7 +20,7 @@ final class ProfitCollectionAdapter: NSObject {
     private(set) var selectedRow: Profit = .income
     private let transactionTypeArray = Profit.allCases
     
-    var onCellTappedHandler: ((Profit) -> ())?
+    private var onCellTappedHandler: ((Profit) -> ())?
 }
 
 extension ProfitCollectionAdapter {
@@ -49,7 +49,7 @@ extension ProfitCollectionAdapter: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView,
                         didSelectItemAt indexPath: IndexPath) {
         self.selectedRow = self.transactionTypeArray[indexPath.item]
-        self.onCellTappedHandler?(selectedRow)
+        self.onCellTappedHandler?(self.selectedRow)
     }
 }
 

@@ -7,24 +7,25 @@
 
 import UIKit
 
-protocol CategoryViewControllerDelegate: AnyObject {
+protocol ListCategoryViewControllerDelegate: AnyObject {
     func setData(_ model: CategoryType)
 }
 
-protocol ICategoryViewController: AnyObject {
+protocol IListCategoryViewController: AnyObject {
     func buttonTappedSuccess(_ model: CategoryType)
 }
 
-final class CategoryViewController: UIViewController {
+final class ListCategoryViewController: UIViewController {
     
-    private let mainView = CategoryView()
-    private let interactor: ICategoryInteractor
-    private let router: ICategoryRouter
+    private let mainView = ListCategoryView()
+    private let interactor: IListCategoryInteractor
+    private let router: IListCategoryRouter
     
-    private weak var delegate: CategoryViewControllerDelegate?
+    private weak var delegate: ListCategoryViewControllerDelegate?
     
-    init(interactor: ICategoryInteractor,
-         router: ICategoryRouter, delegate: CategoryViewControllerDelegate) {
+    init(interactor: IListCategoryInteractor,
+         router: IListCategoryRouter,
+         delegate: ListCategoryViewControllerDelegate) {
         self.interactor = interactor
         self.router = router
         self.delegate = delegate
@@ -53,7 +54,7 @@ final class CategoryViewController: UIViewController {
     }
 }
 
-extension CategoryViewController: ICategoryViewController {
+extension ListCategoryViewController: IListCategoryViewController {
     
     func buttonTappedSuccess(_ model: CategoryType) {
         self.delegate?.setData(model)
@@ -61,7 +62,7 @@ extension CategoryViewController: ICategoryViewController {
     }
 }
 
-private extension CategoryViewController {
+private extension ListCategoryViewController {
     
     func setHandlers() {
         self.setSaveButtonTappedHandler()

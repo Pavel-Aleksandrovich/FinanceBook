@@ -7,24 +7,24 @@
 
 import Foundation
 
-protocol ICategoryPresenter: AnyObject {
+protocol IListCategoryPresenter: AnyObject {
     func showError()
     func showSuccess()
     func buttonTappedError()
     func buttonTappedSuccess(_ model: CategoryType)
-    func onViewAttached(controller: ICategoryViewController,
-                        view: ICategoryView)
+    func onViewAttached(controller: IListCategoryViewController,
+                        view: IListCategoryView)
 }
 
-final class CategoryPresenter {
+final class ListCategoryPresenter {
     
-    private weak var view: ICategoryView?
-    private weak var controller: ICategoryViewController?
+    private weak var view: IListCategoryView?
+    private weak var controller: IListCategoryViewController?
     
     private let mainQueue = DispatchQueue.main
 }
 
-extension CategoryPresenter: ICategoryPresenter {
+extension ListCategoryPresenter: IListCategoryPresenter {
     
     func showError() {
         self.view?.updateSaveButtonState(false)
@@ -42,8 +42,8 @@ extension CategoryPresenter: ICategoryPresenter {
         self.controller?.buttonTappedSuccess(model)
     }
     
-    func onViewAttached(controller: ICategoryViewController,
-                        view: ICategoryView) {
+    func onViewAttached(controller: IListCategoryViewController,
+                        view: IListCategoryView) {
         self.controller = controller
         self.view = view
     }

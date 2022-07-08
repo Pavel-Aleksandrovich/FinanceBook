@@ -1,5 +1,5 @@
 //
-//  CategoryCell.swift
+//  ListCategoryCell.swift
 //  FinanceBook
 //
 //  Created by pavel mishanin on 06.07.2022.
@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-final class CategoryCell: UITableViewCell {
+final class ListCategoryCell: UITableViewCell {
     
     private enum Constants {
         static let dateLabelFontSize: CGFloat = 14
@@ -17,7 +17,7 @@ final class CategoryCell: UITableViewCell {
         static let amountLabelLeading = 30
     }
     
-    static let id = String(describing: CategoryCell.self)
+    static let id = String(describing: ListCategoryCell.self)
     
     private let colorImageView = UIImageView()
     private let nameLabel = UILabel()
@@ -40,7 +40,7 @@ final class CategoryCell: UITableViewCell {
     }
 }
 
-extension CategoryCell {
+extension ListCategoryCell {
     
     func update(name: String?, color: UIColor?) {
         self.nameLabel.text = name
@@ -49,7 +49,7 @@ extension CategoryCell {
 }
 
 // MARK: - Config Appearance
-private extension CategoryCell {
+private extension ListCategoryCell {
     
     func configAppearance() {
         self.configColorImageView()
@@ -61,7 +61,7 @@ private extension CategoryCell {
 }
 
 // MARK: - Make Constraints
-private extension CategoryCell {
+private extension ListCategoryCell {
     
     func makeConstraints() {
         self.makeColorImageViewConstraints()
