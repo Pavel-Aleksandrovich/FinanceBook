@@ -19,7 +19,6 @@ final class DateCell: UITableViewCell {
     
     static let id = String(describing: DateCell.self)
     
-    private let tapGesture = UITapGestureRecognizer()
     private let datePicker = UIDatePicker()
     private let dateImageView = UIImageView()
     private let titleLabel = UILabel()
@@ -46,7 +45,6 @@ extension DateCell {}
 private extension DateCell {
     
     func configAppearance() {
-        self.configView()
         self.configTapGesture()
         self.configDateImageView()
         self.configStackView()
@@ -55,14 +53,12 @@ private extension DateCell {
         self.configDatePicker()
     }
     
-    func configView() {
-        self.addGestureRecognizer(self.tapGesture)
-    }
-    
     func configTapGesture() {
-        self.tapGesture.addTarget(self,
-                                  action: #selector
-                                  (self.textFieldDidChange))
+        let tapGesture = UITapGestureRecognizer()
+        self.addGestureRecognizer(tapGesture)
+        tapGesture.addTarget(self,
+                             action: #selector
+                             (self.textFieldDidChange))
     }
     
     @objc func textFieldDidChange() {

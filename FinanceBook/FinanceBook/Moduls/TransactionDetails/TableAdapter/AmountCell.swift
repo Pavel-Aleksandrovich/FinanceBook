@@ -21,7 +21,6 @@ final class AmountCell: UITableViewCell {
     
     private let titleLabel = UILabel()
     private let textField = UITextField()
-    private let tapGesture = UITapGestureRecognizer()
     
     var textFieldHandler: ((String?) -> ())?
     
@@ -44,19 +43,16 @@ private extension AmountCell {
     
     func configAppearance() {
         self.configTextField()
-        self.configView()
         self.configTapGesture()
         self.configTitleLabel()
     }
     
-    func configView() {
-        self.addGestureRecognizer(self.tapGesture)
-    }
-    
     func configTapGesture() {
-        self.tapGesture.addTarget(self,
-                                  action: #selector
-                                  (self.textFieldDidChange))
+        let tapGesture = UITapGestureRecognizer()
+        self.addGestureRecognizer(tapGesture)
+        tapGesture.addTarget(self,
+                             action: #selector
+                             (self.textFieldDidChange))
     }
     
     func configTextField() {

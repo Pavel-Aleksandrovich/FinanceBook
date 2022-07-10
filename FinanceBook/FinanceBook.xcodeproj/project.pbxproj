@@ -95,6 +95,7 @@
 		84272D05287738C0005B1955 /* DateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84272D04287738C0005B1955 /* DateCell.swift */; };
 		84272D0828788820005B1955 /* DateCollectionAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84272D0728788820005B1955 /* DateCollectionAdapter.swift */; };
 		84272D0A28788AD7005B1955 /* DateCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84272D0928788AD7005B1955 /* DateCollectionCell.swift */; };
+		84272D2C287ADC94005B1955 /* DateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84272D2B287ADC94005B1955 /* DateView.swift */; };
 		845AE7012859E5050021F7B7 /* ListNewsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845AE7002859E5050021F7B7 /* ListNewsInteractor.swift */; };
 		845AE7032859E5CB0021F7B7 /* ListNewsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845AE7022859E5CB0021F7B7 /* ListNewsPresenter.swift */; };
 		845AE7052859E66E0021F7B7 /* ListNewsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845AE7042859E66E0021F7B7 /* ListNewsViewController.swift */; };
@@ -206,6 +207,7 @@
 		84272D04287738C0005B1955 /* DateCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateCell.swift; sourceTree = "<group>"; };
 		84272D0728788820005B1955 /* DateCollectionAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateCollectionAdapter.swift; sourceTree = "<group>"; };
 		84272D0928788AD7005B1955 /* DateCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateCollectionCell.swift; sourceTree = "<group>"; };
+		84272D2B287ADC94005B1955 /* DateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateView.swift; sourceTree = "<group>"; };
 		845AE7002859E5050021F7B7 /* ListNewsInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListNewsInteractor.swift; sourceTree = "<group>"; };
 		845AE7022859E5CB0021F7B7 /* ListNewsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListNewsPresenter.swift; sourceTree = "<group>"; };
 		845AE7042859E66E0021F7B7 /* ListNewsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListNewsViewController.swift; sourceTree = "<group>"; };
@@ -316,8 +318,7 @@
 			children = (
 				84272C55285B7FB8005B1955 /* HistoryViewController.swift */,
 				84272C5A285C2560005B1955 /* HistoryView.swift */,
-				84272CD02865BAA6005B1955 /* DefaultHistoryView.swift */,
-				84272C58285B806F005B1955 /* HistoryChart.swift */,
+				84272D2D287ADCFB005B1955 /* UI */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -537,6 +538,16 @@
 				84272D0928788AD7005B1955 /* DateCollectionCell.swift */,
 			);
 			path = DateCollectionAdapter;
+			sourceTree = "<group>";
+		};
+		84272D2D287ADCFB005B1955 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				84272D2B287ADC94005B1955 /* DateView.swift */,
+				84272CD02865BAA6005B1955 /* DefaultHistoryView.swift */,
+				84272C58285B806F005B1955 /* HistoryChart.swift */,
+			);
+			path = UI;
 			sourceTree = "<group>";
 		};
 		845AE6FF2859E4DB0021F7B7 /* Moduls */ = {
@@ -839,6 +850,7 @@
 				84272D0A28788AD7005B1955 /* DateCollectionCell.swift in Sources */,
 				84272C85285CAF6D005B1955 /* ChartEntity+CoreDataProperties.swift in Sources */,
 				84272D0828788820005B1955 /* DateCollectionAdapter.swift in Sources */,
+				84272D2C287ADC94005B1955 /* DateView.swift in Sources */,
 				84272CF52875EB9E005B1955 /* ListCategoryAssembly.swift in Sources */,
 				84A4070A285984830013387C /* FinanceBook.xcdatamodeld in Sources */,
 			);

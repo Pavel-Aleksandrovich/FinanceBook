@@ -19,6 +19,7 @@ final class HistoryView: UIView {
         static let chartMultiplied = 0.8
     }
     
+    private let selectedDateView = DateView()
     private let pieChartView = HistoryChart()
     private let tableView = UITableView()
     private let defaultView = DefaultHistoryView()
@@ -36,6 +37,7 @@ final class HistoryView: UIView {
     
     var onCellDeleteHandler: ((HistoryRequest) -> ())?
     var onCellTappedHandler: ((Profit) -> ())?
+    var onDateCellTappedHandler: ((DateCollectionAdapter.DateType) -> ())?
     
     init() {
         super.init(frame: .zero)
@@ -69,6 +71,7 @@ private extension HistoryView {
         self.setOnCellDeleteHandler()
         self.setCollectionAdapterHandler()
         self.setDateCollectionAdapterHandler()
+        self.setDateViewHandler()
     }
     
     func setOnCellDeleteHandler() {
@@ -85,8 +88,20 @@ private extension HistoryView {
     
     func setDateCollectionAdapterHandler() {
         self.dateCollectionAdapter.didSelectState { [ weak self ] type in
-            print(type)
-//            self?.onCellTappedHandler?(type)
+            self?.onDateCellTappedHandler?(type)
+        }
+    }
+    
+    func setDateViewHandler() {
+        self.selectedDateView.tapHandler = { state in
+            switch state {
+            case .leftArrow:
+                print("leftArrow")
+            case .rightArrow:
+                print("rightArrow")
+            case .dateLabel:
+                print("dateLabel")
+            }
         }
     }
 }
@@ -106,6 +121,10 @@ private extension HistoryView {
     
     func configView() {
         self.backgroundColor = .white
+    }
+    
+    @objc func onDateViewTapped() {
+        print(#function)
     }
     
     func configTableView() {
@@ -165,6 +184,7 @@ private extension HistoryView {
         self.makeScrollViewConstraints()
         self.makeCollectionViewConstraints()
         self.makeDateCollectionViewConstraints()
+        self.makeSelectedDateViewConstraints()
         self.makeChartConstraints()
         self.makeTableViewConstraints()
         self.makeDefaultViewConstraints()
@@ -196,11 +216,21 @@ private extension HistoryView {
         }
     }
     
+    func makeSelectedDateViewConstraints() {
+        self.scrollView.addSubview(self.selectedDateView)
+        self.selectedDateView.snp.makeConstraints { make in
+            make.top.equalTo(self.dateCollectionView.snp.bottom).inset(-10)
+            make.leading.trailing.equalToSuperview().inset(20)
+            make.height.equalTo(40)
+            make.centerX.equalTo(self.scrollView.snp.centerX)
+        }
+    }
+    
     func makeChartConstraints() {
         self.scrollView.addSubview(self.pieChartView)
         self.pieChartView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.top.equalTo(self.dateCollectionView.snp.bottom).inset(-20)
+            make.top.equalTo(self.selectedDateView.snp.bottom).inset(-20)
             make.width.equalTo(self.snp.width).multipliedBy(Constants.chartMultiplied)
             make.height.equalTo(self.pieChartView.snp.width)
         }

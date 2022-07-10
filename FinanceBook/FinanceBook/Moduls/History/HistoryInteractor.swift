@@ -11,7 +11,7 @@ protocol IHistoryInteractor: AnyObject {
     func onViewAttached(controller: IHistoryViewController,
                         view: IHistoryView)
     func deleteTransaction(_ viewModel: HistoryRequest)
-    func loadDataBy(type: Profit)
+    func loadDataBy(type: Profit, dateInterval: DateCollectionAdapter.DateType)
 }
 
 final class HistoryInteractor {
@@ -34,8 +34,6 @@ extension HistoryInteractor: IHistoryInteractor {
                                       view: view)
     }
     
-    
-    
     func deleteTransaction(_ viewModel: HistoryRequest) {
         if viewModel.transactionCount == 1 {
             self.deleteHistoryBy(id: viewModel.id)
@@ -44,7 +42,8 @@ extension HistoryInteractor: IHistoryInteractor {
         }
     }
     
-    func loadDataBy(type: Profit) {
+    func loadDataBy(type: Profit,
+                    dateInterval: DateCollectionAdapter.DateType) {
         switch type {
         case .income:
             self.loadData()

@@ -17,6 +17,9 @@ final class HistoryViewController: UIViewController {
     private let interactor: IHistoryInteractor
     private let router: IHistoryRouter
     
+    private var profitType: Profit = .income
+    private var dateType: DateCollectionAdapter.DateType = .all
+    
     init(interactor: IHistoryInteractor,
          router: IHistoryRouter) {
         self.interactor = interactor
@@ -43,11 +46,13 @@ final class HistoryViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.interactor.loadDataBy(type: .income)
+        self.interactor.loadDataBy(type: self.profitType,
+                                   dateInterval: self.dateType)
     }
 }
 
 extension HistoryViewController: IHistoryViewController {
+    
     func showError(_ error: String) {
         self.router.showAlert(error)
     }
@@ -58,6 +63,7 @@ private extension HistoryViewController {
     func setHandlers() {
         self.setOnCellDeleteHandler()
         self.setCollectionAdapterHandler()
+        self.setDateCollectionAdapterHandler()
     }
     
     func setOnCellDeleteHandler() {
@@ -68,7 +74,19 @@ private extension HistoryViewController {
     
     func setCollectionAdapterHandler() {
         self.mainView.onCellTappedHandler = { [ weak self ] type in
-            self?.interactor.loadDataBy(type: type)
+            guard let self = self else { return }
+            
+            self.interactor.loadDataBy(type: type,
+                                       dateInterval: self.dateType)
+        }
+    }
+    
+    func setDateCollectionAdapterHandler() {
+        self.mainView.onDateCellTappedHandler = { [ weak self ] type in
+            guard let self = self else { return }
+            
+            self.interactor.loadDataBy(type: self.profitType,
+                                       dateInterval: type)
         }
     }
 }

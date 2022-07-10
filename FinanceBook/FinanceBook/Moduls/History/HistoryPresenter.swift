@@ -36,6 +36,8 @@ extension HistoryPresenter: IHistoryPresenter {
         }
     }
     
+    //MARK: - TO DO
+    //if historyViewModel.isEmpty { showEmptyState() } else { showContent }
     func setHistory(_ history: [HistoryResponse]) {
         let historyViewModel = self.getViewModel(from: history)
         
@@ -47,6 +49,10 @@ extension HistoryPresenter: IHistoryPresenter {
 }
 
 private extension HistoryPresenter {
+    
+    //MARK: - TO DO
+    //move to coverter. Create new class - Converter() / Maper()
+    // возможно сделать func конвертер во viewModel?
     
     func getViewModel(from array: [HistoryResponse]) -> [HistoryViewModel] {
         
