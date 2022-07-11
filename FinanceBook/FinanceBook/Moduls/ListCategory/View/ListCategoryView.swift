@@ -22,10 +22,14 @@ final class ListCategoryView: UIView {
     private let tableView = UITableView()
     private let categoryTableAdapter = ListCategoryTableAdapter()
     private let profitLayout = UICollectionViewFlowLayout()
-    private let profitCollectionAdapter = ProfitCollectionAdapter()
     
     private lazy var profitCollectionView = UICollectionView(frame: .zero,
                                                              collectionViewLayout: self.profitLayout)
+    
+    private lazy var profitCollectionAdapter = ProfitCollectionAdapter { type in
+        self.categoryTableAdapter.didSelectType(type)
+        self.tableView.reloadData()
+    }
     
     var saveButtonTappedHandler: (() -> ())?
     var onCellTappedHandler: ((CategoryType?) -> ())?
@@ -160,15 +164,7 @@ private extension ListCategoryView {
 private extension ListCategoryView {
     
     func setHandlers() {
-        self.onProfitCollectionAdapterCellTapped()
         self.setOnCellTappedHandler()
-    }
-    
-    func onProfitCollectionAdapterCellTapped() {
-        self.profitCollectionAdapter.didSelectState { result in
-            self.categoryTableAdapter.didSelectType(result)
-            self.tableView.reloadData()
-        }
     }
     
     func setOnCellTappedHandler() {

@@ -58,12 +58,14 @@ extension HistoryViewController: IHistoryViewController {
     }
 }
 
+// MARK: - Set Handlers
 private extension HistoryViewController {
     
     func setHandlers() {
         self.setOnCellDeleteHandler()
         self.setCollectionAdapterHandler()
         self.setDateCollectionAdapterHandler()
+        self.setOnDateViewTappedHandler()
     }
     
     func setOnCellDeleteHandler() {
@@ -87,6 +89,19 @@ private extension HistoryViewController {
             
             self.interactor.loadDataBy(type: self.profitType,
                                        dateInterval: type)
+        }
+    }
+    
+    func setOnDateViewTappedHandler() {
+        self.mainView.onDateViewTappedHandler = { [ weak self ] state in
+            switch state {
+            case .leftArrow:
+                print("leftArrow")
+            case .rightArrow:
+                print("leftArrow")
+            case .dateLabel:
+                print("leftArrow")
+            }
         }
     }
 }

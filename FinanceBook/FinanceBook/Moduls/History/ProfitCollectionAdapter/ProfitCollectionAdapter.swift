@@ -18,17 +18,12 @@ final class ProfitCollectionAdapter: NSObject {
     }
     
     private(set) var selectedRow: Profit = .income
+    
     private let transactionTypeArray = Profit.allCases
+    private let onCellTappedHandler: (Profit) -> ()
     
-    private var onCellTappedHandler: ((Profit) -> ())?
-}
-
-extension ProfitCollectionAdapter {
-    
-    func didSelectState(complition: @escaping(Profit) -> ()) {
-        self.onCellTappedHandler = complition
-        
-        complition(.income)
+    init(completion: @escaping(Profit) -> ()) {
+        self.onCellTappedHandler = completion
     }
 }
 
@@ -49,7 +44,7 @@ extension ProfitCollectionAdapter: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView,
                         didSelectItemAt indexPath: IndexPath) {
         self.selectedRow = self.transactionTypeArray[indexPath.item]
-        self.onCellTappedHandler?(self.selectedRow)
+        self.onCellTappedHandler(self.selectedRow)
     }
 }
 

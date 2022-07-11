@@ -51,10 +51,10 @@ extension ListNewsTableAdapter: IListNewsTableAdapter {
     func setData(_ array: [NewsViewModel]) {
         switch self.state {
         case .success:
-            self.dataArray.append(contentsOf: array)
+            self.dataArray = array
         case .loading:
             self.state = .success
-            self.dataArray.append(contentsOf: array)
+            self.dataArray = array
         case .noInternet:
             self.state = .success
         }

@@ -21,17 +21,12 @@ final class DateCollectionAdapter: NSObject {
     }
     
     private(set) var selectedRow: DateType = .day
+    
     private let dataArray = DateType.allCases
+    private let onCellTappedHandler: (DateType) -> ()
     
-    private var onCellTappedHandler: ((DateType) -> ())?
-}
-
-extension DateCollectionAdapter {
-    
-    func didSelectState(complition: @escaping(DateType) -> ()) {
-        self.onCellTappedHandler = complition
-        
-        complition(self.selectedRow)
+    init(completion: @escaping(DateType) -> ()) {
+        self.onCellTappedHandler = completion
     }
 }
 
@@ -42,9 +37,8 @@ extension DateCollectionAdapter: UICollectionViewDelegateFlowLayout {
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
         
         let count = CGFloat(self.dataArray.count)
-        let width = collectionView.frame.width/count
         
-        return CGSize(width: width,
+        return CGSize(width: collectionView.frame.width/count,
                       height: collectionView.frame.height)
     }
 }
@@ -54,7 +48,7 @@ extension DateCollectionAdapter: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView,
                         didSelectItemAt indexPath: IndexPath) {
         self.selectedRow = self.dataArray[indexPath.item]
-        self.onCellTappedHandler?(self.selectedRow)
+        self.onCellTappedHandler(self.selectedRow)
     }
 }
 

@@ -19,29 +19,36 @@ final class HistoryView: UIView {
         static let chartMultiplied = 0.8
     }
     
-    private let selectedDateView = DateView()
     private let pieChartView = HistoryChart()
     private let tableView = UITableView()
     private let defaultView = DefaultHistoryView()
     private let scrollView = UIScrollView()
     private let layout = UICollectionViewFlowLayout()
-    private let collectionAdapter = ProfitCollectionAdapter()
-    private let tableAdapter = HistoryTableAdapter()
+    
     private let dateLayout = UICollectionViewFlowLayout()
-    private let dateCollectionAdapter = DateCollectionAdapter()
     
     private lazy var collectionView = UICollectionView(frame: .zero,
                                                        collectionViewLayout: self.layout)
     private lazy var dateCollectionView = UICollectionView(frame: .zero,
                                                        collectionViewLayout: self.dateLayout)
+    private lazy var selectedDateView = DateView { type in self.onDateViewTappedHandler?(type) }
+    
+    private lazy var dateCollectionAdapter = DateCollectionAdapter { type in
+        self.onDateCellTappedHandler?(type) }
+    
+    private lazy var tableAdapter = HistoryTableAdapter { viewModel in
+        self.onCellDeleteHandler?(viewModel) }
+    
+    private lazy var collectionAdapter = ProfitCollectionAdapter { type in
+        self.onCellTappedHandler?(type) }
     
     var onCellDeleteHandler: ((HistoryRequest) -> ())?
     var onCellTappedHandler: ((Profit) -> ())?
     var onDateCellTappedHandler: ((DateCollectionAdapter.DateType) -> ())?
+    var onDateViewTappedHandler: ((DateView.TapState) -> ())?
     
     init() {
         super.init(frame: .zero)
-        self.setHandlers()
         self.configAppearance()
         self.makeConstraints()
     }
@@ -64,48 +71,6 @@ extension HistoryView: IHistoryView {
     }
 }
 
-// MARK: - Set Handlers
-private extension HistoryView {
-    
-    func setHandlers() {
-        self.setOnCellDeleteHandler()
-        self.setCollectionAdapterHandler()
-        self.setDateCollectionAdapterHandler()
-        self.setDateViewHandler()
-    }
-    
-    func setOnCellDeleteHandler() {
-        self.tableAdapter.onCellDeleteHandler = { [ weak self ] viewModel in
-            self?.onCellDeleteHandler?(viewModel)
-        }
-    }
-    
-    func setCollectionAdapterHandler() {
-        self.collectionAdapter.didSelectState { [ weak self ] type in
-            self?.onCellTappedHandler?(type)
-        }
-    }
-    
-    func setDateCollectionAdapterHandler() {
-        self.dateCollectionAdapter.didSelectState { [ weak self ] type in
-            self?.onDateCellTappedHandler?(type)
-        }
-    }
-    
-    func setDateViewHandler() {
-        self.selectedDateView.tapHandler = { state in
-            switch state {
-            case .leftArrow:
-                print("leftArrow")
-            case .rightArrow:
-                print("rightArrow")
-            case .dateLabel:
-                print("dateLabel")
-            }
-        }
-    }
-}
-
 // MARK: - Config Appearance
 private extension HistoryView {
     
@@ -121,10 +86,6 @@ private extension HistoryView {
     
     func configView() {
         self.backgroundColor = .white
-    }
-    
-    @objc func onDateViewTapped() {
-        print(#function)
     }
     
     func configTableView() {

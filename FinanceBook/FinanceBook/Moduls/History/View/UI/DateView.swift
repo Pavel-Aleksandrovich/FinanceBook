@@ -18,10 +18,10 @@ final class DateView: UIView {
     private let dateLabel = UILabel()
     private let leftArrowImageView = UIImageView()
     private let rightArrowImageView = UIImageView()
+    private let tapHandler: (TapState) -> ()
     
-    var tapHandler: ((TapState) -> ())?
-    
-    init() {
+    init(completion: @escaping(TapState) -> ()) {
+        self.tapHandler = completion
         super.init(frame: .zero)
         self.configAppearance()
         self.makeConstraints()
@@ -36,15 +36,15 @@ final class DateView: UIView {
 private extension DateView {
     
     @objc func leftArrowTapped() {
-        self.tapHandler?(.leftArrow)
+        self.tapHandler(.leftArrow)
     }
     
     @objc func rightArrowTapped() {
-        self.tapHandler?(.rightArrow)
+        self.tapHandler(.rightArrow)
     }
     
     @objc func dateLabelTapped() {
-        self.tapHandler?(.dateLabel)
+        self.tapHandler(.dateLabel)
     }
 }
 

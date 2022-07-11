@@ -21,7 +21,11 @@ final class HistoryTableAdapter: NSObject {
     
     private var historyArray: [HistoryViewModel] = []
     
-    var onCellDeleteHandler: ((HistoryRequest) -> ())?
+    private let onCellDeleteHandler: (HistoryRequest) -> ()
+    
+    init(completion: @escaping(HistoryRequest) -> ()) {
+        self.onCellDeleteHandler = completion
+    }
 }
 
 extension HistoryTableAdapter {
@@ -89,7 +93,7 @@ extension HistoryTableAdapter: UITableViewDelegate, UITableViewDataSource {
             let viewModel = HistoryRequest(id: chart.id,
                                            idSegment: segment.id,
                                            transactionCount: chart.transaction.count)
-            self.onCellDeleteHandler?(viewModel)
+            self.onCellDeleteHandler(viewModel)
         }
     }
     
