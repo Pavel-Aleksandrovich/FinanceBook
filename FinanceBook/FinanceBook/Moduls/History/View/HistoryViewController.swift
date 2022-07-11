@@ -100,6 +100,10 @@ private extension HistoryViewController {
             case .rightArrow:
                 print("leftArrow")
             case .dateLabel:
+                let vc = CalendarPickerViewController(baseDate: Date()) { date in
+                    print(date)
+                }
+                self?.present(vc, animated: true)
                 print("leftArrow")
             }
         }
