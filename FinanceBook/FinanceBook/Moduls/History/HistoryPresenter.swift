@@ -12,6 +12,7 @@ protocol IHistoryPresenter: AnyObject {
                         view: IHistoryView)
     func showError(_ error: Error)
     func setHistory(_ history: [HistoryResponse])
+    func setTitleForDateLabel(dateInterval: DateCollectionAdapter.DateType)
 }
 
 final class HistoryPresenter {
@@ -44,6 +45,22 @@ extension HistoryPresenter: IHistoryPresenter {
         self.mainQueue.async {
             self.view?.setImageViewState(!historyViewModel.isEmpty)
             self.view?.setHistory(historyViewModel)
+        }
+    }
+    
+    func setTitleForDateLabel(dateInterval: DateCollectionAdapter.DateType) {
+        print("presenter")
+        switch dateInterval {
+        case .day:
+            print("day")
+        case .week:
+            print("week")
+        case .month:
+            print("month")
+        case .year:
+            print("year")
+        case .all:
+            print("all")
         }
     }
 }

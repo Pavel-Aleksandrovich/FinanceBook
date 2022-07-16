@@ -12,6 +12,7 @@ protocol IHistoryInteractor: AnyObject {
                         view: IHistoryView)
     func deleteTransaction(_ viewModel: HistoryRequest)
     func loadDataBy(type: Profit, dateInterval: DateCollectionAdapter.DateType)
+    func loadDataFromPreviousMonth()
 }
 
 final class HistoryInteractor {
@@ -44,19 +45,28 @@ extension HistoryInteractor: IHistoryInteractor {
     
     func loadDataBy(type: Profit,
                     dateInterval: DateCollectionAdapter.DateType) {
-        switch type {
-        case .income:
-            self.loadData()
-        case .expenses:
-            self.presenter.setHistory([])
+        
+        self.presenter.setTitleForDateLabel(dateInterval: dateInterval)
+        
+        self.dataManager.getHistory(type: type) { [ weak self ] result in
+            switch result {
+            case .success(let historyResponse):
+                self?.presenter.setHistory(historyResponse)
+            case .failure(let error):
+                self?.presenter.showError(error)
+            }
         }
+    }
+    
+    func loadDataFromPreviousMonth() {
+        
     }
 }
 
 private extension HistoryInteractor {
     
     func loadData() {
-        self.dataManager.getHistory { [ weak self ] result in
+        self.dataManager.getHistory(type: .income) { [ weak self ] result in
             switch result {
             case .success(let historyResponse):
                 self?.presenter.setHistory(historyResponse)

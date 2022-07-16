@@ -8,7 +8,8 @@
 import Foundation
 
 protocol IHistoryDataManager {
-    func getHistory(completion: @escaping(Result<([HistoryResponse]),
+    func getHistory(type: Profit,
+                    completion: @escaping(Result<([HistoryResponse]),
                                           Error>) -> ())
     func create(transaction: TransactionDetailsRequest,
                 completion: @escaping(Result<(), Error>) -> ())
@@ -30,7 +31,8 @@ final class HistoryDataManager {
 
 extension HistoryDataManager: IHistoryDataManager {
     
-    func getHistory(completion: @escaping (Result<([HistoryResponse]),
+    func getHistory(type: Profit,
+                    completion: @escaping (Result<([HistoryResponse]),
                                            Error>) -> ()) {
         self.globalQueue.async {
             do {

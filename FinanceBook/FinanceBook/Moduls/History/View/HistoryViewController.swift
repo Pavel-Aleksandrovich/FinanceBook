@@ -18,7 +18,17 @@ final class HistoryViewController: UIViewController {
     private let router: IHistoryRouter
     
     private var profitType: Profit = .income
-    private var dateType: DateCollectionAdapter.DateType = .all
+    private var dateType: DateCollectionAdapter.DateType = .day
+    
+    private var dateFormatter: DateFormatter = {
+        let dateFormatter = DateFormatter()
+        dateFormatter.calendar = Calendar.current
+        dateFormatter.locale = Locale.autoupdatingCurrent
+        dateFormatter.setLocalizedDateFormatFromTemplate("MMMM y")
+        return dateFormatter
+    }()
+    
+    private let calendar = Calendar.current
     
     init(interactor: IHistoryInteractor,
          router: IHistoryRouter) {
@@ -87,6 +97,8 @@ private extension HistoryViewController {
         self.mainView.onDateCellTappedHandler = { [ weak self ] type in
             guard let self = self else { return }
             
+            self.dateType = type
+            
             self.interactor.loadDataBy(type: self.profitType,
                                        dateInterval: type)
         }
@@ -94,17 +106,35 @@ private extension HistoryViewController {
     
     func setOnDateViewTappedHandler() {
         self.mainView.onDateViewTappedHandler = { [ weak self ] state in
+            
+            guard let self = self else { return }
             switch state {
             case .leftArrow:
+                self.interactor.loadDataFromPreviousMonth()
+                print(self.calendar.date(byAdding: .month,
+                                         value: -1,
+                                         to: Date()) ?? Date())
                 print("leftArrow")
             case .rightArrow:
                 print("leftArrow")
             case .dateLabel:
-                let vc = CalendarPickerViewController(baseDate: Date()) { date in
-                    print(date)
+                switch self.dateType {
+                case .day:
+                    let vc = CalendarPickerViewController(baseDate: Date()) { date in
+                        print(date)
+                    }
+                    self.present(vc, animated: true)
+                    print("day")
+                case .week:
+                    print("week")
+                case .month:
+                    print(self.dateFormatter.string(from: Date()))
+                case .year:
+                    print("year")
+                case .all:
+                    print("all")
                 }
-                self?.present(vc, animated: true)
-                print("leftArrow")
+                
             }
         }
     }

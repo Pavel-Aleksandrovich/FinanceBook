@@ -42,6 +42,7 @@ extension DateCollectionCell {
     }
 }
 
+// MARK: - Config Appearance
 private extension DateCollectionCell {
     
     func configAppearance() {
@@ -64,6 +65,7 @@ private extension DateCollectionCell {
     }
 }
 
+// MARK: - Make Constraints
 private extension DateCollectionCell {
     
     func makeConstraints() {

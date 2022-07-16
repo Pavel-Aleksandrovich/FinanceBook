@@ -42,6 +42,7 @@ extension ProfitCollectionCell {
     }
 }
 
+// MARK: - Config Appearance
 private extension ProfitCollectionCell {
     
     func configAppearance() {
@@ -64,6 +65,7 @@ private extension ProfitCollectionCell {
     }
 }
 
+// MARK: - Make Constraints
 private extension ProfitCollectionCell {
     
     func makeConstraints() {

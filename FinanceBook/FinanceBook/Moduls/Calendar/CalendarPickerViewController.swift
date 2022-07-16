@@ -7,7 +7,7 @@
 
 import UIKit
 
-class CalendarPickerViewController: UIViewController {
+final class CalendarPickerViewController: UIViewController {
     
     private lazy var dimmedBackgroundView: UIView = {
         let view = UIView()
@@ -21,7 +21,8 @@ class CalendarPickerViewController: UIViewController {
         layout.minimumLineSpacing = 0
         layout.minimumInteritemSpacing = 0
         
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        let collectionView = UICollectionView(frame: .zero,
+                                              collectionViewLayout: layout)
         collectionView.isScrollEnabled = false
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
@@ -34,24 +35,25 @@ class CalendarPickerViewController: UIViewController {
     }
     
     private lazy var footerView = CalendarPickerFooterView(
-        didTapLastMonthCompletionHandler: { [weak self] in
+        didTapPreviousMonthHandler: { [weak self] in
             guard let self = self else { return }
             
-            self.baseDate = self.calendar.date(
-                byAdding: .month,
-                value: -1,
-                to: self.baseDate
-            ) ?? self.baseDate
+            self.baseDate = self.calendar.date(byAdding: .month,
+                                               value: -1,
+                                               to: self.baseDate) ?? self.baseDate
         },
-        didTapNextMonthCompletionHandler: { [weak self] in
+        didTapNextMonthHandler: { [weak self] in
             guard let self = self else { return }
             
-            self.baseDate = self.calendar.date(byAdding: .month, value: 1, to: self.baseDate) ?? self.baseDate
+            self.baseDate = self.calendar.date(byAdding: .month,
+                                               value: 1,
+                                               to: self.baseDate) ?? self.baseDate
         })
     
     // MARK: Calendar Data Values
     
     private let selectedDate: Date
+    
     private var baseDate: Date {
         didSet {
             days = generateDaysInMonth(for: baseDate)
@@ -77,7 +79,8 @@ class CalendarPickerViewController: UIViewController {
     
     // MARK: Initializers
     
-    init(baseDate: Date, selectedDateChanged: @escaping ((Date) -> Void)) {
+    init(baseDate: Date,
+         selectedDateChanged: @escaping ((Date) -> ())) {
         self.selectedDate = baseDate
         self.baseDate = baseDate
         self.selectedDateChanged = selectedDateChanged
@@ -142,7 +145,7 @@ class CalendarPickerViewController: UIViewController {
         
         collectionView.register(
             CalendarDateCollectionViewCell.self,
-            forCellWithReuseIdentifier: CalendarDateCollectionViewCell.reuseIdentifier
+            forCellWithReuseIdentifier: CalendarDateCollectionViewCell.id
         )
         
         collectionView.dataSource = self
@@ -161,16 +164,13 @@ class CalendarPickerViewController: UIViewController {
 private extension CalendarPickerViewController {
     // 1
     func monthMetadata(for baseDate: Date) throws -> MonthMetadata {
-        // 2
         guard
-            let numberOfDaysInMonth = calendar.range(
-                of: .day,
-                in: .month,
-                for: baseDate)?.count,
+            let numberOfDaysInMonth = calendar.range(of: .day,
+                                                     in: .month,
+                                                     for: baseDate)?.count,
             let firstDayOfMonth = calendar.date(
                 from: calendar.dateComponents([.year, .month], from: baseDate))
         else {
-            // 3
             throw CalendarDataError.metadataGeneration
         }
         
@@ -202,15 +202,14 @@ private extension CalendarPickerViewController {
                 let isWithinDisplayedMonth = day >= offsetInInitialRow
                 // 5
                 let dayOffset =
-                    isWithinDisplayedMonth ?
-                    day - offsetInInitialRow :
-                    -(offsetInInitialRow - day)
+                isWithinDisplayedMonth ?
+                day - offsetInInitialRow :
+                -(offsetInInitialRow - day)
                 
                 // 6
-                return generateDay(
-                    offsetBy: dayOffset,
-                    for: firstDayOfMonth,
-                    isWithinDisplayedMonth: isWithinDisplayedMonth)
+                return generateDay(offsetBy: dayOffset,
+                                   for: firstDayOfMonth,
+                                   isWithinDisplayedMonth: isWithinDisplayedMonth)
             }
         
         days += generateStartOfNextMonth(using: firstDayOfMonth)
@@ -219,10 +218,16 @@ private extension CalendarPickerViewController {
     }
     
     // 7
-    func generateDay(offsetBy dayOffset: Int,for baseDate: Date,isWithinDisplayedMonth: Bool) -> Day {
-        let date = calendar.date(byAdding: .day, value: dayOffset, to: baseDate) ?? baseDate
+    func generateDay(offsetBy dayOffset: Int,
+                     for baseDate: Date,
+                     isWithinDisplayedMonth: Bool) -> Day {
         
-        return Day(date: date,number: dateFormatter.string(from: date),
+        let date = calendar.date(byAdding: .day,
+                                 value: dayOffset,
+                                 to: baseDate) ?? baseDate
+        
+        return Day(date: date,
+                   number: dateFormatter.string(from: date),
                    isSelected: calendar.isDate(date, inSameDayAs: selectedDate),
                    isWithinDisplayedMonth: isWithinDisplayedMonth)
     }
@@ -263,6 +268,7 @@ private extension CalendarPickerViewController {
 
 // MARK: - UICollectionViewDataSource
 extension CalendarPickerViewController: UICollectionViewDataSource {
+    
     func collectionView(
         _ collectionView: UICollectionView,
         numberOfItemsInSection section: Int
@@ -276,8 +282,10 @@ extension CalendarPickerViewController: UICollectionViewDataSource {
     ) -> UICollectionViewCell {
         let day = days[indexPath.row]
         
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CalendarDateCollectionViewCell.reuseIdentifier,
-                                                      for: indexPath) as! CalendarDateCollectionViewCell
+        guard let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: CalendarDateCollectionViewCell.id,
+            for: indexPath) as? CalendarDateCollectionViewCell
+        else { return UICollectionViewCell() }
         
         cell.day = day
         return cell
@@ -290,9 +298,9 @@ extension CalendarPickerViewController: UICollectionViewDelegateFlowLayout {
         _ collectionView: UICollectionView,
         didSelectItemAt indexPath: IndexPath
     ) {
-        let day = days[indexPath.row + 1]
+        let day = days[indexPath.row]
         selectedDateChanged(day.date)
-        dismiss(animated: true, completion: nil)
+//        dismiss(animated: true, completion: nil)
     }
     
     func collectionView(
