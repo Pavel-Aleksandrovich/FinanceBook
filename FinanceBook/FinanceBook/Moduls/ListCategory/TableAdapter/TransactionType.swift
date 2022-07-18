@@ -7,11 +7,11 @@
 
 import UIKit
 
-enum ProfitType: CaseIterable {
+enum ProfitType: String, CaseIterable {
     static var allCases: [ProfitType] = ProfitType.allCases
     
-    case income(TransactionType)
-    case expenses(ExpensesType)
+    case income
+    case expenses
 }
 
 enum ExpensesType: String, CaseIterable {

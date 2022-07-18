@@ -12,7 +12,7 @@ protocol ITransactionDetailsView: AnyObject {
     var saveButtonTappedHandler: (() -> ())? { get set }
     var textFieldChangeHandler: (() -> ())? { get set }
     func updateSaveButtonState(_ state: Bool)
-    func getViewModel() -> TransactionDetailsValidateRequest
+    func getViewModel() -> HistoryValidateRequest
     func setCategory(_ model: CategoryType)
     func showShakeAnimation()
 }
@@ -74,16 +74,23 @@ extension TransactionDetailsView: ITransactionDetailsView {
         }
     }
     
-    func getViewModel() -> TransactionDetailsValidateRequest {
+    func getViewModel() -> HistoryValidateRequest {
+        
         let date = self.tableAdapter.selectedDate
         let color = self.tableAdapter.selectedCategory?.color
         let amount = self.tableAdapter.selectedAmount
         let name = self.tableAdapter.selectedCategory?.name
+        let profit = self.tableAdapter.selectedCategory?.profit
         
-        return TransactionDetailsValidateRequest(name: name,
-                                                 amount: amount,
-                                                 date: date,
-                                                 color: color)
+        return HistoryValidateRequest(name: name,
+                                      amount: amount,
+                                      date: date,
+                                      color: color,
+                                      profit: profit)
+//        return TransactionDetailsValidateRequest(name: name,
+//                                                 amount: amount,
+//                                                 date: date,
+//                                                 color: color)
     }
     
     func setCategory(_ model: CategoryType) {

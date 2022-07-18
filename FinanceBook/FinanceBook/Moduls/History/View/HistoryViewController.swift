@@ -17,19 +17,6 @@ final class HistoryViewController: UIViewController {
     private let interactor: IHistoryInteractor
     private let router: IHistoryRouter
     
-    private var profitType: Profit = .income
-    private var dateType: DateCollectionAdapter.DateType = .day
-    
-    private var dateFormatter: DateFormatter = {
-        let dateFormatter = DateFormatter()
-        dateFormatter.calendar = Calendar.current
-        dateFormatter.locale = Locale.autoupdatingCurrent
-        dateFormatter.setLocalizedDateFormatFromTemplate("MMMM y")
-        return dateFormatter
-    }()
-    
-    private let calendar = Calendar.current
-    
     init(interactor: IHistoryInteractor,
          router: IHistoryRouter) {
         self.interactor = interactor
@@ -56,8 +43,16 @@ final class HistoryViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.interactor.loadDataBy(type: self.profitType,
-                                   dateInterval: self.dateType)
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd MMMM yy"
+        
+        let dateString = dateFormatter.string(from: Date())
+        let date = dateFormatter.date(from: dateString)
+
+        guard let date = date else { return }
+        
+        self.interactor.setSelectedDate(date)
     }
 }
 
@@ -79,64 +74,42 @@ private extension HistoryViewController {
     }
     
     func setOnCellDeleteHandler() {
-        self.mainView.onCellDeleteHandler = { [ weak self ] viewModel in
-            self?.interactor.deleteTransaction(viewModel)
+        self.mainView.onCellDeleteHandler = { [ weak self ] id in
+            self?.interactor.deleteHistoryBy(id: id)
         }
     }
     
     func setCollectionAdapterHandler() {
         self.mainView.onCellTappedHandler = { [ weak self ] type in
-            guard let self = self else { return }
-            
-            self.interactor.loadDataBy(type: type,
-                                       dateInterval: self.dateType)
+            self?.interactor.setProfitState(type)
         }
     }
     
     func setDateCollectionAdapterHandler() {
         self.mainView.onDateCellTappedHandler = { [ weak self ] type in
-            guard let self = self else { return }
-            
-            self.dateType = type
-            
-            self.interactor.loadDataBy(type: self.profitType,
-                                       dateInterval: type)
+            self?.interactor.setDateState(type)
         }
     }
     
     func setOnDateViewTappedHandler() {
         self.mainView.onDateViewTappedHandler = { [ weak self ] state in
-            
-            guard let self = self else { return }
             switch state {
             case .leftArrow:
-                self.interactor.loadDataFromPreviousMonth()
-                print(self.calendar.date(byAdding: .month,
-                                         value: -1,
-                                         to: Date()) ?? Date())
-                print("leftArrow")
+                self?.interactor.leftArrowTapped()
             case .rightArrow:
-                print("leftArrow")
+                self?.interactor.rightArrowTapped()
             case .dateLabel:
-                switch self.dateType {
-                case .day:
-                    let vc = CalendarPickerViewController(baseDate: Date()) { date in
-                        print(date)
-                    }
-                    self.present(vc, animated: true)
-                    print("day")
-                case .week:
-                    print("week")
-                case .month:
-                    print(self.dateFormatter.string(from: Date()))
-                case .year:
-                    print("year")
-                case .all:
-                    print("all")
-                }
-                
+                self?.showCalendar()
             }
         }
+    }
+    
+    func showCalendar() {
+        let vc = CalendarPickerViewController(baseDate: Date()) { date in
+            
+            self.interactor.setSelectedDate(date)
+        }
+        self.present(vc, animated: true)
     }
 }
 

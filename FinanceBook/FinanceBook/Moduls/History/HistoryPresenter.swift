@@ -11,7 +11,7 @@ protocol IHistoryPresenter: AnyObject {
     func onViewAttached(controller: IHistoryViewController,
                         view: IHistoryView)
     func showError(_ error: Error)
-    func setHistory(_ history: [HistoryResponse])
+    func setHistory(_ history: [HistoryModelResponse])
     func setTitleForDateLabel(dateInterval: DateCollectionAdapter.DateType)
 }
 
@@ -39,8 +39,8 @@ extension HistoryPresenter: IHistoryPresenter {
     
     //MARK: - TO DO
     //if historyViewModel.isEmpty { showEmptyState() } else { showContent }
-    func setHistory(_ history: [HistoryResponse]) {
-        let historyViewModel = self.getViewModel(from: history)
+    func setHistory(_ history: [HistoryModelResponse]) {
+        let historyViewModel = history.map { HistoryModel(model: $0) }
         
         self.mainQueue.async {
             self.view?.setImageViewState(!historyViewModel.isEmpty)
@@ -49,31 +49,6 @@ extension HistoryPresenter: IHistoryPresenter {
     }
     
     func setTitleForDateLabel(dateInterval: DateCollectionAdapter.DateType) {
-        print("presenter")
-        switch dateInterval {
-        case .day:
-            print("day")
-        case .week:
-            print("week")
-        case .month:
-            print("month")
-        case .year:
-            print("year")
-        case .all:
-            print("all")
-        }
-    }
-}
-
-private extension HistoryPresenter {
-    
-    //MARK: - TO DO
-    //move to coverter. Create new class - Converter() / Maper()
-    // возможно сделать func конвертер во viewModel?
-    
-    func getViewModel(from array: [HistoryResponse]) -> [HistoryViewModel] {
-        
-        array.map { HistoryViewModel(history: $0,
-                                     transaction: $0.transaction.map { TransactionTypeViewModel(transaction: $0) } ) }
+        self.view?.setTitleForDateLabel(dateInterval.rawValue)
     }
 }

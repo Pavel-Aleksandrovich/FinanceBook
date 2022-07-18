@@ -8,7 +8,7 @@
 import Foundation
 
 protocol ITransactionDetailsValidator: AnyObject {
-    func check(viewModel: TransactionDetailsValidateRequest?,
+    func check(viewModel: HistoryValidateRequest?,
                complition: @escaping(ValidateResult) -> ()) -> Bool
 }
 
@@ -27,7 +27,7 @@ final class TransactionDetailsValidator {
 
 extension TransactionDetailsValidator: ITransactionDetailsValidator {
     
-    func check(viewModel: TransactionDetailsValidateRequest?,
+    func check(viewModel: HistoryValidateRequest?,
                complition: @escaping(ValidateResult) -> ()) -> Bool {
         
         let nameError = self.checkName(viewModel?.name)

@@ -32,6 +32,13 @@ final class DateView: UIView {
     }
 }
 
+extension DateView {
+    
+    func setTitleForDateLabel(_ title: String) {
+        self.dateLabel.text = title
+    }
+}
+
 // MARK: - Actions
 private extension DateView {
     

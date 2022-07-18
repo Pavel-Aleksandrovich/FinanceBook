@@ -67,6 +67,13 @@ extension TransactionDetailsViewController: ITransactionDetailsViewController {
     }
 }
 
+extension TransactionDetailsViewController: ListCategoryViewControllerDelegate {
+    
+    func setData(_ model: CategoryType) {
+        self.mainView.setCategory(model)
+    }
+}
+
 private extension TransactionDetailsViewController {
     
     func setHandlers() {
@@ -96,8 +103,4 @@ private extension TransactionDetailsViewController {
     }
 }
 
-extension TransactionDetailsViewController: ListCategoryViewControllerDelegate {
-    func setData(_ model: CategoryType) {
-        self.mainView.setCategory(model)
-    }
-}
+

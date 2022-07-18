@@ -10,6 +10,13 @@ import UIKit
 enum Profit: String, CaseIterable {
     case income = "Income"
     case expenses = "Expenses"
+    
+    var name: String {
+        switch self {
+        case .income: return "income"
+        case .expenses: return "expenses"
+        }
+    }
 }
 
 final class ProfitCollectionAdapter: NSObject {

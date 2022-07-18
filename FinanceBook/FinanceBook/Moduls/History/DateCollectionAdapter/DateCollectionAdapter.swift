@@ -14,13 +14,10 @@ final class DateCollectionAdapter: NSObject {
     
     enum DateType: String, CaseIterable {
         case day = "Day"
-        case week = "Week"
         case month = "Month"
         case year = "Year"
         case all = "All"
     }
-    
-    private(set) var selectedRow: DateType = .day
     
     private let dataArray = DateType.allCases
     private let onCellTappedHandler: (DateType) -> ()
@@ -47,8 +44,8 @@ extension DateCollectionAdapter: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView,
                         didSelectItemAt indexPath: IndexPath) {
-        self.selectedRow = self.dataArray[indexPath.item]
-        self.onCellTappedHandler(self.selectedRow)
+        let selectedRow = self.dataArray[indexPath.item]
+        self.onCellTappedHandler(selectedRow)
     }
 }
 

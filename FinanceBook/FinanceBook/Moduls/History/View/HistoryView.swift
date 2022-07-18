@@ -9,8 +9,9 @@ import UIKit
 import SnapKit
 
 protocol IHistoryView: AnyObject {
-    func setHistory(_ chart: [HistoryViewModel])
+    func setHistory(_ chart: [HistoryModel])
     func setImageViewState(_ state: Bool)
+    func setTitleForDateLabel(_ title: String)
 }
 
 final class HistoryView: UIView {
@@ -30,19 +31,19 @@ final class HistoryView: UIView {
     private lazy var collectionView = UICollectionView(frame: .zero,
                                                        collectionViewLayout: self.layout)
     private lazy var dateCollectionView = UICollectionView(frame: .zero,
-                                                       collectionViewLayout: self.dateLayout)
+                                                           collectionViewLayout: self.dateLayout)
     private lazy var selectedDateView = DateView { type in self.onDateViewTappedHandler?(type) }
     
     private lazy var dateCollectionAdapter = DateCollectionAdapter { type in
         self.onDateCellTappedHandler?(type) }
     
-    private lazy var tableAdapter = HistoryTableAdapter { viewModel in
-        self.onCellDeleteHandler?(viewModel) }
+    private lazy var tableAdapter = TableAdapter { id in
+        self.onCellDeleteHandler?(id) }
     
     private lazy var collectionAdapter = ProfitCollectionAdapter { type in
         self.onCellTappedHandler?(type) }
     
-    var onCellDeleteHandler: ((HistoryRequest) -> ())?
+    var onCellDeleteHandler: ((UUID) -> ())?
     var onCellTappedHandler: ((Profit) -> ())?
     var onDateCellTappedHandler: ((DateCollectionAdapter.DateType) -> ())?
     var onDateViewTappedHandler: ((DateView.TapState) -> ())?
@@ -60,14 +61,18 @@ final class HistoryView: UIView {
 
 extension HistoryView: IHistoryView {
     
-    func setHistory(_ history: [HistoryViewModel]) {
-        self.pieChartView.updateChart(history)
+    func setHistory(_ history: [HistoryModel]) {
+//        self.pieChartView.updateChart(history)
         self.tableAdapter.setHistory(history)
         self.tableView.reloadData()
     }
     
     func setImageViewState(_ state: Bool) {
         self.defaultView.isHidden = state
+    }
+    
+    func setTitleForDateLabel(_ title: String) {
+        self.selectedDateView.setTitleForDateLabel(title)
     }
 }
 
@@ -93,8 +98,8 @@ private extension HistoryView {
         self.tableView.showsVerticalScrollIndicator = false
         self.tableView.delegate = self.tableAdapter
         self.tableView.dataSource = self.tableAdapter
-        self.tableView.register(HistoryCell.self,
-                                forCellReuseIdentifier: HistoryCell.id)
+        self.tableView.register(TableAdapterCell.self,
+                                forCellReuseIdentifier: TableAdapterCell.id)
     }
     
     func configScrollView() {
@@ -111,12 +116,12 @@ private extension HistoryView {
         self.collectionView.backgroundColor = .clear
         self.collectionView.showsHorizontalScrollIndicator = false
         self.collectionView.register(ProfitCollectionCell.self,
-                                      forCellWithReuseIdentifier: ProfitCollectionCell.id)
+                                     forCellWithReuseIdentifier: ProfitCollectionCell.id)
         self.collectionView.dataSource = self.collectionAdapter
         self.collectionView.delegate = self.collectionAdapter
         self.collectionView.selectItem(at: [0, 0],
-                                        animated: true,
-                                        scrollPosition: [])
+                                       animated: true,
+                                       scrollPosition: [])
     }
     
     func configDateLayout() {
@@ -211,7 +216,7 @@ private extension HistoryView {
         self.addSubview(self.defaultView)
         self.defaultView.snp.makeConstraints { make in
             make.leading.trailing.bottom.equalToSuperview()
-            make.top.equalTo(self.dateCollectionView.snp.bottom)
+            make.top.equalTo(self.selectedDateView.snp.bottom)
         }
     }
 }

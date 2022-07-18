@@ -6,6 +6,14 @@
         <attribute name="name" attributeType="String"/>
         <relationship name="segment" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="SegmentEntity" inverseName="chart" inverseEntity="SegmentEntity"/>
     </entity>
+    <entity name="HistoryEntity" representedClassName="HistoryEntity" syncable="YES">
+        <attribute name="color" attributeType="Binary"/>
+        <attribute name="date" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="name" attributeType="String"/>
+        <attribute name="profit" attributeType="String"/>
+        <attribute name="value" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+    </entity>
     <entity name="NewsEntity" representedClassName=".NewsEntity" syncable="YES">
         <attribute name="content" attributeType="String"/>
         <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
@@ -19,8 +27,9 @@
         <relationship name="chart" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ChartEntity" inverseName="segment" inverseEntity="ChartEntity"/>
     </entity>
     <elements>
-        <element name="NewsEntity" positionX="-63" positionY="-18" width="128" height="89"/>
         <element name="ChartEntity" positionX="-54" positionY="18" width="128" height="89"/>
+        <element name="NewsEntity" positionX="-63" positionY="-18" width="128" height="89"/>
         <element name="SegmentEntity" positionX="-36" positionY="45" width="128" height="89"/>
+        <element name="HistoryEntity" positionX="-18" positionY="81" width="128" height="14"/>
     </elements>
 </model>

@@ -10,4 +10,5 @@ import UIKit
 struct CategoryType {
     let name: String
     let color: UIColor
+    let profit: String
 }

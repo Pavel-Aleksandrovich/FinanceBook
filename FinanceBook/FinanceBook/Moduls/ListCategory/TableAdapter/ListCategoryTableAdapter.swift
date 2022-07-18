@@ -12,7 +12,7 @@ final class ListCategoryTableAdapter: NSObject {
     private enum Constants {
     }
     
-    private var selectedRow: ProfitType = .income(.home)
+    private var selectedRow: ProfitType = .income
     
     private(set) var model: CategoryType? = nil {
         didSet {
@@ -30,9 +30,9 @@ extension ListCategoryTableAdapter {
         
         switch result {
         case .income:
-            self.selectedRow = .income(.home)
+            self.selectedRow = .income
         case .expenses:
-            self.selectedRow = .expenses(.salary)
+            self.selectedRow = .expenses
         }
     }
     
@@ -48,9 +48,9 @@ extension ListCategoryTableAdapter: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView,
                    numberOfRowsInSection section: Int) -> Int {
         switch self.selectedRow {
-        case .income(_):
+        case .income:
             return TransactionType.allCases.count
-        case .expenses(_):
+        case .expenses:
             return ExpensesType.allCases.count
         }
     }
@@ -69,10 +69,10 @@ extension ListCategoryTableAdapter: UITableViewDelegate, UITableViewDataSource {
         else { return UITableViewCell() }
         
         switch self.selectedRow {
-        case .income(_):
+        case .income:
             let transaction = TransactionType.allCases[indexPath.item]
             cell.update(name: transaction.name, color: transaction.color)
-        case .expenses(_):
+        case .expenses:
             let transaction = ExpensesType.allCases[indexPath.item]
             cell.update(name: transaction.name, color: transaction.color)
         }
@@ -80,20 +80,24 @@ extension ListCategoryTableAdapter: UITableViewDelegate, UITableViewDataSource {
         return cell
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView,
+                   didSelectRowAt indexPath: IndexPath) {
         
         var name = String()
         var color = UIColor()
+        let profit = self.selectedRow.rawValue
         
         switch self.selectedRow {
-        case .income(_):
+        case .income:
             color = TransactionType.allCases[indexPath.row].color
             name = TransactionType.allCases[indexPath.row].name
-        case .expenses(_):
+        case .expenses:
             color = ExpensesType.allCases[indexPath.row].color
             name = ExpensesType.allCases[indexPath.row].name
         }
         
-        self.model = CategoryType(name: name, color: color)
+        self.model = CategoryType(name: name,
+                                  color: color,
+                                  profit: profit)
     }
 }

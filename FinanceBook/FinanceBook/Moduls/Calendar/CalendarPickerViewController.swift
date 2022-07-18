@@ -65,10 +65,12 @@ final class CalendarPickerViewController: UIViewController {
     private lazy var days = generateDaysInMonth(for: baseDate)
     
     private var numberOfWeeksInBaseDate: Int {
-        calendar.range(of: .weekOfMonth, in: .month, for: baseDate)?.count ?? 0
+        calendar.range(of: .weekOfMonth,
+                       in: .month,
+                       for: baseDate)?.count ?? 0
     }
     
-    private let selectedDateChanged: ((Date) -> Void)
+    private let selectedDateChanged: ((Date) -> ())
     private let calendar = Calendar.current
     
     private lazy var dateFormatter: DateFormatter = {
@@ -170,18 +172,20 @@ private extension CalendarPickerViewController {
                                                      for: baseDate)?.count,
             let firstDayOfMonth = calendar.date(
                 from: calendar.dateComponents([.year, .month], from: baseDate))
+                
         else {
             throw CalendarDataError.metadataGeneration
         }
         
+        print(firstDayOfMonth)
+        print(numberOfDaysInMonth)
         // 4
         let firstDayWeekday = calendar.component(.weekday, from: firstDayOfMonth)
         
         // 5
-        return MonthMetadata(
-            numberOfDays: numberOfDaysInMonth,
-            firstDay: firstDayOfMonth,
-            firstDayWeekday: firstDayWeekday)
+        return MonthMetadata(numberOfDays: numberOfDaysInMonth,
+                             firstDay: firstDayOfMonth,
+                             firstDayWeekday: firstDayWeekday)
     }
     
     // 1
@@ -294,10 +298,10 @@ extension CalendarPickerViewController: UICollectionViewDataSource {
 
 // MARK: - UICollectionViewDelegateFlowLayout
 extension CalendarPickerViewController: UICollectionViewDelegateFlowLayout {
+    
     func collectionView(
         _ collectionView: UICollectionView,
-        didSelectItemAt indexPath: IndexPath
-    ) {
+        didSelectItemAt indexPath: IndexPath) {
         let day = days[indexPath.row]
         selectedDateChanged(day.date)
 //        dismiss(animated: true, completion: nil)
@@ -306,8 +310,8 @@ extension CalendarPickerViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
-        sizeForItemAt indexPath: IndexPath
-    ) -> CGSize {
+        sizeForItemAt indexPath: IndexPath) -> CGSize {
+            
         let width = Int(collectionView.frame.width / 7)
         let height = Int(collectionView.frame.height) / numberOfWeeksInBaseDate
         return CGSize(width: width, height: height)

@@ -69,57 +69,75 @@ extension CoreDataStorage {
 // MARK: - History modul
 extension CoreDataStorage {
     
-    func getHistory() throws -> [HistoryResponse] {
+    func getHistory(profit: String,
+                    date: Date) throws -> [HistoryModelResponse] {
         
-        var historyResponse: [HistoryResponse] = []
+        let fetchRequest = HistoryEntity.fetchRequest()
+        let predicate = NSPredicate(format: "profit = %@", "\(profit)")
         
-        let historyEntity = try self.getHistoryEntity()
+        let datePredicate = NSPredicate(format: "date = %@", date as NSDate)
         
-        for i in 0..<historyEntity.count {
-            let transactionEntity = try self.getTransactions(from: historyEntity[i])
-            let transactionResponse = transactionEntity.compactMap { TransactionTypeResponse(transaction: $0) }
-            historyResponse.append(HistoryResponse(history: historyEntity[i],
-                                                   transaction: transactionResponse))
-        }
+        let mainPredicate = NSCompoundPredicate(
+            andPredicateWithSubpredicates: [datePredicate, predicate])
         
-        return historyResponse
+        fetchRequest.predicate = mainPredicate
+        
+        let history = try self.context.fetch(fetchRequest)
+        
+        return history.compactMap { HistoryModelResponse(model: $0) }
     }
     
-    func create(transaction: TransactionDetailsRequest) throws {
-        guard let entity = NSEntityDescription.entity(forEntityName: "ChartEntity",
-                                                      in: context) else { return }
+    func getHistory(profit: String) throws -> [HistoryModelResponse] {
+        let fetchRequest = HistoryEntity.fetchRequest()
         
-        let savedHistory = try self.getHistoryEntity()
+        let predicate = NSPredicate(format: "profit = %@", "\(profit)")
+        fetchRequest.predicate = predicate
         
-        if savedHistory.contains(where: { $0.color == transaction.color}) == false {
-            let historyEntity = ChartEntity(entity: entity, insertInto: context)
-            historyEntity.setValues(from: transaction)
-            self.saveContext()
-            try self.add(transaction: transaction, to: historyEntity)
-        } else {
-            for i in 0..<savedHistory.count {
-                if savedHistory[i].color == transaction.color {
-                    try self.add(transaction: transaction, to: savedHistory[i])
-                }
-            }
+        let history = try self.context.fetch(fetchRequest)
+        
+        return history.compactMap { HistoryModelResponse(model: $0) }
+    }
+    
+    func getHistory(fromDate: Date,
+                        toDate: Date,
+                        profit: String) throws -> [HistoryModelResponse] {
+        
+        let fetchRequest = HistoryEntity.fetchRequest()
+        let predicate = NSPredicate(format: "profit = %@", "\(profit)")
+        
+        let fromPredicate = NSPredicate(format: "date >= %@", fromDate as NSDate)
+        let toPredicate = NSPredicate(format: "date <= %@", toDate as NSDate)
+        
+        let mainPredicate = NSCompoundPredicate(
+            andPredicateWithSubpredicates: [predicate,
+                                            fromPredicate,
+                                            toPredicate])
+        
+        fetchRequest.predicate = mainPredicate
+        
+        let history = try self.context.fetch(fetchRequest)
+        
+        return history.compactMap { HistoryModelResponse(model: $0) }
+    }
+    
+    func create(transaction: TransactionRequest) throws {
+        guard let entity = NSEntityDescription.entity(
+            forEntityName: "HistoryEntity",
+            in: self.context) else { return }
+
+        let fetchRequest = HistoryEntity.fetchRequest()
+        let history = try self.context.fetch(fetchRequest)
+        let savedHistory = history.compactMap { HistoryModelResponse(model: $0) }
+        
+        if savedHistory.contains(where: { $0.id == transaction.id}) == false {
+            let newHistoryEntity = HistoryEntity(entity: entity, insertInto: self.context)
+            newHistoryEntity.setValues(from: transaction)
         }
-        
         self.saveContext()
     }
     
-    func deleteTransactionBy(id: UUID) throws {
-        let fetchRequest = SegmentEntity.fetchRequest()
-        fetchRequest.predicate = NSPredicate(format: "id = %@",
-                                             id.description)
-        
-        if let transactionForDelete = try self.context.fetch(fetchRequest).first {
-            context.delete(transactionForDelete)
-            self.saveContext()
-        }
-    }
-    
     func deleteHistoryBy(id: UUID) throws {
-        let fetchRequest = ChartEntity.fetchRequest()
+        let fetchRequest = HistoryEntity.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "id = %@",
                                              id.description)
         
