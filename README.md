@@ -1,19 +1,22 @@
 # FinanceBook
 
-Final project for Shift (CFT)
+- Application for saving you expenses and income
 
-Pavel Mishanin t.me/pavel_mishanin
+## Branch
+- Current branch - **develop**
 
-develop - current version of the project
+## Features
+- List of expenses and income
+- Filter by date
 
+## Stack
+- Clean Swift
+- Core Data
+- URLSession
+- SnapKit
+- DI
 
-Stack:
-
-Architecture: Clean Swift
-
-CoreData
-
-URLSession
+## Screenshots
 
 ![Simulator Screen Recording - iPhone 12 - 2022-06-23 at 19 46 21](https://user-images.githubusercontent.com/87460819/175301867-0f7b384e-825b-4d10-a3a9-e8675e8d8e8b.gif)
 
@@ -22,3 +25,8 @@ URLSession
 ![gif3](https://user-images.githubusercontent.com/87460819/175303584-7dbaaf17-e256-4fa1-990d-781b306cb6d2.gif)
 
 ![gif4](https://user-images.githubusercontent.com/87460819/175304989-ff466bb9-dd23-41c1-b4e7-b9bc57fdd9bb.gif)
+
+## Author
+Pavel Mishanin
+
+**t.me/pavel_mishanin**
