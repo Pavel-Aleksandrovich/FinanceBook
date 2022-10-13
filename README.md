@@ -1,6 +1,6 @@
 # FinanceBook
 
-- Application for saving you expenses and income
+- Application for watching you expenses and income
 
 ## Branch
 - Current branch - **develop**
