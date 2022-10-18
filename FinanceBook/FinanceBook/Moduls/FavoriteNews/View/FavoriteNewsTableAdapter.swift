@@ -87,7 +87,6 @@ extension FavoriteNewsTableAdapter: UITableViewDelegate, UITableViewDataSource {
             
             return cell
         }
-        
     }
     
     func tableView(_ tableView: UITableView,

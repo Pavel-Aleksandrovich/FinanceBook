@@ -21,7 +21,6 @@ enum TransactionDetailsAssembly {
         let router = TransactionDetailsRouter()
         let controller = TransactionDetailsViewController(interactor: interactor,
                                                           router: router)
-        router.controller = controller
         
         return controller
     }

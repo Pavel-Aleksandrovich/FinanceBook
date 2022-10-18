@@ -41,6 +41,7 @@ final class NewsDetailsViewController: UIViewController {
         super.viewDidLoad()
         self.interactor.onViewAttached(controller: self,
                                        view: self.mainView)
+        self.router.setupViewController(self)
         self.setOnFavoriteButtonTappedHandler()
     }
 }

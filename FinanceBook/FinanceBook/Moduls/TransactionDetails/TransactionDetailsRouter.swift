@@ -8,17 +8,23 @@
 import UIKit
 
 protocol ITransactionDetailsRouter: AnyObject {
+    func setupViewController(_ controller: UIViewController)
     func popToRoot()
     func showAlert(_ title: String)
     func showSuccessAlert(complition: @escaping() -> ())
+    func showCategoryModul(delegate: ListCategoryViewControllerDelegate)
 }
 
 final class TransactionDetailsRouter {
     
-    weak var controller: UIViewController?
+    private weak var controller: UIViewController?
 }
 
 extension TransactionDetailsRouter: ITransactionDetailsRouter {
+    
+    func setupViewController(_ controller: UIViewController) {
+        self.controller = controller
+    }
     
     func popToRoot() {
         self.controller?.navigationController?.popToRootViewController(animated: true)
@@ -34,5 +40,10 @@ extension TransactionDetailsRouter: ITransactionDetailsRouter {
             complition()
         }
         self.controller?.present(alert, animated: true)
+    }
+    
+    func showCategoryModul(delegate: ListCategoryViewControllerDelegate) {
+        let vc = ListCategoryAssembly.build(delegate: delegate)
+        self.controller?.navigationController?.pushViewController(vc, animated: true)
     }
 }

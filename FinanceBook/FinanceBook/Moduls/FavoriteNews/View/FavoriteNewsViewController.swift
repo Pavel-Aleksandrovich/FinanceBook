@@ -40,6 +40,7 @@ final class FavoriteNewsViewController: UIViewController {
         self.interactor.onViewAttached(controller: self,
                                        view: self.mainView,
                                        tableAdapter: self.tableAdapter)
+        self.router.setupViewController(self)
         self.setOnCellDeleteHandler()
     }
     

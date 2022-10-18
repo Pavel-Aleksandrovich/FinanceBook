@@ -9,16 +9,41 @@ import Foundation
 
 protocol IHistoryInteractor: AnyObject {
     func onViewAttached(controller: IHistoryViewController,
-                        view: IHistoryView,
-                        tableAdapter: IHistoryTableAdapter)
-    func loadData()
-    func deleteTransaction(_ viewModel: HistoryRequest)
+                        view: IHistoryView)
+    func deleteHistoryBy(id: UUID)
+    func setSelectedDate(_ date: Date)
+    func setDateState(_ state: DateCollectionAdapter.DateType)
+    func setProfitState(_ state: Profit)
+    func leftArrowTapped()
+    func rightArrowTapped()
 }
 
 final class HistoryInteractor {
     
     private let presenter: IHistoryPresenter
     private let dataManager: IHistoryDataManager
+    
+    private var profitType: Profit = .income {
+        didSet {
+            self.switchForEachDateState()
+        }
+    }
+    
+    private var selectedDate = Date() {
+        didSet {
+            self.switchForEachDateState()
+            self.setTitleDateLable()
+        }
+    }
+    
+    private var dateType: DateCollectionAdapter.DateType = .day {
+        didSet {
+            self.switchForEachDateState()
+            self.setTitleDateLable()
+        }
+    }
+    
+    private let calendar = Calendar.current
     
     init(presenter: IHistoryPresenter,
          dataManager: IHistoryDataManager) {
@@ -30,15 +55,100 @@ final class HistoryInteractor {
 extension HistoryInteractor: IHistoryInteractor {
     
     func onViewAttached(controller: IHistoryViewController,
-                        view: IHistoryView,
-                        tableAdapter: IHistoryTableAdapter) {
+                        view: IHistoryView) {
         self.presenter.onViewAttached(controller: controller,
-                                      view: view,
-                                      tableAdapter: tableAdapter)
+                                      view: view)
     }
     
-    func loadData() {
-        self.dataManager.getHistory { [ weak self ] result in
+    func deleteHistoryBy(id: UUID) {
+        self.dataManager.deleteHistoryBy(id: id) { [ weak self ] result in
+            guard let self = self else { return }
+            
+            switch result {
+            case .success():
+                self.loadHistoryForChooseDate()
+            case .failure(let error):
+                self.presenter.showError(error)
+            }
+        }
+    }
+    
+    func setSelectedDate(_ date: Date) {
+        self.selectedDate = date
+    }
+    
+    func setProfitState(_ state: Profit) {
+        self.profitType = state
+    }
+    
+    func setDateState(_ state: DateCollectionAdapter.DateType) {
+        self.dateType = state
+    }
+    
+    func leftArrowTapped() {
+        switch self.dateType {
+        case .day:
+            self.selectedDate = self.calendar.date(byAdding: .day,
+                                     value: -1,
+                                     to: self.selectedDate) ?? Date()
+        case .month:
+            self.selectedDate = self.calendar.date(byAdding: .month,
+                                     value: -1,
+                                     to: self.selectedDate) ?? Date()
+        case .year:
+            self.selectedDate = self.calendar.date(byAdding: .year,
+                                     value: -1,
+                                     to: self.selectedDate) ?? Date()
+        case .all: break
+        }
+    }
+    
+    func rightArrowTapped() {
+        switch self.dateType {
+        case .day:
+            self.selectedDate = self.calendar.date(byAdding: .day,
+                                     value: +1,
+                                     to: self.selectedDate) ?? Date()
+        case .month:
+            self.selectedDate = self.calendar.date(byAdding: .month,
+                                     value: +1,
+                                     to: self.selectedDate) ?? Date()
+        case .year:
+            self.selectedDate = self.calendar.date(byAdding: .year,
+                                     value: +1,
+                                     to: self.selectedDate) ?? Date()
+        case .all: break
+        }
+    }
+    
+    func setTitleDateLable() {
+        let dateFormatter = DateFormatter()
+        
+        switch self.dateType {
+        case .day:
+            dateFormatter.dateFormat = "dd MMMM yy"
+        case .month:
+            dateFormatter.dateFormat = "MMMM"
+        case .year:
+            dateFormatter.dateFormat = "yy"
+        case .all: break
+        }
+        
+        let title = dateFormatter.string(from: self.selectedDate)
+        
+        if title != "" {
+            self.presenter.setTitleForDateLabel(title)
+        } else {
+            self.presenter.setTitleForDateLabel("All Time")
+        }
+    }
+}
+
+private extension HistoryInteractor {
+    
+    func loadAllHistory() {
+        self.dataManager.getHistory(profit: self.profitType.name)
+        { [ weak self ] result in
             switch result {
             case .success(let historyResponse):
                 self?.presenter.setHistory(historyResponse)
@@ -48,36 +158,113 @@ extension HistoryInteractor: IHistoryInteractor {
         }
     }
     
-    func deleteTransaction(_ viewModel: HistoryRequest) {
-        if viewModel.transactionCount == 1 {
-            self.deleteHistoryBy(id: viewModel.id)
-        } else {
-            self.deleteTransactionBy(id: viewModel.idSegment)
+    func loadHistoryForDateInterval(fromDate: Date,
+                                    toDate: Date) {
+        self.dataManager.getHistory(fromDate: fromDate,
+                                    toDate: toDate,
+                                    profit: self.profitType.name)
+        { [ weak self ] result in
+            switch result {
+            case .success(let historyResponse):
+                self?.presenter.setHistory(historyResponse)
+            case .failure(let error):
+                self?.presenter.showError(error)
+            }
+        }
+    }
+    
+    func loadHistoryForChooseDate() {
+        self.dataManager.getHistory(profit: self.profitType.name,
+                                    date: self.selectedDate)
+        { [ weak self ] result in
+            switch result {
+            case .success(let historyResponse):
+                self?.presenter.setHistory(historyResponse)
+            case .failure(let error):
+                self?.presenter.showError(error)
+            }
+        }
+    }
+    
+    func switchForEachDateState() {
+        switch self.dateType {
+        case .day:
+            self.loadHistoryForDateInterval(fromDate: self.selectedDate,
+                                            toDate: self.selectedDate)
+        case .month:
+            self.loadHistoryForDateInterval(
+                fromDate: self.generateDateFirstDayInMonth(),
+                toDate: self.generateDateLastDayInMonth())
+        case .year:
+            self.loadHistoryForDateInterval(
+                fromDate: self.generateDateStartOfYear(),
+                toDate: self.generateDateEndOfYear())
+        case .all:
+            self.loadAllHistory()
         }
     }
 }
 
 private extension HistoryInteractor {
     
-    func deleteTransactionBy(id: UUID) {
-        self.dataManager.deleteTransactionBy(id: id) { [ weak self ] result in
-            switch result {
-            case .success():
-                self?.loadData()
-            case .failure(let error):
-                self?.presenter.showError(error)
-            }
-        }
+    func generateDateFirstDayInMonth() -> Date {
+        let calendar = Calendar.current
+        
+        let firstDayOfMonth = calendar.date(
+            from: calendar.dateComponents([.year, .month],
+                                          from: self.selectedDate))
+        
+        guard let firstDayOfMonth = firstDayOfMonth else { return Date() }
+        
+        print("153 - \(firstDayOfMonth)")
+        
+        print("min - \(generateDateStartOfYear())")
+        print("max - \(generateDateEndOfYear())")
+        
+        return firstDayOfMonth
     }
     
-    func deleteHistoryBy(id: UUID) {
-        self.dataManager.deleteHistoryBy(id: id) { [ weak self ] result in
-            switch result {
-            case .success():
-                self?.loadData()
-            case .failure(let error):
-                self?.presenter.showError(error)
-            }
-        }
+    func generateDateLastDayInMonth() -> Date {
+        let calendar = Calendar.current
+        
+        let firstDayOfMonth = calendar.date(
+            from: calendar.dateComponents([.year, .month], from: self.selectedDate)) ?? Date()
+        
+        let dateMax = calendar.date(byAdding: DateComponents(month: 1, day: -1),
+                                    to: firstDayOfMonth)
+        
+        guard let dateMax = dateMax else { return Date() }
+        
+        return dateMax
+    }
+    
+    func generateDateEndOfYear() -> Date {
+        let calendar = Calendar.current
+        
+        let firstMonth = calendar.date(
+            from: calendar.dateComponents([.year],
+                                          from: self.selectedDate))
+        
+        guard let firstMonth = firstMonth else { return Date() }
+        
+        let dateMax = calendar.date(byAdding: DateComponents(year: 1, day: -1),
+                                    to: firstMonth)
+        
+        guard let dateMax = dateMax else { return Date() }
+        print(dateMax)
+        
+        return dateMax
+    }
+    
+    func generateDateStartOfYear() -> Date {
+        let calendar = Calendar.current
+        
+        let firstMonth = calendar.date(
+            from: calendar.dateComponents([.year],
+                                          from: self.selectedDate))
+        
+        guard let firstMonth = firstMonth else { return Date() }
+        
+        return firstMonth
     }
 }

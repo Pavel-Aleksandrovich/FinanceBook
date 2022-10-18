@@ -14,16 +14,13 @@ protocol IHistoryViewController: AnyObject {
 final class HistoryViewController: UIViewController {
     
     private let mainView = HistoryView()
-    private let tableAdapter: IHistoryTableAdapter
     private let interactor: IHistoryInteractor
     private let router: IHistoryRouter
     
     init(interactor: IHistoryInteractor,
-         router: IHistoryRouter,
-         tableAdapter: IHistoryTableAdapter) {
+         router: IHistoryRouter) {
         self.interactor = interactor
         self.router = router
-        self.tableAdapter = tableAdapter
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -38,31 +35,91 @@ final class HistoryViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.interactor.onViewAttached(controller: self,
-                                       view: self.mainView,
-                                       tableAdapter: self.tableAdapter)
+                                       view: self.mainView)
+        self.router.setupViewController(self)
         self.createAddTransactionBarButton()
-        self.setOnCellDeleteHandler()
+        self.setHandlers()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.interactor.loadData()
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd MMMM yy"
+        
+        let dateString = dateFormatter.string(from: Date())
+        let date = dateFormatter.date(from: dateString)
+
+        guard let date = date else { return }
+        
+        self.interactor.setSelectedDate(date)
     }
 }
 
 extension HistoryViewController: IHistoryViewController {
+    
     func showError(_ error: String) {
         self.router.showAlert(error)
     }
 }
 
+// MARK: - Set Handlers
 private extension HistoryViewController {
     
-    func setOnCellDeleteHandler() {
-        self.tableAdapter.onCellDeleteHandler = { [ weak self ] viewModel in
-            self?.interactor.deleteTransaction(viewModel)
+    func setHandlers() {
+        self.setOnButtonTappedHandler()
+        self.setOnCellDeleteHandler()
+        self.setCollectionAdapterHandler()
+        self.setDateCollectionAdapterHandler()
+        self.setOnDateViewTappedHandler()
+    }
+    
+    func setOnButtonTappedHandler() {
+        self.mainView.onButtonTappedHandler = {
         }
     }
+    
+    func setOnCellDeleteHandler() {
+        self.mainView.onCellDeleteHandler = { [ weak self ] id in
+            self?.interactor.deleteHistoryBy(id: id)
+        }
+    }
+    
+    func setCollectionAdapterHandler() {
+        self.mainView.onCellTappedHandler = { [ weak self ] type in
+            self?.interactor.setProfitState(type)
+        }
+    }
+    
+    func setDateCollectionAdapterHandler() {
+        self.mainView.onDateCellTappedHandler = { [ weak self ] type in
+            self?.interactor.setDateState(type)
+        }
+    }
+    
+    func setOnDateViewTappedHandler() {
+        self.mainView.onDateViewTappedHandler = { [ weak self ] state in
+            switch state {
+            case .leftArrow:
+                self?.interactor.leftArrowTapped()
+            case .rightArrow:
+                self?.interactor.rightArrowTapped()
+            case .dateLabel:
+                self?.showCalendar()
+            }
+        }
+    }
+    
+    func showCalendar() {
+        let vc = CalendarPickerViewController(baseDate: Date()) { date in
+            
+            self.interactor.setSelectedDate(date)
+        }
+        self.present(vc, animated: true)
+    }
+}
+
+private extension HistoryViewController {
     
     func createAddTransactionBarButton() {
         let item = UIBarButtonItem(barButtonSystemItem: .add,

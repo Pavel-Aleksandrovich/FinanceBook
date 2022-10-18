@@ -8,15 +8,20 @@
 import UIKit
 
 protocol INewsDetailsRouter: AnyObject {
+    func setupViewController(_ controller: UIViewController)
     func showAlert(_ title: String)
 }
 
 final class NewsDetailsRouter {
     
-    weak var controller: UIViewController?
+    private weak var controller: UIViewController?
 }
 
 extension NewsDetailsRouter: INewsDetailsRouter {
+    
+    func setupViewController(_ controller: UIViewController) {
+        self.controller = controller
+    }
     
     func showAlert(_ title: String) {
         let alert = AlertAssembly.createAlert(title)

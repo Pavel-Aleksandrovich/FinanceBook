@@ -26,7 +26,7 @@ final class CollectionCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.configAppearance()
-        self.configLayout()
+        self.makeConstraints()
     }
     
     required init?(coder: NSCoder) {
@@ -57,7 +57,7 @@ private extension CollectionCell {
         self.categoryLabel.textAlignment = .center
     }
     
-    func configLayout() {
+    func makeConstraints() {
         self.makeImageNameLabelConstraints()
     }
     

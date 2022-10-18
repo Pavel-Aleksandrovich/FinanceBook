@@ -37,9 +37,8 @@ final class TransactionDetailsViewController: UIViewController {
         super.viewDidLoad()
         self.interactor.onViewAttached(controller: self,
                                        view: self.mainView)
-        self.setSaveButtonTappedHandler()
-        self.setCheckTextFieldsHandler()
-        self.navigationController?.navigationBar.tintColor = MainAttributs.color
+        self.router.setupViewController(self)
+        self.setHandlers()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -68,10 +67,23 @@ extension TransactionDetailsViewController: ITransactionDetailsViewController {
     }
 }
 
+extension TransactionDetailsViewController: ListCategoryViewControllerDelegate {
+    
+    func setData(_ model: CategoryType) {
+        self.mainView.setCategory(model)
+    }
+}
+
 private extension TransactionDetailsViewController {
     
+    func setHandlers() {
+        self.setCheckTextFieldsHandler()
+        self.setSaveButtonTappedHandler()
+        self.setOnCellTappedHandler()
+    }
+    
     func setCheckTextFieldsHandler() {
-        self.mainView.checkTextFieldsHandler = { [ weak self ] in
+        self.mainView.textFieldChangeHandler = { [ weak self ] in
             let viewModel = self?.mainView.getViewModel()
             self?.interactor.checkTextFields(viewModel: viewModel)
         }
@@ -83,4 +95,12 @@ private extension TransactionDetailsViewController {
             self?.interactor.createTransaction(viewModel)
         }
     }
+    
+    func setOnCellTappedHandler() {
+        self.mainView.onCellTappedHandler = { type in
+            self.router.showCategoryModul(delegate: self)
+        }
+    }
 }
+
+

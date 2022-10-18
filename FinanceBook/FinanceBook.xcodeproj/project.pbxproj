@@ -52,7 +52,6 @@
 		84272C87285D8FC3005B1955 /* HistoryHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84272C86285D8FC3005B1955 /* HistoryHeaderView.swift */; };
 		84272C8A285D940A005B1955 /* HistoryResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84272C89285D940A005B1955 /* HistoryResponse.swift */; };
 		84272C8C285D9588005B1955 /* TransactionDetailsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84272C8B285D9588005B1955 /* TransactionDetailsRequest.swift */; };
-		84272C8F285DCC40005B1955 /* TransactionDetailsPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84272C8E285DCC40005B1955 /* TransactionDetailsPicker.swift */; };
 		84272C91285E2203005B1955 /* MainAttributs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84272C90285E2203005B1955 /* MainAttributs.swift */; };
 		84272C95285EE8C4005B1955 /* NumberConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84272C94285EE8C4005B1955 /* NumberConverter.swift */; };
 		84272C98285EE912005B1955 /* DateConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84272C97285EE912005B1955 /* DateConverter.swift */; };
@@ -79,6 +78,36 @@
 		84272CD12865BAA6005B1955 /* DefaultHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84272CD02865BAA6005B1955 /* DefaultHistoryView.swift */; };
 		84272CD3286A02EA005B1955 /* InternetChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84272CD2286A02EA005B1955 /* InternetChecker.swift */; };
 		84272CD5286B523C005B1955 /* ListNewsInternetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84272CD4286B523C005B1955 /* ListNewsInternetCell.swift */; };
+		84272CE42875684D005B1955 /* ProfitCollectionAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84272CE32875684D005B1955 /* ProfitCollectionAdapter.swift */; };
+		84272CE6287571AC005B1955 /* ProfitCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84272CE5287571AC005B1955 /* ProfitCollectionCell.swift */; };
+		84272CEA2875E826005B1955 /* ListCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84272CE92875E826005B1955 /* ListCategoryViewController.swift */; };
+		84272CEC2875E906005B1955 /* ListCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84272CEB2875E906005B1955 /* ListCategoryView.swift */; };
+		84272CEF2875EA10005B1955 /* ListCategoryRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84272CEE2875EA10005B1955 /* ListCategoryRouter.swift */; };
+		84272CF12875EA8C005B1955 /* ListCategoryInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84272CF02875EA8C005B1955 /* ListCategoryInteractor.swift */; };
+		84272CF32875EB33005B1955 /* ListCategoryPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84272CF22875EB33005B1955 /* ListCategoryPresenter.swift */; };
+		84272CF52875EB9E005B1955 /* ListCategoryAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84272CF42875EB9E005B1955 /* ListCategoryAssembly.swift */; };
+		84272CF82875F260005B1955 /* ListCategoryTableAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84272CF72875F260005B1955 /* ListCategoryTableAdapter.swift */; };
+		84272CFA2875F2FF005B1955 /* ListCategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84272CF92875F2FF005B1955 /* ListCategoryCell.swift */; };
+		84272CFC2876ABA5005B1955 /* CategoryType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84272CFB2876ABA5005B1955 /* CategoryType.swift */; };
+		84272CFF2876E163005B1955 /* TransactionDetailsTableAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84272CFE2876E163005B1955 /* TransactionDetailsTableAdapter.swift */; };
+		84272D012876E808005B1955 /* CategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84272D002876E808005B1955 /* CategoryCell.swift */; };
+		84272D032876EEDD005B1955 /* AmountCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84272D022876EEDD005B1955 /* AmountCell.swift */; };
+		84272D05287738C0005B1955 /* DateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84272D04287738C0005B1955 /* DateCell.swift */; };
+		84272D0828788820005B1955 /* DateCollectionAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84272D0728788820005B1955 /* DateCollectionAdapter.swift */; };
+		84272D0A28788AD7005B1955 /* DateCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84272D0928788AD7005B1955 /* DateCollectionCell.swift */; };
+		84272D2C287ADC94005B1955 /* DateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84272D2B287ADC94005B1955 /* DateView.swift */; };
+		84272D30287C44FD005B1955 /* CalendarPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84272D2F287C44FD005B1955 /* CalendarPickerViewController.swift */; };
+		84272D32287C452C005B1955 /* CalendarPickerHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84272D31287C452C005B1955 /* CalendarPickerHeaderView.swift */; };
+		84272D34287C4545005B1955 /* CalendarPickerFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84272D33287C4545005B1955 /* CalendarPickerFooterView.swift */; };
+		84272D36287C455D005B1955 /* CalendarDateCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84272D35287C455D005B1955 /* CalendarDateCollectionViewCell.swift */; };
+		84272D38287C457B005B1955 /* Day.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84272D37287C457B005B1955 /* Day.swift */; };
+		84272D3A287C4593005B1955 /* MonthMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84272D39287C4593005B1955 /* MonthMetadata.swift */; };
+		84272D3E28828303005B1955 /* HistoryEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84272D3C28828303005B1955 /* HistoryEntity+CoreDataClass.swift */; };
+		84272D3F28828303005B1955 /* HistoryEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84272D3D28828303005B1955 /* HistoryEntity+CoreDataProperties.swift */; };
+		84272D4228828A5B005B1955 /* TableAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84272D4128828A5B005B1955 /* TableAdapter.swift */; };
+		84272D4428828B86005B1955 /* TableAdapterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84272D4328828B86005B1955 /* TableAdapterCell.swift */; };
+		84272D4628828C18005B1955 /* HistoryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84272D4528828C18005B1955 /* HistoryModel.swift */; };
+		84272D4828829239005B1955 /* HistoryValidateRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84272D4728829239005B1955 /* HistoryValidateRequest.swift */; };
 		845AE7012859E5050021F7B7 /* ListNewsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845AE7002859E5050021F7B7 /* ListNewsInteractor.swift */; };
 		845AE7032859E5CB0021F7B7 /* ListNewsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845AE7022859E5CB0021F7B7 /* ListNewsPresenter.swift */; };
 		845AE7052859E66E0021F7B7 /* ListNewsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845AE7042859E66E0021F7B7 /* ListNewsViewController.swift */; };
@@ -147,7 +176,6 @@
 		84272C86285D8FC3005B1955 /* HistoryHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryHeaderView.swift; sourceTree = "<group>"; };
 		84272C89285D940A005B1955 /* HistoryResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryResponse.swift; sourceTree = "<group>"; };
 		84272C8B285D9588005B1955 /* TransactionDetailsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailsRequest.swift; sourceTree = "<group>"; };
-		84272C8E285DCC40005B1955 /* TransactionDetailsPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailsPicker.swift; sourceTree = "<group>"; };
 		84272C90285E2203005B1955 /* MainAttributs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainAttributs.swift; sourceTree = "<group>"; };
 		84272C94285EE8C4005B1955 /* NumberConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberConverter.swift; sourceTree = "<group>"; };
 		84272C97285EE912005B1955 /* DateConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateConverter.swift; sourceTree = "<group>"; };
@@ -174,6 +202,36 @@
 		84272CD02865BAA6005B1955 /* DefaultHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultHistoryView.swift; sourceTree = "<group>"; };
 		84272CD2286A02EA005B1955 /* InternetChecker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternetChecker.swift; sourceTree = "<group>"; };
 		84272CD4286B523C005B1955 /* ListNewsInternetCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListNewsInternetCell.swift; sourceTree = "<group>"; };
+		84272CE32875684D005B1955 /* ProfitCollectionAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfitCollectionAdapter.swift; sourceTree = "<group>"; };
+		84272CE5287571AC005B1955 /* ProfitCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfitCollectionCell.swift; sourceTree = "<group>"; };
+		84272CE92875E826005B1955 /* ListCategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListCategoryViewController.swift; sourceTree = "<group>"; };
+		84272CEB2875E906005B1955 /* ListCategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListCategoryView.swift; sourceTree = "<group>"; };
+		84272CEE2875EA10005B1955 /* ListCategoryRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListCategoryRouter.swift; sourceTree = "<group>"; };
+		84272CF02875EA8C005B1955 /* ListCategoryInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListCategoryInteractor.swift; sourceTree = "<group>"; };
+		84272CF22875EB33005B1955 /* ListCategoryPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListCategoryPresenter.swift; sourceTree = "<group>"; };
+		84272CF42875EB9E005B1955 /* ListCategoryAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListCategoryAssembly.swift; sourceTree = "<group>"; };
+		84272CF72875F260005B1955 /* ListCategoryTableAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListCategoryTableAdapter.swift; sourceTree = "<group>"; };
+		84272CF92875F2FF005B1955 /* ListCategoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListCategoryCell.swift; sourceTree = "<group>"; };
+		84272CFB2876ABA5005B1955 /* CategoryType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryType.swift; sourceTree = "<group>"; };
+		84272CFE2876E163005B1955 /* TransactionDetailsTableAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailsTableAdapter.swift; sourceTree = "<group>"; };
+		84272D002876E808005B1955 /* CategoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCell.swift; sourceTree = "<group>"; };
+		84272D022876EEDD005B1955 /* AmountCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmountCell.swift; sourceTree = "<group>"; };
+		84272D04287738C0005B1955 /* DateCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateCell.swift; sourceTree = "<group>"; };
+		84272D0728788820005B1955 /* DateCollectionAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateCollectionAdapter.swift; sourceTree = "<group>"; };
+		84272D0928788AD7005B1955 /* DateCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateCollectionCell.swift; sourceTree = "<group>"; };
+		84272D2B287ADC94005B1955 /* DateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateView.swift; sourceTree = "<group>"; };
+		84272D2F287C44FD005B1955 /* CalendarPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarPickerViewController.swift; sourceTree = "<group>"; };
+		84272D31287C452C005B1955 /* CalendarPickerHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarPickerHeaderView.swift; sourceTree = "<group>"; };
+		84272D33287C4545005B1955 /* CalendarPickerFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarPickerFooterView.swift; sourceTree = "<group>"; };
+		84272D35287C455D005B1955 /* CalendarDateCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarDateCollectionViewCell.swift; sourceTree = "<group>"; };
+		84272D37287C457B005B1955 /* Day.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day.swift; sourceTree = "<group>"; };
+		84272D39287C4593005B1955 /* MonthMetadata.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthMetadata.swift; sourceTree = "<group>"; };
+		84272D3C28828303005B1955 /* HistoryEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HistoryEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
+		84272D3D28828303005B1955 /* HistoryEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HistoryEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		84272D4128828A5B005B1955 /* TableAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableAdapter.swift; sourceTree = "<group>"; };
+		84272D4328828B86005B1955 /* TableAdapterCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableAdapterCell.swift; sourceTree = "<group>"; };
+		84272D4528828C18005B1955 /* HistoryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryModel.swift; sourceTree = "<group>"; };
+		84272D4728829239005B1955 /* HistoryValidateRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryValidateRequest.swift; sourceTree = "<group>"; };
 		845AE7002859E5050021F7B7 /* ListNewsInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListNewsInteractor.swift; sourceTree = "<group>"; };
 		845AE7022859E5CB0021F7B7 /* ListNewsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListNewsPresenter.swift; sourceTree = "<group>"; };
 		845AE7042859E66E0021F7B7 /* ListNewsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListNewsViewController.swift; sourceTree = "<group>"; };
@@ -267,6 +325,10 @@
 			isa = PBXGroup;
 			children = (
 				84272CAF2860A51A005B1955 /* ViewModels */,
+				84272D06287887E5005B1955 /* DateCollectionAdapter */,
+				84272CE228756832005B1955 /* ProfitCollectionAdapter */,
+				84272CE128755BC7005B1955 /* HistoryTableAdapter */,
+				84272D4028828A41005B1955 /* TableAdapter */,
 				84272C68285C2A0E005B1955 /* View */,
 				84272C5C285C261C005B1955 /* HistoryRouter.swift */,
 				84272C5E285C2668005B1955 /* HistoryInteractor.swift */,
@@ -281,11 +343,7 @@
 			children = (
 				84272C55285B7FB8005B1955 /* HistoryViewController.swift */,
 				84272C5A285C2560005B1955 /* HistoryView.swift */,
-				84272CD02865BAA6005B1955 /* DefaultHistoryView.swift */,
-				84272C62285C27C7005B1955 /* HistoryTableAdapter.swift */,
-				84272C64285C2883005B1955 /* HistoryCell.swift */,
-				84272C86285D8FC3005B1955 /* HistoryHeaderView.swift */,
-				84272C58285B806F005B1955 /* HistoryChart.swift */,
+				84272D2D287ADCFB005B1955 /* UI */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -295,12 +353,12 @@
 			children = (
 				84272CAA28604202005B1955 /* Validator */,
 				84272CA528602AFD005B1955 /* ViewModels */,
+				84272CFD2876E14D005B1955 /* TableAdapter */,
 				84272C74285C3F47005B1955 /* View */,
 				84272C6C285C3CC3005B1955 /* TransactionDetailsRouter.swift */,
 				84272C70285C3D8D005B1955 /* TransactionDetailsInteractor.swift */,
 				84272C72285C3E32005B1955 /* TransactionDetailsPresenter.swift */,
 				84272C75285C3F54005B1955 /* TransactionDetailsAssembly.swift */,
-				84272C77285C5C49005B1955 /* TransactionType.swift */,
 			);
 			path = TransactionDetails;
 			sourceTree = "<group>";
@@ -311,7 +369,6 @@
 				84272C6A285C391B005B1955 /* TransactionDetailsViewController.swift */,
 				84272C6E285C3CFF005B1955 /* TransactionDetailsView.swift */,
 				84272CAD2860670F005B1955 /* TransactionDetailsTextFieldView.swift */,
-				84272C8E285DCC40005B1955 /* TransactionDetailsPicker.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -354,6 +411,7 @@
 			children = (
 				84272CA628602B0E005B1955 /* TransactionDetailsValidateRequest.swift */,
 				84272C8B285D9588005B1955 /* TransactionDetailsRequest.swift */,
+				84272D4728829239005B1955 /* HistoryValidateRequest.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -373,6 +431,7 @@
 				84272CB02860A944005B1955 /* HistoryRequest.swift */,
 				84272C89285D940A005B1955 /* HistoryResponse.swift */,
 				84272CB22860AFD9005B1955 /* HistoryViewModel.swift */,
+				84272D4528828C18005B1955 /* HistoryModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -429,10 +488,131 @@
 			path = Remote;
 			sourceTree = "<group>";
 		};
+		84272CE128755BC7005B1955 /* HistoryTableAdapter */ = {
+			isa = PBXGroup;
+			children = (
+				84272C62285C27C7005B1955 /* HistoryTableAdapter.swift */,
+				84272C64285C2883005B1955 /* HistoryCell.swift */,
+				84272C86285D8FC3005B1955 /* HistoryHeaderView.swift */,
+			);
+			path = HistoryTableAdapter;
+			sourceTree = "<group>";
+		};
+		84272CE228756832005B1955 /* ProfitCollectionAdapter */ = {
+			isa = PBXGroup;
+			children = (
+				84272CE32875684D005B1955 /* ProfitCollectionAdapter.swift */,
+				84272CE5287571AC005B1955 /* ProfitCollectionCell.swift */,
+			);
+			path = ProfitCollectionAdapter;
+			sourceTree = "<group>";
+		};
+		84272CE72875845E005B1955 /* Reusable */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Reusable;
+			sourceTree = "<group>";
+		};
+		84272CE82875E6AA005B1955 /* ListCategory */ = {
+			isa = PBXGroup;
+			children = (
+				84272CF62875F251005B1955 /* TableAdapter */,
+				84272CED2875EA01005B1955 /* View */,
+				84272CEE2875EA10005B1955 /* ListCategoryRouter.swift */,
+				84272CF02875EA8C005B1955 /* ListCategoryInteractor.swift */,
+				84272CF22875EB33005B1955 /* ListCategoryPresenter.swift */,
+				84272CF42875EB9E005B1955 /* ListCategoryAssembly.swift */,
+			);
+			path = ListCategory;
+			sourceTree = "<group>";
+		};
+		84272CED2875EA01005B1955 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				84272CE92875E826005B1955 /* ListCategoryViewController.swift */,
+				84272CEB2875E906005B1955 /* ListCategoryView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		84272CF62875F251005B1955 /* TableAdapter */ = {
+			isa = PBXGroup;
+			children = (
+				84272CF72875F260005B1955 /* ListCategoryTableAdapter.swift */,
+				84272CF92875F2FF005B1955 /* ListCategoryCell.swift */,
+				84272CFB2876ABA5005B1955 /* CategoryType.swift */,
+				84272C77285C5C49005B1955 /* TransactionType.swift */,
+			);
+			path = TableAdapter;
+			sourceTree = "<group>";
+		};
+		84272CFD2876E14D005B1955 /* TableAdapter */ = {
+			isa = PBXGroup;
+			children = (
+				84272CFE2876E163005B1955 /* TransactionDetailsTableAdapter.swift */,
+				84272D002876E808005B1955 /* CategoryCell.swift */,
+				84272D022876EEDD005B1955 /* AmountCell.swift */,
+				84272D04287738C0005B1955 /* DateCell.swift */,
+			);
+			path = TableAdapter;
+			sourceTree = "<group>";
+		};
+		84272D06287887E5005B1955 /* DateCollectionAdapter */ = {
+			isa = PBXGroup;
+			children = (
+				84272D0728788820005B1955 /* DateCollectionAdapter.swift */,
+				84272D0928788AD7005B1955 /* DateCollectionCell.swift */,
+			);
+			path = DateCollectionAdapter;
+			sourceTree = "<group>";
+		};
+		84272D2D287ADCFB005B1955 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				84272D2B287ADC94005B1955 /* DateView.swift */,
+				84272CD02865BAA6005B1955 /* DefaultHistoryView.swift */,
+				84272C58285B806F005B1955 /* HistoryChart.swift */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		84272D2E287C447D005B1955 /* Calendar */ = {
+			isa = PBXGroup;
+			children = (
+				84272D2F287C44FD005B1955 /* CalendarPickerViewController.swift */,
+				84272D31287C452C005B1955 /* CalendarPickerHeaderView.swift */,
+				84272D33287C4545005B1955 /* CalendarPickerFooterView.swift */,
+				84272D35287C455D005B1955 /* CalendarDateCollectionViewCell.swift */,
+				84272D3B287C45AC005B1955 /* Model */,
+			);
+			path = Calendar;
+			sourceTree = "<group>";
+		};
+		84272D3B287C45AC005B1955 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				84272D37287C457B005B1955 /* Day.swift */,
+				84272D39287C4593005B1955 /* MonthMetadata.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		84272D4028828A41005B1955 /* TableAdapter */ = {
+			isa = PBXGroup;
+			children = (
+				84272D4128828A5B005B1955 /* TableAdapter.swift */,
+				84272D4328828B86005B1955 /* TableAdapterCell.swift */,
+			);
+			path = TableAdapter;
+			sourceTree = "<group>";
+		};
 		845AE6FF2859E4DB0021F7B7 /* Moduls */ = {
 			isa = PBXGroup;
 			children = (
+				84272CE82875E6AA005B1955 /* ListCategory */,
 				84272C69285C3853005B1955 /* TransactionDetails */,
+				84272D2E287C447D005B1955 /* Calendar */,
 				84272C57285B7FC3005B1955 /* History */,
 				84272C31285ADAD9005B1955 /* FavoriteNews */,
 				845AE7122859F4500021F7B7 /* NewsDetails */,
@@ -501,6 +681,9 @@
 		84A406FE285984830013387C /* FinanceBook */ = {
 			isa = PBXGroup;
 			children = (
+				84272D3C28828303005B1955 /* HistoryEntity+CoreDataClass.swift */,
+				84272D3D28828303005B1955 /* HistoryEntity+CoreDataProperties.swift */,
+				84272CE72875845E005B1955 /* Reusable */,
 				845AE6FF2859E4DB0021F7B7 /* Moduls */,
 				84A4074128599C410013387C /* Services */,
 				84272CC12862F7B7005B1955 /* SupportingFiles */,
@@ -629,6 +812,7 @@
 				845AE70B2859E7E40021F7B7 /* ListNewsTableAdapter.swift in Sources */,
 				84A40700285984830013387C /* AppDelegate.swift in Sources */,
 				845AE7012859E5050021F7B7 /* ListNewsInteractor.swift in Sources */,
+				84272D4428828B86005B1955 /* TableAdapterCell.swift in Sources */,
 				84272CBB2861C2AB005B1955 /* FavoriteNewsRequest.swift in Sources */,
 				84272C56285B7FB8005B1955 /* HistoryViewController.swift in Sources */,
 				84272C3D285ADF94005B1955 /* FavoriteNewsView.swift in Sources */,
@@ -637,7 +821,6 @@
 				84272CA728602B0E005B1955 /* TransactionDetailsValidateRequest.swift in Sources */,
 				84272C5F285C2668005B1955 /* HistoryInteractor.swift in Sources */,
 				84272CA4285F9AEA005B1955 /* KeyboardObserver.swift in Sources */,
-				84272C8F285DCC40005B1955 /* TransactionDetailsPicker.swift in Sources */,
 				84272C29285A2A79005B1955 /* NewsDetailsPresenter.swift in Sources */,
 				84272C59285B806F005B1955 /* HistoryChart.swift in Sources */,
 				84272C42285AE67C005B1955 /* CoreDataStorage.swift in Sources */,
@@ -648,18 +831,27 @@
 				84272C8A285D940A005B1955 /* HistoryResponse.swift in Sources */,
 				845AE7162859F62C0021F7B7 /* NewsDetailsView.swift in Sources */,
 				84272C3B285ADF3E005B1955 /* FavoriteNewsCell.swift in Sources */,
+				84272CF82875F260005B1955 /* ListCategoryTableAdapter.swift in Sources */,
 				84A407472859B4EC0013387C /* FavoriteNewsResponse.swift in Sources */,
 				84272C25285A29F2005B1955 /* NewsDetailsRouter.swift in Sources */,
 				84272C78285C5C49005B1955 /* TransactionType.swift in Sources */,
+				84272CE42875684D005B1955 /* ProfitCollectionAdapter.swift in Sources */,
 				84272CAC28604213005B1955 /* ValidateResult.swift in Sources */,
 				84272C2E285AD367005B1955 /* TabBarAssembly.swift in Sources */,
 				84272C51285B22B5005B1955 /* Category.swift in Sources */,
 				84272C65285C2883005B1955 /* HistoryCell.swift in Sources */,
 				845AE7072859E6E90021F7B7 /* ListNewsRouter.swift in Sources */,
 				845AE7032859E5CB0021F7B7 /* ListNewsPresenter.swift in Sources */,
+				84272D032876EEDD005B1955 /* AmountCell.swift in Sources */,
+				84272D05287738C0005B1955 /* DateCell.swift in Sources */,
 				84272C6D285C3CC3005B1955 /* TransactionDetailsRouter.swift in Sources */,
+				84272D3A287C4593005B1955 /* MonthMetadata.swift in Sources */,
+				84272CF32875EB33005B1955 /* ListCategoryPresenter.swift in Sources */,
+				84272CEF2875EA10005B1955 /* ListCategoryRouter.swift in Sources */,
 				84272CD12865BAA6005B1955 /* DefaultHistoryView.swift in Sources */,
 				84272C33285ADCCD005B1955 /* FavoriteNewsRouter.swift in Sources */,
+				84272D30287C44FD005B1955 /* CalendarPickerViewController.swift in Sources */,
+				84272D3F28828303005B1955 /* HistoryEntity+CoreDataProperties.swift in Sources */,
 				84272C61285C26FA005B1955 /* HistoryPresenter.swift in Sources */,
 				84272CCD28642720005B1955 /* NewsDataManager.swift in Sources */,
 				84272CCF28646E1E005B1955 /* NewsDetailsFavoriteView.swift in Sources */,
@@ -674,8 +866,10 @@
 				84272CCB286424E3005B1955 /* HistoryDataManager.swift in Sources */,
 				84A40702285984830013387C /* SceneDelegate.swift in Sources */,
 				84272C39285ADEB1005B1955 /* FavoriteNewsTableAdapter.swift in Sources */,
+				84272D3E28828303005B1955 /* HistoryEntity+CoreDataClass.swift in Sources */,
 				845AE70F2859E96D0021F7B7 /* ListNewsAssembly.swift in Sources */,
 				84272C63285C27C7005B1955 /* HistoryTableAdapter.swift in Sources */,
+				84272CEC2875E906005B1955 /* ListCategoryView.swift in Sources */,
 				84272C8C285D9588005B1955 /* TransactionDetailsRequest.swift in Sources */,
 				84272CD3286A02EA005B1955 /* InternetChecker.swift in Sources */,
 				845AE7182859FB310021F7B7 /* BaseLabel.swift in Sources */,
@@ -689,29 +883,47 @@
 				84272C87285D8FC3005B1955 /* HistoryHeaderView.swift in Sources */,
 				84272C95285EE8C4005B1955 /* NumberConverter.swift in Sources */,
 				84272C4D285B2279005B1955 /* CollectionViewAdapter.swift in Sources */,
+				84272D4228828A5B005B1955 /* TableAdapter.swift in Sources */,
 				845AE7052859E66E0021F7B7 /* ListNewsViewController.swift in Sources */,
+				84272CEA2875E826005B1955 /* ListCategoryViewController.swift in Sources */,
 				84272C82285CAF6D005B1955 /* SegmentEntity+CoreDataClass.swift in Sources */,
+				84272D36287C455D005B1955 /* CalendarDateCollectionViewCell.swift in Sources */,
+				84272CE6287571AC005B1955 /* ProfitCollectionCell.swift in Sources */,
 				84272C2B285A2DA8005B1955 /* NewsDetailsAssembly.swift in Sources */,
+				84272CFA2875F2FF005B1955 /* ListCategoryCell.swift in Sources */,
 				84272C6B285C391B005B1955 /* TransactionDetailsViewController.swift in Sources */,
+				84272CFF2876E163005B1955 /* TransactionDetailsTableAdapter.swift in Sources */,
+				84272CFC2876ABA5005B1955 /* CategoryType.swift in Sources */,
+				84272D012876E808005B1955 /* CategoryCell.swift in Sources */,
+				84272D4628828C18005B1955 /* HistoryModel.swift in Sources */,
 				84272C98285EE912005B1955 /* DateConverter.swift in Sources */,
 				84272C67285C2963005B1955 /* HistoryAssembly.swift in Sources */,
+				84272D38287C457B005B1955 /* Day.swift in Sources */,
 				845AE70D2859E8820021F7B7 /* ListNewsCell.swift in Sources */,
 				84272CA928603B3A005B1955 /* TransactionDetailsValidator.swift in Sources */,
 				84272CD5286B523C005B1955 /* ListNewsInternetCell.swift in Sources */,
 				84272C3F285AE043005B1955 /* FavoriteNewsAssembly.swift in Sources */,
 				84272C76285C3F54005B1955 /* TransactionDetailsAssembly.swift in Sources */,
 				845AE7092859E7880021F7B7 /* ListNewsView.swift in Sources */,
+				84272CF12875EA8C005B1955 /* ListCategoryInteractor.swift in Sources */,
 				84272C37285ADE54005B1955 /* FavoriteNewsPresenter.swift in Sources */,
+				84272D34287C4545005B1955 /* CalendarPickerFooterView.swift in Sources */,
 				84272C5D285C261C005B1955 /* HistoryRouter.swift in Sources */,
 				84272C5B285C2560005B1955 /* HistoryView.swift in Sources */,
 				84272C27285A2A3C005B1955 /* NewsDetailsInteractor.swift in Sources */,
 				84272C4A285AFCAA005B1955 /* NewsEntity+CoreDataProperties.swift in Sources */,
 				84272C71285C3D8D005B1955 /* TransactionDetailsInteractor.swift in Sources */,
+				84272D32287C452C005B1955 /* CalendarPickerHeaderView.swift in Sources */,
 				84272C73285C3E32005B1955 /* TransactionDetailsPresenter.swift in Sources */,
 				84272CA0285F4398005B1955 /* BaseTextField.swift in Sources */,
 				84272C46285AF686005B1955 /* NewsDetailsRequest.swift in Sources */,
 				84272C7C285CA57A005B1955 /* ColorConverter.swift in Sources */,
+				84272D0A28788AD7005B1955 /* DateCollectionCell.swift in Sources */,
 				84272C85285CAF6D005B1955 /* ChartEntity+CoreDataProperties.swift in Sources */,
+				84272D0828788820005B1955 /* DateCollectionAdapter.swift in Sources */,
+				84272D2C287ADC94005B1955 /* DateView.swift in Sources */,
+				84272D4828829239005B1955 /* HistoryValidateRequest.swift in Sources */,
+				84272CF52875EB9E005B1955 /* ListCategoryAssembly.swift in Sources */,
 				84A4070A285984830013387C /* FinanceBook.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

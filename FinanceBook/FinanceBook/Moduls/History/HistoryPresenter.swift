@@ -9,17 +9,17 @@ import Foundation
 
 protocol IHistoryPresenter: AnyObject {
     func onViewAttached(controller: IHistoryViewController,
-                        view: IHistoryView,
-                        tableAdapter: IHistoryTableAdapter)
+                        view: IHistoryView)
     func showError(_ error: Error)
-    func setHistory(_ history: [HistoryResponse])
+    func setHistory(_ history: [HistoryModelResponse])
+    func setTitleForDateLabel(dateInterval: DateCollectionAdapter.DateType)
+    func setTitleForDateLabel(_ title: String)
 }
 
 final class HistoryPresenter {
     
     private weak var view: IHistoryView?
     private weak var controller: IHistoryViewController?
-    private weak var tableAdapter: IHistoryTableAdapter?
     
     private let mainQueue = DispatchQueue.main
 }
@@ -27,13 +27,9 @@ final class HistoryPresenter {
 extension HistoryPresenter: IHistoryPresenter {
     
     func onViewAttached(controller: IHistoryViewController,
-                        view: IHistoryView,
-                        tableAdapter: IHistoryTableAdapter) {
+                        view: IHistoryView) {
         self.controller = controller
         self.view = view
-        self.tableAdapter = tableAdapter
-        
-        self.tableAdapter?.tableView = self.view?.getTableView()
     }
     
     func showError(_ error: Error) {
@@ -42,22 +38,52 @@ extension HistoryPresenter: IHistoryPresenter {
         }
     }
     
-    func setHistory(_ history: [HistoryResponse]) {
-        let historyViewModel = self.getViewModel(from: history)
+    //MARK: - TO DO
+    //if historyViewModel.isEmpty { showEmptyState() } else { showContent }
+    func setHistory(_ history: [HistoryModelResponse]) {
+        let historyViewModel = history.map { HistoryModel(model: $0) }
+        
+        let ar = self.convert(array: historyViewModel)
+        print(ar)
         
         self.mainQueue.async {
             self.view?.setImageViewState(!historyViewModel.isEmpty)
-            self.tableAdapter?.setHistory(historyViewModel)
             self.view?.setHistory(historyViewModel)
+            self.view?.updateChart(ar)
+        }
+    }
+    
+    func setTitleForDateLabel(dateInterval: DateCollectionAdapter.DateType) {
+        self.view?.setTitleForDateLabel(dateInterval.rawValue)
+    }
+    
+    func setTitleForDateLabel(_ title: String) {
+        self.mainQueue.async {
+            self.view?.setTitleForDateLabel(title)
         }
     }
 }
 
 private extension HistoryPresenter {
     
-    func getViewModel(from array: [HistoryResponse]) -> [HistoryViewModel] {
+    func convert(array: [HistoryModel]) -> [[HistoryModel]] {
+        var newArray: [[HistoryModel]] = []
+        var isAppend = Bool()
         
-        array.map { HistoryViewModel(history: $0,
-                                     transaction: $0.transaction.map { TransactionTypeViewModel(transaction: $0) } ) }
+        for i in 0..<array.count {
+            isAppend = false
+            for j in 0..<newArray.count {
+                if newArray[j].first?.name == array[i].name {
+                    newArray[j].append(contentsOf: [array[i]])
+                    isAppend = true
+                    break
+                }
+            }
+            if isAppend == false {
+                newArray.append([array[i]])
+            }
+        }
+        
+        return newArray
     }
 }

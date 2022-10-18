@@ -8,16 +8,21 @@
 import UIKit
 
 protocol IHistoryRouter: AnyObject {
+    func setupViewController(_ controller: UIViewController)
     func showAddTransactionModul()
     func showAlert(_ title: String)
 }
 
 final class HistoryRouter {
     
-    weak var controller: UIViewController?
+    private weak var controller: UIViewController?
 }
 
 extension HistoryRouter: IHistoryRouter {
+    
+    func setupViewController(_ controller: UIViewController) {
+        self.controller = controller
+    }
     
     func showAddTransactionModul() {
         let vc = TransactionDetailsAssembly.build()
