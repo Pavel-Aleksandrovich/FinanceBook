@@ -9,7 +9,9 @@ import UIKit
 import SnapKit
 
 protocol HistoryHeaderViewDelegate: AnyObject {
-    func toggleSection(header: HistoryHeaderView, section: Int, tableView: UITableView)
+    func toggleSection(header: HistoryHeaderView,
+                       section: Int,
+                       tableView: UITableView)
 }
 
 final class HistoryHeaderView: UITableViewHeaderFooterView {
@@ -58,16 +60,16 @@ final class HistoryHeaderView: UITableViewHeaderFooterView {
 extension HistoryHeaderView {
     
     func setup(section: Int,
-               history: HistoryViewModel,
+               history: [HistoryModel],
                delegate: HistoryHeaderViewDelegate,
                tableView: UITableView) {
         
         self.tableView = tableView
         self.delegate = delegate
         self.section = section
-        self.amountLabel.text = NumberConverter.toStringFrom(int: Int(history.amount))
-        self.imageView.backgroundColor = ColorConverter.toColor(fromData: history.color)
-        self.nameLabel.text = history.name
+        self.amountLabel.text = NumberConverter.toStringFrom(int: Int(history.map { $0.value }.reduce(0, +)))
+        self.imageView.backgroundColor = ColorConverter.toColor(fromData: history.first?.color ?? Data())
+        self.nameLabel.text = history.first?.name
     }
     
     func setCollapsed(_ collapsed: Bool) {

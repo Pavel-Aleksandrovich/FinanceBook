@@ -36,7 +36,7 @@ final class HistoryCell: UITableViewCell {
 
 extension HistoryCell {
     
-    func update(transaction: TransactionTypeViewModel) {
+    func update(transaction: HistoryModel) {
         self.amountLabel.text = NumberConverter.toStringFrom(int: transaction.value)
         self.dateLabel.text = DateConverter.toStringFrom(date: transaction.date)
     }

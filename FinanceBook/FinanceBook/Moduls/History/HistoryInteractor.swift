@@ -23,13 +23,25 @@ final class HistoryInteractor {
     private let presenter: IHistoryPresenter
     private let dataManager: IHistoryDataManager
     
-    private var profitType: Profit = .income
-    private var selectedDate = Date() {
+    private var profitType: Profit = .income {
         didSet {
             self.switchForEachDateState()
         }
     }
-    private var dateType: DateCollectionAdapter.DateType = .day
+    
+    private var selectedDate = Date() {
+        didSet {
+            self.switchForEachDateState()
+            self.setTitleDateLable()
+        }
+    }
+    
+    private var dateType: DateCollectionAdapter.DateType = .day {
+        didSet {
+            self.switchForEachDateState()
+            self.setTitleDateLable()
+        }
+    }
     
     private let calendar = Calendar.current
     
@@ -63,18 +75,14 @@ extension HistoryInteractor: IHistoryInteractor {
     
     func setSelectedDate(_ date: Date) {
         self.selectedDate = date
-        self.switchForEachDateState()
     }
     
     func setProfitState(_ state: Profit) {
         self.profitType = state
-        self.switchForEachDateState()
     }
     
     func setDateState(_ state: DateCollectionAdapter.DateType) {
         self.dateType = state
-        
-        self.switchForEachDateState()
     }
     
     func leftArrowTapped() {
@@ -110,6 +118,28 @@ extension HistoryInteractor: IHistoryInteractor {
                                      value: +1,
                                      to: self.selectedDate) ?? Date()
         case .all: break
+        }
+    }
+    
+    func setTitleDateLable() {
+        let dateFormatter = DateFormatter()
+        
+        switch self.dateType {
+        case .day:
+            dateFormatter.dateFormat = "dd MMMM yy"
+        case .month:
+            dateFormatter.dateFormat = "MMMM"
+        case .year:
+            dateFormatter.dateFormat = "yy"
+        case .all: break
+        }
+        
+        let title = dateFormatter.string(from: self.selectedDate)
+        
+        if title != "" {
+            self.presenter.setTitleForDateLabel(title)
+        } else {
+            self.presenter.setTitleForDateLabel("All Time")
         }
     }
 }

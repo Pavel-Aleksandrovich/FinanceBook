@@ -32,7 +32,6 @@ extension DateCollectionAdapter: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
         let count = CGFloat(self.dataArray.count)
         
         return CGSize(width: collectionView.frame.width/count,

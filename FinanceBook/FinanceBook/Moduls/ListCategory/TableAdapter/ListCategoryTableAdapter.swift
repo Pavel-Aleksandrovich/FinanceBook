@@ -31,7 +31,7 @@ extension ListCategoryTableAdapter {
         switch result {
         case .income:
             self.selectedRow = .income
-        case .expenses:
+        case .spending:
             self.selectedRow = .expenses
         }
     }

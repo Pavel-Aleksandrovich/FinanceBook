@@ -14,6 +14,7 @@ struct HistoryModel {
     let value: Int
     let date: Date
     let profit: String
+    var expanded: Bool
     
     init(model: HistoryModelResponse) {
         self.color = model.color
@@ -22,6 +23,7 @@ struct HistoryModel {
         self.value = model.value
         self.date = model.date
         self.profit = model.profit
+        self.expanded = false
     }
 }
 

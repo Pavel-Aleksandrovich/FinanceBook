@@ -9,7 +9,7 @@ import UIKit
 
 final class HistoryChart: UIView {
     
-    private var segments = [HistoryViewModel]()
+    private var segments = [[HistoryModel]]()
     private var total = CGFloat()
     
     init() {
@@ -36,25 +36,26 @@ final class HistoryChart: UIView {
 
 extension HistoryChart {
     
-    func updateChart(_ chart: [HistoryViewModel]) {
+    func updateChart(_ chart: [[HistoryModel]]) {
         self.segments = chart
         self.total = self.getTotalSum(chart)
+        print(self.total)
         self.setNeedsDisplay()
     }
 }
 
 private extension HistoryChart {
     
-    func forEachSegment(complition: (HistoryViewModel,
+    func forEachSegment(complition: ([HistoryModel],
                                      _ startAngle: CGFloat,
                                      _ endAngle: CGFloat) -> ()) {
         
-        let valueCount = segments.lazy.map { $0.amount }.reduce(0, +)
+        let valueCount = segments.lazy.map { $0.lazy.map { $0.value }.reduce(0, +) }.reduce(0, +)
         
         var startAngle: CGFloat = -.pi * 0.5
         
         for segment in segments {
-            let endAngle = startAngle + .pi * 2 * CGFloat((segment.amount / valueCount))
+            let endAngle = startAngle + .pi * 2 * CGFloat(((segment.map { CGFloat($0.value) }.reduce(0, +)) / self.total))
             defer {
                 startAngle = endAngle
             }
@@ -74,7 +75,8 @@ private extension HistoryChart {
                                                center: segmentCenter)
             }
             
-            let textString = String(format: "%g", (segment.amount/self.total * 100).rounded())
+            let textString = String(format: "%g", ((segment.lazy.map { CGFloat($0.value) }.reduce(0, +))/self.total * 100).rounded())
+            
             let text = "\(textString)%"
             
             let font: UIFont = .systemFont(ofSize: 16)
@@ -95,7 +97,9 @@ private extension HistoryChart {
         
         self.forEachSegment { segment, startAngle, endAngle in
             
-            let color = ColorConverter.toColor(fromData: segment.color)
+            let color = ColorConverter.toColor(fromData: segment.first?.color ?? Data())
+            
+            
             ctx.setFillColor(color?.cgColor ?? UIColor.green.cgColor)
             
             ctx.move(to: viewCenter)
@@ -128,13 +132,13 @@ private extension HistoryChart {
                size: size)
     }
     
-    func getTotalSum(_ chart: [HistoryViewModel]) -> CGFloat {
-        var total = CGFloat()
+    func getTotalSum(_ chart: [[HistoryModel]]) -> CGFloat {
+        var total = Int()
         
         for i in 0..<chart.count {
-            total += chart[i].amount
+            total += chart[i].lazy.map { $0.value }.reduce(0, +)
         }
         
-        return total
+        return CGFloat(total)
     }
 }

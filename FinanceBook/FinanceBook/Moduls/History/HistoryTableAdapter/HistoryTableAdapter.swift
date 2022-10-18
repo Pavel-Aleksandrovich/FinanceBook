@@ -19,18 +19,18 @@ final class HistoryTableAdapter: NSObject {
         static let fromNumber = 0
     }
     
-    private var historyArray: [HistoryViewModel] = []
+    private var historyArray: [[HistoryModel]] = []
     
-    private let onCellDeleteHandler: (HistoryRequest) -> ()
+    private let onCellDeleteHandler: (UUID) -> ()
     
-    init(completion: @escaping(HistoryRequest) -> ()) {
+    init(completion: @escaping(UUID) -> ()) {
         self.onCellDeleteHandler = completion
     }
 }
 
 extension HistoryTableAdapter {
     
-    func setHistory(_ history: [HistoryViewModel]) {
+    func setHistory(_ history: [[HistoryModel]]) {
         self.historyArray = history
     }
 }
@@ -43,7 +43,7 @@ extension HistoryTableAdapter: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView,
                    numberOfRowsInSection section: Int) -> Int {
-        self.historyArray[section].transaction.count
+        self.historyArray[section].count
     }
     
     func tableView(_ tableView: UITableView,
@@ -53,7 +53,9 @@ extension HistoryTableAdapter: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView,
                    heightForRowAt indexPath: IndexPath) -> CGFloat {
-        switch self.historyArray[indexPath.section].expanded {
+        guard let isExpanded = self.historyArray[indexPath.section].first?.expanded else { return Constants.heightForRowMin }
+        
+        switch isExpanded {
         case true:
             return Constants.heightForRowMax
         case false:
@@ -73,8 +75,9 @@ extension HistoryTableAdapter: UITableViewDelegate, UITableViewDataSource {
                                                        for: indexPath) as? HistoryCell
         else { return UITableViewCell() }
         
-        let news = self.historyArray[indexPath.section].transaction[indexPath.row]
-        cell.update(transaction: news)
+        let history = self.historyArray[indexPath.section]
+        
+        cell.update(transaction: history[indexPath.row])
         
         return cell
     }
@@ -88,12 +91,8 @@ extension HistoryTableAdapter: UITableViewDelegate, UITableViewDataSource {
                    commit editingStyle: UITableViewCell.EditingStyle,
                    forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            let chart = self.historyArray[indexPath.section]
-            let segment = chart.transaction[indexPath.row]
-            let viewModel = HistoryRequest(id: chart.id,
-                                           idSegment: segment.id,
-                                           transactionCount: chart.transaction.count)
-            self.onCellDeleteHandler(viewModel)
+            let history = self.historyArray[indexPath.section]
+            self.onCellDeleteHandler(history[indexPath.row].id)
         }
     }
     
@@ -102,7 +101,9 @@ extension HistoryTableAdapter: UITableViewDelegate, UITableViewDataSource {
         let header = HistoryHeaderView()
         let history = self.historyArray[section]
         
-        header.setCollapsed(history.expanded)
+        guard let expanded = history.first?.expanded else { return nil }
+        
+        header.setCollapsed(expanded)
         
         header.setup(section: section,
                      history: history,
@@ -119,11 +120,11 @@ extension HistoryTableAdapter: HistoryHeaderViewDelegate {
                        section: Int,
                        tableView: UITableView) {
         
-        let expanded = !self.historyArray[section].expanded
-        self.historyArray[section].expanded = expanded
+        let expanded = !self.historyArray[section].first!.expanded
+        self.historyArray[section][0].expanded = expanded
         header.setCollapsed(expanded)
         
-        for row in Constants.fromNumber..<self.historyArray[section].transaction.count {
+        for row in Constants.fromNumber..<self.historyArray[section].count {
             
             tableView.reloadRows(at: [IndexPath(row: row, section: section)],
                                   with: .automatic)

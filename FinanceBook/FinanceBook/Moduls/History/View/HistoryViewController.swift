@@ -67,10 +67,16 @@ extension HistoryViewController: IHistoryViewController {
 private extension HistoryViewController {
     
     func setHandlers() {
+        self.setOnButtonTappedHandler()
         self.setOnCellDeleteHandler()
         self.setCollectionAdapterHandler()
         self.setDateCollectionAdapterHandler()
         self.setOnDateViewTappedHandler()
+    }
+    
+    func setOnButtonTappedHandler() {
+        self.mainView.onButtonTappedHandler = {
+        }
     }
     
     func setOnCellDeleteHandler() {

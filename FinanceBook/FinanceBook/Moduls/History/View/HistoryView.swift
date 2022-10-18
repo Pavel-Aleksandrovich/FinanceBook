@@ -12,6 +12,7 @@ protocol IHistoryView: AnyObject {
     func setHistory(_ chart: [HistoryModel])
     func setImageViewState(_ state: Bool)
     func setTitleForDateLabel(_ title: String)
+    func updateChart(_ chart: [[HistoryModel]])
 }
 
 final class HistoryView: UIView {
@@ -20,6 +21,7 @@ final class HistoryView: UIView {
         static let chartMultiplied = 0.8
     }
     
+    private let switchTableStateButton = UIButton()
     private let pieChartView = HistoryChart()
     private let tableView = UITableView()
     private let defaultView = DefaultHistoryView()
@@ -40,6 +42,10 @@ final class HistoryView: UIView {
     private lazy var tableAdapter = TableAdapter { id in
         self.onCellDeleteHandler?(id) }
     
+    private lazy var historyTableAdapter = HistoryTableAdapter { id in
+        print("")
+    }
+    
     private lazy var collectionAdapter = ProfitCollectionAdapter { type in
         self.onCellTappedHandler?(type) }
     
@@ -47,6 +53,7 @@ final class HistoryView: UIView {
     var onCellTappedHandler: ((Profit) -> ())?
     var onDateCellTappedHandler: ((DateCollectionAdapter.DateType) -> ())?
     var onDateViewTappedHandler: ((DateView.TapState) -> ())?
+    var onButtonTappedHandler: (() -> ())?
     
     init() {
         super.init(frame: .zero)
@@ -62,9 +69,13 @@ final class HistoryView: UIView {
 extension HistoryView: IHistoryView {
     
     func setHistory(_ history: [HistoryModel]) {
-//        self.pieChartView.updateChart(history)
         self.tableAdapter.setHistory(history)
         self.tableView.reloadData()
+    }
+    
+    func updateChart(_ chart: [[HistoryModel]]) {
+        self.pieChartView.updateChart(chart)
+        self.historyTableAdapter.setHistory(chart)
     }
     
     func setImageViewState(_ state: Bool) {
@@ -81,6 +92,7 @@ private extension HistoryView {
     
     func configAppearance() {
         self.configView()
+        self.configSwitchTableStateButton()
         self.configTableView()
         self.configScrollView()
         self.configLayout()
@@ -91,6 +103,26 @@ private extension HistoryView {
     
     func configView() {
         self.backgroundColor = .white
+    }
+    
+    func configSwitchTableStateButton() {
+        self.switchTableStateButton.backgroundColor = .gray
+        self.switchTableStateButton.layer.cornerRadius = 25
+        self.switchTableStateButton.clipsToBounds = true
+        self.switchTableStateButton.addTarget(self,
+                                              action: #selector
+                                              (self.onButtonTapped),
+                                              for: .touchUpInside)
+    }
+    
+    @objc func onButtonTapped() {
+        self.onButtonTappedHandler?()
+        
+        self.tableView.delegate = self.historyTableAdapter
+        self.tableView.dataSource = self.historyTableAdapter
+        self.tableView.register(HistoryCell.self,
+                                forCellReuseIdentifier: HistoryCell.id)
+        self.tableView.reloadData()
     }
     
     func configTableView() {
@@ -152,6 +184,7 @@ private extension HistoryView {
         self.makeDateCollectionViewConstraints()
         self.makeSelectedDateViewConstraints()
         self.makeChartConstraints()
+        self.makeSwitchTableStateButtonConstraints()
         self.makeTableViewConstraints()
         self.makeDefaultViewConstraints()
     }
@@ -202,10 +235,20 @@ private extension HistoryView {
         }
     }
     
+    func makeSwitchTableStateButtonConstraints() {
+        self.scrollView.addSubview(self.switchTableStateButton)
+        self.switchTableStateButton.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().inset(10)
+            make.top.equalTo(self.pieChartView.snp.bottom).inset(-10)
+            make.width.equalToSuperview().multipliedBy(0.2)
+            make.height.equalTo(50)
+        }
+    }
+    
     func makeTableViewConstraints() {
         self.scrollView.addSubview(self.tableView)
         self.tableView.snp.makeConstraints { make in
-            make.top.equalTo(self.pieChartView.snp.bottom)
+            make.top.equalTo(self.switchTableStateButton.snp.bottom).inset(-10)
             make.bottom.equalToSuperview()
             make.leading.trailing.equalTo(self.safeAreaLayoutGuide)
             make.height.equalTo(UIScreen.main.bounds.height - 200)

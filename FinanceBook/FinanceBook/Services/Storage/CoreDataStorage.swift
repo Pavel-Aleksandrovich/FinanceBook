@@ -52,7 +52,9 @@ extension CoreDataStorage {
     func create(news: NewsDetailsRequest) throws {
         
         guard let entity = NSEntityDescription.entity(forEntityName: "NewsEntity",
-                                                      in: self.context) else { return }
+                                                      in: self.context)
+        else { return }
+        
         let savedNews = try self.getListNews()
         
         if savedNews.contains(where: { $0.title == news.title}) == false {

@@ -20,7 +20,7 @@ final class ProfitCollectionCell: UICollectionViewCell {
     
     override var isSelected: Bool {
         didSet {
-            self.selectView.isHidden = !self.isSelected
+            self.configSelectView()
         }
     }
     
@@ -60,8 +60,11 @@ private extension ProfitCollectionCell {
     }
     
     func configSelectView() {
-        self.selectView.backgroundColor = MainAttributs.color
-        self.selectView.isHidden = true
+        if self.isSelected {
+            self.selectView.backgroundColor = MainAttributs.color
+        } else {
+            self.selectView.backgroundColor = .systemGray6
+        }
     }
 }
 

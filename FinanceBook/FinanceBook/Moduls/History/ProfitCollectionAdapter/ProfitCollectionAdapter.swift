@@ -9,12 +9,12 @@ import UIKit
 
 enum Profit: String, CaseIterable {
     case income = "Income"
-    case expenses = "Expenses"
+    case spending = "Spending"
     
     var name: String {
         switch self {
         case .income: return "income"
-        case .expenses: return "expenses"
+        case .spending: return "spending"
         }
     }
 }
